@@ -1,0 +1,6 @@
+http://www.ict.griffith.edu.au/~jw/normalization/ind.php
+https://www.studytonight.com/dbms/database-normalization.php
+https://github.com/michaelmior/eson
+
+https://stackoverflow.com/questions/2234552/tools-or-a-website-to-help-with-database-normalization
+https://dba.stackexchange.com/questions/24748/is-there-a-tool-to-check-if-my-database-is-normalized-to-the-third-normal-form

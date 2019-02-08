@@ -1,0 +1,754 @@
+<!DOCTYPE html><html
+lang="en-US"><head><meta
+charset="UTF-8"><meta
+name="viewport" content="width=device-width"><title>iloc, loc, and ix for data selection in Python Pandas | Shane Lynn</title><link
+rel="profile" href="http://gmpg.org/xfn/11"><link
+rel="shortcut icon" href=""/><link
+rel="pingback" href="https://www.shanelynn.ie/xmlrpc.php">
+<!--[if lt IE 9]> <script src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/html5.js"></script> <![endif]--><meta
+name="description"  content="The iloc, loc and ix indexers for Python Pandas select rows and columns from DataFrames. Simple guide to find data by position, label &amp; conditional statements." /><meta
+name="keywords"  content="python,pandas,select,index,iloc,loc,ix,iat,at,datascience,column,row,selection,indexer,data cleansing,code,data,data science,learning,tutorial" /><link
+rel="canonical" href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/" /><link
+rel='dns-prefetch' href='//platform.twitter.com' /><link
+rel='dns-prefetch' href='//s0.wp.com' /><link
+rel='dns-prefetch' href='//ajax.googleapis.com' /><link
+rel='dns-prefetch' href='//fonts.googleapis.com' /><link
+rel='dns-prefetch' href='//s.w.org' /><link
+rel="alternate" type="application/rss+xml" title="Shane Lynn &raquo; Feed" href="https://www.shanelynn.ie/feed/" /><link
+rel="alternate" type="application/rss+xml" title="Shane Lynn &raquo; Comments Feed" href="https://www.shanelynn.ie/comments/feed/" /><link
+rel="alternate" type="application/rss+xml" title="Shane Lynn &raquo; Using iloc, loc, &#038; ix to select rows and columns in Pandas DataFrames Comments Feed" href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/feed/" /> <script type="text/javascript">/*<![CDATA[*/window._wpemojiSettings={"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.shanelynn.ie\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.5"}};!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55357,56692,8205,9792,65039],[55357,56692,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);/*]]>*/</script> <script>/*<![CDATA[*/advanced_ads_ready=function(){var fns=[],listener,doc=typeof document==="object"&&document,hack=doc&&doc.documentElement.doScroll,domContentLoaded="DOMContentLoaded",loaded=doc&&(hack?/^loaded|^c/:/^loaded|^i|^c/).test(doc.readyState);if(!loaded&&doc){listener=function(){doc.removeEventListener(domContentLoaded,listener);window.removeEventListener("load",listener);loaded=1;while(listener=fns.shift())listener()};doc.addEventListener(domContentLoaded,listener);window.addEventListener("load",listener)}return function(fn){loaded?setTimeout(fn,0):fns.push(fn)}}();/*]]>*/</script><style type="text/css">img.wp-smiley,img.emoji{display:inline !important;border:none !important;box-shadow:none !important;height:1em !important;width:1em !important;margin:0
+.07em !important;vertical-align:-0.1em !important;background:none !important;padding:0
+!important}</style><link
+rel='stylesheet' id='contact-form-7-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.0.1' type='text/css' media='all' /><link
+rel='stylesheet' id='ctf_styles-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/custom-twitter-feeds/css/ctf-styles.css?ver=1.2.8' type='text/css' media='all' /><link
+rel='stylesheet' id='google-raleway-css'  href='https://fonts.googleapis.com/css?family=Open+Sans%3A300italic%2C400italic%2C600italic%2C700italic%2C800italic%2C400%2C300%2C600%2C700%2C800&#038;ver=4.9.5' type='text/css' media='all' /><link
+rel='stylesheet' id='ascent-bootstrap-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/resources/bootstrap/css/bootstrap.css?ver=4.9.5' type='text/css' media='all' /><link
+rel='stylesheet' id='ascent-swipebox-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/css/swipebox.css?ver=4.9.5' type='text/css' media='all' /><link
+rel='stylesheet' id='ascent-owl-carousel-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/css/owl.carousel.css?ver=4.9.5' type='text/css' media='all' /><link
+rel='stylesheet' id='ascent-owl-theme-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/css/owl.theme.css?ver=4.9.5' type='text/css' media='all' /><link
+rel='stylesheet' id='ascent-animations-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/css/animations.css?ver=4.9.5' type='text/css' media='all' /><link
+rel='stylesheet' id='ascent-meanmenu-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/css/meanmenu.css?ver=4.9.5' type='text/css' media='all' /><link
+rel='stylesheet' id='ascent-main-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/css/main.css?ver=4.9.5' type='text/css' media='all' /><link
+rel='stylesheet' id='jetpack-widget-social-icons-styles-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/jetpack/modules/widgets/social-icons/social-icons.css?ver=20170506' type='text/css' media='all' /><link
+rel='stylesheet' id='easy_table_style-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/easy-table/themes/default/style.css?ver=1.6' type='text/css' media='all' /><link
+rel='stylesheet' id='enlighter-local-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/enlighter/resources/EnlighterJS.min.css?ver=3.5' type='text/css' media='all' /><link
+rel='stylesheet' id='an_style-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/ywrMnyIoxdTt/eHjUtdkTrPUU.css?ver=2.2.3' type='text/css' media='all' /><style id='an_style-inline-css' type='text/css'>.AnEaCyNbUfNi-bg{display:none;position:fixed;z-index:100;top:0;left:0;width:100%;height:100%;background:#000;background:rgba(0,0,0,0.75)}.AnEaCyNbUfNi{visibility:hidden;position:fixed;z-index:101;top:100px;right:0;left:0;max-width:640px;margin-right:auto;margin-left:auto;background:#fff;-webkit-box-shadow:0 3px 5px 2px rgba(0,0,0,0.25);box-shadow:0 3px 5px 2px rgba(0,0,0,0.25);font-family:Arial,Helvetica,sans-serif}.AnEaCyNbUfNi-default,.AnEaCyNbUfNi-ok{padding:30px
+30px 15px}.AnEaCyNbUfNi-image{overflow:hidden;position:relative;width:100%}.AnEaCyNbUfNi-image .AnEaCyNbUfNi-left{position:absolute;top:0;left:0;width:50%;height:100%}.AnEaCyNbUfNi-image .AnEaCyNbUfNi-right{float:right;width:50%;padding:30px}.AnEaCyNbUfNi.small{width:200px;margin-left:-140px}.AnEaCyNbUfNi.medium{width:400px;margin-left:-240px}.AnEaCyNbUfNi.large{width:600px;margin-left:-340px}.AnEaCyNbUfNi.xlarge{width:800px;margin-left:-440px}.close-AnEaCyNbUfNi{display:inline-block;position:absolute;top:15px;right:15px;width:30px;height:30px;color:#bbb;font-size:32px;font-weight:700;line-height:30px;text-align:center;cursor:pointer;-webkit-transition:0.3s;transition:0.3s}.close-AnEaCyNbUfNi:hover{color:#252b37}.AnEaCyNbUfNi
+h1{margin-bottom:15px;padding:0
+30px;color:#252b37;font-size:28px;line-height:1.25;text-align:center}.AnEaCyNbUfNi-right
+h1{padding:0
+30px 0 0;text-align:left}.AnEaCyNbUfNi
+p{margin-bottom:15px;color:#333745;font-size:14px}.AnEaCyNbUfNi p
+a{color:#ff6160}.AnEaCyNbUfNi-right .close-modal,.AnEaCyNbUfNi-footer .close-modal{padding:15px
+!important;border-radius:0 !important;background-color:#ff6160;font-size:14px;letter-spacing:2px !important;-webkit-transition:0.3s;transition:0.3s}.AnEaCyNbUfNi-right .close-modal:hover,.AnEaCyNbUfNi-footer .close-modal:hover{background-color:#252b37 !important}.AnEaCyNbUfNi-footer .grey-button-modal{margin-right:15px;background-color:#a5a5a5}.AnEaCyNbUfNi-footer{display:block;padding:15px
+30px;background-color:#eff4f7;text-align:right}@media only screen and (max-width: 640px){.AnEaCyNbUfNi{right:5%;left:5%;max-width:90%}.AnEaCyNbUfNi-default{padding:20px}.AnEaCyNbUfNi-image .AnEaCyNbUfNi-left{width:100%;height:250px}.AnEaCyNbUfNi-image .AnEaCyNbUfNi-right{float:left;width:100%;margin-top:250px;padding:20px}.AnEaCyNbUfNi
+h1{margin-bottom:10px;font-size:20px}.AnEaCyNbUfNi-right
+h1{padding:0}.AnEaCyNbUfNi
+p{margin-bottom:10px}.close-AnEaCyNbUfNi{color:#fcfcfc;background-color:#252b37}.close-AnEaCyNbUfNi:hover{color:#252b37;background-color:#fcfcfc}.AnEaCyNbUfNi-footer{padding:15px
+20px}}@media only screen and (max-width: 480px){.AnEaCyNbUfNi-image .AnEaCyNbUfNi-left{height:200px}.AnEaCyNbUfNi-image .AnEaCyNbUfNi-right{margin-top:200px}.AnEaCyNbUfNi-footer{text-align:center}.AnEaCyNbUfNi-footer .close-modal{width:80%;margin:5px
+10%}}</style><link
+rel='stylesheet' id='jetpack_css-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/jetpack/css/jetpack.css?ver=6.0' type='text/css' media='all' /> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script> <script type='text/javascript'>var related_posts_js_options={"post_heading":"h4"};</script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/jetpack/_inc/build/related-posts/related-posts.min.js?ver=20150408'></script> <script type='text/javascript' src='https://platform.twitter.com/widgets.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/resources/bootstrap/js/bootstrap.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/bootstrap-wp.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/jquery.swipebox.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/swipebox-config.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/owl.carousel.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/jquery.appear.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/jquery.meanmenu.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/jquery.velocity.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/appear.config.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/main.js?ver=4.9.5'></script> <link
+rel='https://api.w.org/' href='https://www.shanelynn.ie/wp-json/' /><link
+rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-includes/wlwmanifest.xml" /><link
+rel='prev' title='The ggthemr package &#8211; Theme and colour your ggplot figures' href='https://www.shanelynn.ie/themes-and-colours-for-r-ggplots-with-ggthemr/' /><link
+rel='next' title='Batch CSV Geocoding in Python with Google Maps API' href='https://www.shanelynn.ie/batch-geocoding-in-python-with-google-geocoding-api/' /><meta
+name="generator" content="WordPress 4.9.5" /><link
+rel='shortlink' href='https://www.shanelynn.ie/?p=643' /><link
+rel="alternate" type="application/json+oembed" href="https://www.shanelynn.ie/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.shanelynn.ie%2Fselect-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix%2F" /><link
+rel="alternate" type="text/xml+oembed" href="https://www.shanelynn.ie/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.shanelynn.ie%2Fselect-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix%2F&#038;format=xml" /><link
+rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.shanelynn.ie/xmlrpc2.php?rsd" /><link
+rel='dns-prefetch' href='//jetpack.wordpress.com'/><link
+rel='dns-prefetch' href='//s0.wp.com'/><link
+rel='dns-prefetch' href='//s1.wp.com'/><link
+rel='dns-prefetch' href='//s2.wp.com'/><link
+rel='dns-prefetch' href='//public-api.wordpress.com'/><link
+rel='dns-prefetch' href='//0.gravatar.com'/><link
+rel='dns-prefetch' href='//1.gravatar.com'/><link
+rel='dns-prefetch' href='//2.gravatar.com'/><style type='text/css'>img#wpstats{display:none}</style><style type='text/css' id='dynamic-css'></style><style type="text/css"></style><link
+rel="amphtml" href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/amp/"><meta
+property="og:type" content="article" /><meta
+property="og:title" content="Using iloc, loc, &#038; ix to select rows and columns in Pandas DataFrames" /><meta
+property="og:url" content="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/" /><meta
+property="og:description" content="Pandas Data Selection There are multiple ways to select and index rows and columns from Pandas DataFrames. I find tutorials online focusing on advanced selections of row and column choices a little…" /><meta
+property="article:published_time" content="2016-10-02T09:44:51+00:00" /><meta
+property="article:modified_time" content="2017-07-09T13:09:42+00:00" /><meta
+property="og:site_name" content="Shane Lynn" /><meta
+property="og:image" content="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Information-and-Data-Services.jpg" /><meta
+property="og:image:width" content="1600" /><meta
+property="og:image:height" content="550" /><meta
+property="og:locale" content="en_US" /><meta
+name="twitter:text:title" content="Using iloc, loc, &#038; ix to select rows and columns in Pandas DataFrames" /><meta
+name="twitter:image" content="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Information-and-Data-Services.jpg?w=640" /><meta
+name="twitter:card" content="summary_large_image" /> <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> <script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-2568178699868194",enable_page_level_ads:true});</script> <style type="text/css" id="wp-custom-css">.entry-content{font-size:1.2em;line-height:150%;text-align:justify}.wp-caption-text{font-size:1em}h2{margin-top:0.8em;margin-bottom:0.4em}.shane-content{margin-top:30px;margin-bottom:30px}.shane-content-1{margin-top:30px;margin-bottom:30px}#googleadwords{width:263px;height:600px}</style></head><body
+class="post-template-default single single-post postid-643 single-format-standard"><header
+id="masthead" class="site-header" role="banner"><div
+class="header-top"><div
+class="container"><div
+class="row"><div
+class="col-sm-6"><div
+class="mail-info"></div></div><div
+class="col-sm-6"><div
+class="header-social-icon-wrap"><ul
+class="social-icons"><li
+class="social-icon"><a
+target="_blank" href="http://twitter.com/shane_a_lynn"><i
+class="fa fa-twitter"></i></a></li><li
+class="social-icon"><a
+target="_blank" href="http://facebook.com/shanerlynn"><i
+class="fa fa-facebook"></i></a></li><li
+class="social-icon"><a
+target="_blank" href="https://www.linkedin.com/in/shanealynn"><i
+class="fa fa-linkedin"></i></a></li><li
+class="social-icon"><a
+target="_blank" href="http://www.github.com/shanealynn"><i
+class="fa fa-github"></i></a></li></ul></div></div></div></div></div><div
+id="header-main" class="header-bottom"><div
+class="header-bottom-inner"><div
+class="container"><div
+class="row"><div
+class="col-sm-3"><div
+id="logo"><div
+class="site-header-inner col-sm-12"><div
+class="site-branding"><h1 class="site-title">
+<a
+href="https://www.shanelynn.ie/" title="Shane Lynn" rel="home">
+Shane Lynn                        				                        				    </a></h1><h4 class="site-description">Data science, Startups, Analytics and Data visualisation.</h4></div></div></div></div><div
+class="col-sm-9"><div
+class="header-search pull-right"><div
+id="header-search-button"><i
+class="fa fa-search"></i></div></div><div
+class="site-navigation pull-right">
+<nav
+class="main-menu"><ul
+id="menu-home" class="header-nav clearfix"><li
+id="menu-item-56" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-56"><a
+href="https://www.shanelynn.ie">Blog</a></li><li
+id="menu-item-53" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-53"><a
+href="https://www.shanelynn.ie/about/">About</a></li><li
+id="menu-item-800" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-ancestor current-menu-parent current-post-parent menu-item-has-children menu-item-800"><a
+href="https://www.shanelynn.ie/category/tutorials/">Pandas Tutorials</a><ul
+class="sub-menu"><li
+id="menu-item-954" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-954"><a
+href="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/">The Pandas DataFrame – creating, editing, and viewing data in Python</a></li><li
+id="menu-item-799" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-799"><a
+href="https://www.shanelynn.ie/summarising-aggregation-and-grouping-data-in-python-pandas/">Summarising, Aggregating, and Grouping data</a></li><li
+id="menu-item-798" class="menu-item menu-item-type-post_type menu-item-object-post current-menu-item menu-item-798"><a
+href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/">Use iloc, loc, &#038; ix for DataFrame selections</a></li><li
+id="menu-item-797" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-797"><a
+href="https://www.shanelynn.ie/merge-join-dataframes-python-pandas-index-1/">Master Merges and Joins with Pandas</a></li></ul></li><li
+id="menu-item-694" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-694"><a
+href="https://www.shanelynn.ie/consultancy-services/">Consultancy &#038; Services</a></li><li
+id="menu-item-55" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-55"><a
+href="https://www.shanelynn.ie/research/">Research</a></li><li
+id="menu-item-71" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-71"><a
+href="https://www.shanelynn.ie/publications/">Publications</a></li><li
+id="menu-item-54" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54"><a
+href="https://www.shanelynn.ie/contact/">Contact</a></li></ul>            			    </nav><div
+id="responsive-menu-container"></div></div></div></div></div></div></div><div
+id="header-search-form-wrap" class="header-search-form-wrap"><div
+class="container"><form
+role="search" method="get" class="header-search-form search-form" action="https://www.shanelynn.ie/"><div
+class="control-group">
+<i
+class="fa fa-search"></i>
+<input
+type="search" class="search-field" placeholder="Search &hellip;" value="" name="s" title="Search for:">
+<button
+class="search" type="submit"><i
+class="icon-search"></i></button></div></form></div></div>
+</header><div
+class="main-content"><div
+class="container"><div
+id="content" class="main-content-inner"><div
+class="row"><div
+class="col-sm-12 col-md-9">
+<article
+id="post-643" class="post-643 post type-post status-publish format-standard has-post-thumbnail hentry category-blog category-data-science category-pandas category-python category-tutorials tag-code tag-data tag-data-science tag-datascience tag-learning tag-pandas tag-python tag-tutorial"><div
+class="row"><div
+class="post-meta-info col-sm-12 col-md-2"><div
+class="entry-meta">
+<time
+class="entry-time updated" itemprop="datePublished" datetime="2016-10-02T09:44:51+00:00">Oct<strong>02</strong></time>
+<span
+class="comments_count clearfix entry-comments-link"><a
+href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/#comments">48</a></span></div></div><div
+class="post-content-wrap col-sm-12 col-md-10">
+<header
+class="page-header"><h1 class="entry-title">Using iloc, loc, &#038; ix to select rows and columns in Pandas DataFrames</h1>
+<span
+class="entry-author">
+Posted by			<span
+class="author vcard entry-author-link">
+<a
+href="https://www.shanelynn.ie/author/shanelynn/" title="Posts by shanelynn" rel="author">shanelynn</a>			</span>
+</span>
+</header><div
+class="entry-content">
+<figure>
+<a
+class="swipebox" href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Information-and-Data-Services.jpg" title="Using iloc, loc, &#038; ix to select rows and columns in Pandas DataFrames">
+<img
+width="732" height="252" src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Information-and-Data-Services-732x252.jpg" class="attachment-blog-page size-blog-page wp-post-image" alt="" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Information-and-Data-Services-732x252.jpg 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Information-and-Data-Services-300x103.jpg 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Information-and-Data-Services-768x264.jpg 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Information-and-Data-Services-1024x352.jpg 1024w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Information-and-Data-Services-1140x392.jpg 1140w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Information-and-Data-Services.jpg 1600w" sizes="(max-width: 732px) 100vw, 732px" data-attachment-id="668" data-permalink="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/information-and-data-services/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Information-and-Data-Services.jpg" data-orig-size="1600,550" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;0&quot;}" data-image-title="Searching and selecting data with python pandas iloc indexers" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Information-and-Data-Services-300x103.jpg" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Information-and-Data-Services-1024x352.jpg" />			    </a>
+</figure><div
+class="shane-before-content" style="margin-left: auto; margin-right: auto; width: 700px; height: 100px; " id="shane-736072964"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><ins
+class="adsbygoogle" style="display:inline-block;width:700px;height:100px;" data-ad-client="ca-pub-2568178699868194" data-ad-slot="7699998463"></ins> <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><h2>Pandas Data Selection</h2><p>There are <a
+href="http://pandas.pydata.org/pandas-docs/stable/indexing.html#different-choices-for-indexing">multiple ways to select</a> and index rows and columns from <a
+href="http://pandas.pydata.org/" target="_blank" rel="noopener">Pandas</a> <a
+href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html" target="_blank" rel="noopener">DataFrames</a>. I find tutorials online focusing on advanced selections of row and column choices a little complex for my requirements.</p><h3>Selection Options</h3><p>There’s three main options to achieve the selection and indexing activities in Pandas, which can be confusing. The three selection cases and methods covered in this post are:</p><ol><li><a
+href="#iloc-selection">Selecting data by row numbers (.iloc)</a></li><li><a
+href="#loc-selection">Selecting data by label or by a conditional statment (.loc)</a></li><li><a
+href="#ix-selection">Selecting in a hybrid approach (.ix) (now Deprecated in Pandas 0.20.1)</a></li></ol><h3>Data Setup</h3><p>This blog post, <a
+href="http://chrisalbon.com" target="_blank" rel="noopener">inspired by other tutorials</a>, describes selection activities with these operations. The tutorial is suited for the general data science situation where, typically I find myself:</p><ol><li>Each row in your data frame represents a data sample.</li><li>Each column is a variable, and is usually named. I rarely select columns without their names.</li><li>I need to quickly and often select relevant rows from the data frame for modelling and visualisation activities.</li></ol><p>For the uninitiated, the <a
+href="http://pandas.pydata.org">Pandas</a> library for Python provides high-performance, easy-to-use data structures and data analysis tools for handling tabular data in “series” and in “data frames”. It’s brilliant at making your data processing easier and I’ve written before about <a
+href="http://104.236.88.249/summarising-aggregation-and-grouping-data-in-python-pandas/">grouping and summarising data</a> with Pandas.</p><div
+id="attachment_665" style="width: 760px" class="wp-caption aligncenter"><a
+href="http://104.236.88.249/wp-content/uploads/2016/10/Pandas-selections-and-indexing.png"><img
+data-attachment-id="665" data-permalink="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/pandas-selections-and-indexing/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing.png" data-orig-size="1400,1000" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="pandas-selections-and-indexing" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing-300x214.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing-1024x731.png" class="size-large wp-image-665" src="http://104.236.88.249/wp-content/uploads/2016/10/Pandas-selections-and-indexing-1024x731.png" alt="iloc and loc indexing is achieved with pandas using two main arguments for rows and columns" width="750" height="535" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing-1024x731.png 1024w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing-300x214.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing-768x549.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing-732x523.png 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing-1140x814.png 1140w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing.png 1400w" sizes="(max-width: 750px) 100vw, 750px"></a><p
+class="wp-caption-text">Summary of iloc and loc methods discussed in this blog post. iloc and loc are operations for retrieving data from Pandas dataframes.</p></div><h2>Selection and Indexing Methods for Pandas DataFrames</h2><p>For these explorations we’ll need some sample data – I downloaded the uk-500 sample data set from <a
+href="https://www.briandunning.com/sample-data/">www.briandunning.com</a>. This data contains artificial names, addresses, companies and phone numbers for fictitious UK characters. To follow along, you can download the .csv file <a
+href="https://s3-eu-west-1.amazonaws.com/shanebucket/downloads/uk-500.csv">here</a>. Load the data as follows (the diagrams here come from a <a
+href="http://jupyter.org/">Jupyter notebook</a> in the <a
+href="https://www.continuum.io/downloads">Anaconda Python</a> install):</p><div
+class="oembed-gist"><script src="https://gist.github.com/shanealynn/3324456b1a22eae86fce40bdd744f102.js"></script><noscript>View the code on <a
+href="https://gist.github.com/shanealynn/3324456b1a22eae86fce40bdd744f102">Gist</a>.</noscript></div><div
+id="attachment_649" style="width: 760px" class="wp-caption aligncenter"><a
+href="http://104.236.88.249/wp-content/uploads/2016/09/pandas_indexing_example-1.png"><img
+data-attachment-id="649" data-permalink="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/pandas_indexing_example-2/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/pandas_indexing_example-1.png" data-orig-size="2246,926" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="Pandas indexing iloc loc example data" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/pandas_indexing_example-1-300x124.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/pandas_indexing_example-1-1024x422.png" class="wp-image-649 size-large" src="http://104.236.88.249/wp-content/uploads/2016/09/pandas_indexing_example-1-1024x422.png" alt="example data for pandas iloc loc and ix indexing examples." width="750" height="309" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/pandas_indexing_example-1-1024x422.png 1024w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/pandas_indexing_example-1-300x124.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/pandas_indexing_example-1-768x317.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/pandas_indexing_example-1-732x302.png 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/pandas_indexing_example-1-1140x470.png 1140w" sizes="(max-width: 750px) 100vw, 750px"></a><p
+class="wp-caption-text">Example data loaded from CSV file.</p></div><div
+class="shane-content" style="margin-left: auto; margin-right: auto; width: 336px; height: 280px; " id="shane-767895826"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><ins
+class="adsbygoogle" style="display:inline-block;width:336px;height:280px;" data-ad-client="ca-pub-2568178699868194" data-ad-slot="4606931263"></ins> <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><h2 id="iloc-selection">1. Selecting pandas data using “iloc”</h2><p>The <a
+href="http://pandas.pydata.org/pandas-docs/version/0.17.0/generated/pandas.DataFrame.iloc.html">iloc</a> indexer for Pandas Dataframe is used for <a
+href="http://pandas.pydata.org/pandas-docs/stable/indexing.html#selection-by-position">integer-location based indexing / selection</a> by position.</p><p>The iloc indexer syntax is data.iloc[&lt;row selection&gt;, &lt;column selection&gt;], which is sure to be a source of confusion for R users. “iloc” in pandas is used to <strong>select rows and columns by number</strong>, in the order that they appear in the data frame. You can imagine that each row has a row number from 0 to the total rows (data.shape[0])  and iloc[] allows selections based on these numbers. The same applies for columns (ranging from 0 to data.shape[1] )</p><p>There are two “arguments” to iloc – a row selector, and a column selector.  For example:</p><div
+class="oembed-gist"><script src="https://gist.github.com/shanealynn/1efd0555a0a668b5f0e3f5fa5593c673.js"></script><noscript>View the code on <a
+href="https://gist.github.com/shanealynn/1efd0555a0a668b5f0e3f5fa5593c673">Gist</a>.</noscript></div><p>Multiple columns and rows can be selected together using the .iloc indexer.</p><div
+class="oembed-gist"><script src="https://gist.github.com/shanealynn/3cd4c410ca1514dd9575443ab1b08a06.js"></script><noscript>View the code on <a
+href="https://gist.github.com/shanealynn/3cd4c410ca1514dd9575443ab1b08a06">Gist</a>.</noscript></div><p>There’s two gotchas to remember when using iloc in this manner:</p><ol><li>Note that .iloc returns a Pandas Series when one row is selected, and a Pandas DataFrame when multiple rows are selected, or if any column in full is selected. To counter this, pass a single-valued list if you require DataFrame output.<p></p><div
+id="attachment_661" style="width: 760px" class="wp-caption aligncenter"><a
+href="http://104.236.88.249/wp-content/uploads/2016/10/returning_dataframe_or_series_from_pandas_selections.png"><img
+data-attachment-id="661" data-permalink="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/returning_dataframe_or_series_from_pandas_selections/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/returning_dataframe_or_series_from_pandas_selections.png" data-orig-size="1886,514" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="Controlling return types – Series or DataFrame from pandas selections" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/returning_dataframe_or_series_from_pandas_selections-300x82.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/returning_dataframe_or_series_from_pandas_selections-1024x279.png" class="size-large wp-image-661" src="http://104.236.88.249/wp-content/uploads/2016/10/returning_dataframe_or_series_from_pandas_selections-1024x279.png" alt="When using .loc, or .iloc, you can control the output format by passing lists or single values to the selectors." width="750" height="204" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/returning_dataframe_or_series_from_pandas_selections-1024x279.png 1024w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/returning_dataframe_or_series_from_pandas_selections-300x82.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/returning_dataframe_or_series_from_pandas_selections-768x209.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/returning_dataframe_or_series_from_pandas_selections-732x199.png 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/returning_dataframe_or_series_from_pandas_selections-1140x311.png 1140w" sizes="(max-width: 750px) 100vw, 750px"></a><p
+class="wp-caption-text">When using .loc, or .iloc, you can control the output format by passing lists or single values to the selectors.</p></div></li><li>When selecting multiple columns or multiple rows in this manner, remember that in your selection e.g.[1:5], the rows/columns selected will run from the first number to <em>one minus</em> the second number. e.g. [1:5] will go 1,2,3,4., [x,y] goes from x to y-1.</li></ol><p>In practice, I rarely use the iloc indexer, unless I want the first ( .iloc[0] ) or the last ( .iloc[-1] )  row of the data frame.</p><div
+class="shane-content-1" style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px; width: 336px; height: 280px; " id="shane-1566582712"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><ins
+class="adsbygoogle" style="display:inline-block;width:336px;height:280px;" data-ad-client="ca-pub-2568178699868194" data-ad-slot="6964968463"></ins> <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><h2 id="loc-selection">2. Selecting pandas data using “loc”</h2><p>The Pandas <a
+href="http://pandas.pydata.org/pandas-docs/version/0.17.0/generated/pandas.DataFrame.loc.html">loc</a> indexer can be used with DataFrames for two different use cases:</p><ul><li>a.) Selecting <a
+href="http://pandas.pydata.org/pandas-docs/stable/indexing.html#selection-by-label">rows by label/index</a></li><li>b.) Selecting rows with a <a
+href="http://pandas.pydata.org/pandas-docs/stable/indexing.html#boolean-indexing">boolean / conditional lookup</a></li></ul><p>The loc indexer is used with the same syntax as iloc: data.loc[&lt;row selection&gt;, &lt;column selection&gt;] .</p><h3>2a. Label-based / Index-based indexing using .loc</h3><p>Selections using the loc method are based on the index of the data frame (if any). Where the index is set on a DataFrame, using &lt;code&gt;df.set_index()&lt;/code&gt;, the .loc method directly selects based on index values of any rows. For example, setting the index of our test data frame to the persons “last_name”:</p><div
+class="oembed-gist"><script src="https://gist.github.com/shanealynn/12069e026b30f15d043193bdc5032846.js"></script><noscript>View the code on <a
+href="https://gist.github.com/shanealynn/12069e026b30f15d043193bdc5032846">Gist</a>.</noscript></div><p></p><div
+id="attachment_653" style="width: 760px" class="wp-caption aligncenter"><a
+href="http://104.236.88.249/wp-content/uploads/2016/09/index_set_dataframe.png"><img
+data-attachment-id="653" data-permalink="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/index_set_dataframe/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/index_set_dataframe.png" data-orig-size="2036,988" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="DataFrame with index set" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/index_set_dataframe-300x146.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/index_set_dataframe-1024x497.png" class="size-large wp-image-653" src="http://104.236.88.249/wp-content/uploads/2016/09/index_set_dataframe-1024x497.png" alt="Pandas Dataframe with index set using .set_index() for .loc[] explanation." width="750" height="364" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/index_set_dataframe-1024x497.png 1024w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/index_set_dataframe-300x146.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/index_set_dataframe-768x373.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/index_set_dataframe-732x355.png 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/index_set_dataframe-1140x553.png 1140w" sizes="(max-width: 750px) 100vw, 750px"></a><p
+class="wp-caption-text">Last Name set as Index set on sample data frame</p></div>Now with the index set, we can directly select rows for different “last_name” values using .loc[&lt;label&gt;]  – either singly, or in multiples. For example:<div
+id="attachment_654" style="width: 760px" class="wp-caption aligncenter"><a
+href="http://104.236.88.249/wp-content/uploads/2016/09/pandas-loc-indexing-based-on-index-labels.png"><img
+data-attachment-id="654" data-permalink="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/pandas-loc-indexing-based-on-index-labels/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/pandas-loc-indexing-based-on-index-labels.png" data-orig-size="1502,1058" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="Pandas .loc indexing based on index labels" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/pandas-loc-indexing-based-on-index-labels-300x211.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/pandas-loc-indexing-based-on-index-labels-1024x721.png" class="size-large wp-image-654" src="http://104.236.88.249/wp-content/uploads/2016/09/pandas-loc-indexing-based-on-index-labels-1024x721.png" alt=".loc is used by pandas for label based lookups in dataframes" width="750" height="528" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/pandas-loc-indexing-based-on-index-labels-1024x721.png 1024w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/pandas-loc-indexing-based-on-index-labels-300x211.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/pandas-loc-indexing-based-on-index-labels-768x541.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/pandas-loc-indexing-based-on-index-labels-732x516.png 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/pandas-loc-indexing-based-on-index-labels-1140x803.png 1140w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/09/pandas-loc-indexing-based-on-index-labels.png 1502w" sizes="(max-width: 750px) 100vw, 750px"></a><p
+class="wp-caption-text">Selecting single or multiple rows using .loc index selections with pandas. Note that the first example returns a series, and the second returns a DataFrame. You can achieve a single-column DataFrame by passing a single-element list to the .loc operation.</p></div><p>Select columns with .loc using the names of the columns. In most of my data work, typically I have named columns, and use these named selections.</p><div
+id="attachment_660" style="width: 760px" class="wp-caption aligncenter"><a
+href="http://104.236.88.249/wp-content/uploads/2016/10/named_column_selection_loc.png"><img
+data-attachment-id="660" data-permalink="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/named_column_selection_loc/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/named_column_selection_loc.png" data-orig-size="1402,360" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="Selecting columns by name in  Pandas using loc" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/named_column_selection_loc-300x77.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/named_column_selection_loc-1024x263.png" class="size-large wp-image-660" src="http://104.236.88.249/wp-content/uploads/2016/10/named_column_selection_loc-1024x263.png" alt="selecting columns by name in pandas .loc" width="750" height="193" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/named_column_selection_loc-1024x263.png 1024w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/named_column_selection_loc-300x77.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/named_column_selection_loc-768x197.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/named_column_selection_loc-732x188.png 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/named_column_selection_loc-1140x293.png 1140w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/named_column_selection_loc.png 1402w" sizes="(max-width: 750px) 100vw, 750px"></a><p
+class="wp-caption-text">When using the .loc indexer, columns are referred to by names using lists of strings, or “:” slices.</p></div><p>You can select ranges of index labels – the selection &lt;/code&gt;data.loc[‘Bruch’:’Julio’]&lt;/code&gt; will return all rows in the data frame between the index entries for “Bruch” and “Julio”. The following examples should now make sense:</p><div
+class="oembed-gist"><script src="https://gist.github.com/shanealynn/b27fbdce4688f06108a32c767b65fc3f.js"></script><noscript>View the code on <a
+href="https://gist.github.com/shanealynn/b27fbdce4688f06108a32c767b65fc3f">Gist</a>.</noscript></div><p>Note that in the last example, data.loc[487]<strong> (the row with index value 487) is not equal to </strong>data.iloc[487]<strong> (the 487th row in the data)</strong>. The index of the DataFrame can be out of numeric order, and/or a string or multi-value.</p><h3>2b. Boolean / Logical indexing using .loc</h3><p><a
+href="http://pandas.pydata.org/pandas-docs/stable/indexing.html#boolean-indexing">Conditional selections with boolean arrays</a> using data.loc[&lt;selection&gt;] is the most common method that I use with Pandas DataFrames. With boolean indexing or logical selection, you pass an array or <a
+href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.html">Series</a> of True/False values to the .loc indexer to select the rows where your Series has <em>True</em> values.</p><p>In most use cases, you will make selections based on the values of different columns in your data set.</p><p>For example, the statement data[‘first_name’] == ‘Antonio’] produces a Pandas Series with a True/False value for every row in the ‘data’ DataFrame, where there are “True” values for the rows where the first_name is “Antonio”. These type of boolean arrays can be passed directly to the .loc indexer as so:</p><div
+id="attachment_657" style="width: 760px" class="wp-caption aligncenter"><a
+href="http://104.236.88.249/wp-content/uploads/2016/10/Boolean-Selection-with-loc.png"><img
+data-attachment-id="657" data-permalink="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/boolean-selection-with-loc/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Boolean-Selection-with-loc.png" data-orig-size="2250,664" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="boolean-selection-with-loc" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Boolean-Selection-with-loc-300x89.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Boolean-Selection-with-loc-1024x302.png" class="size-large wp-image-657" src="http://104.236.88.249/wp-content/uploads/2016/10/Boolean-Selection-with-loc-1024x302.png" alt="The .loc indexer can accept boolean arrays to select rows" width="750" height="221" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Boolean-Selection-with-loc-1024x302.png 1024w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Boolean-Selection-with-loc-300x89.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Boolean-Selection-with-loc-768x227.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Boolean-Selection-with-loc-732x216.png 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Boolean-Selection-with-loc-1140x336.png 1140w" sizes="(max-width: 750px) 100vw, 750px"></a><p
+class="wp-caption-text">Using a boolean True/False series to select rows in a pandas data frame – all rows with first name of “Antonio” are selected.</p></div><p>As before, a second argument can be passed to .loc to select particular columns out of the data frame. Again, columns are referred to by name for the loc indexer and can be a single string, a list of columns, or a slice “:” operation.</p><p></p><div
+id="attachment_658" style="width: 760px" class="wp-caption aligncenter"><a
+href="http://104.236.88.249/wp-content/uploads/2016/10/multiple_column_select_loc_indexer.png"><img
+data-attachment-id="658" data-permalink="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/multiple_column_select_loc_indexer/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/multiple_column_select_loc_indexer.png" data-orig-size="1542,426" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="multiple_column_select_loc_indexer" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/multiple_column_select_loc_indexer-300x83.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/multiple_column_select_loc_indexer-1024x283.png" class="wp-image-658 size-large" src="http://104.236.88.249/wp-content/uploads/2016/10/multiple_column_select_loc_indexer-1024x283.png" alt="Multiple column selection example using .loc" width="750" height="207" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/multiple_column_select_loc_indexer-1024x283.png 1024w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/multiple_column_select_loc_indexer-300x83.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/multiple_column_select_loc_indexer-768x212.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/multiple_column_select_loc_indexer-732x202.png 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/multiple_column_select_loc_indexer-1140x315.png 1140w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/multiple_column_select_loc_indexer.png 1542w" sizes="(max-width: 750px) 100vw, 750px"></a><p
+class="wp-caption-text">Selecting multiple columns with loc can be achieved by passing column names to the second argument of .loc[]</p></div>Note that when selecting columns, if one column only is selected, the .loc operator returns a Series. For a single column DataFrame, use a one-element list to keep the DataFrame format, for example:<div
+id="attachment_659" style="width: 760px" class="wp-caption aligncenter"><a
+href="http://104.236.88.249/wp-content/uploads/2016/10/loc_indexer_returns_series_or_dataframe.png"><img
+data-attachment-id="659" data-permalink="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/loc_indexer_returns_series_or_dataframe/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/loc_indexer_returns_series_or_dataframe.png" data-orig-size="1400,800" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="Loc indexer can return a series or a data frame depending on arguments" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/loc_indexer_returns_series_or_dataframe-300x171.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/loc_indexer_returns_series_or_dataframe-1024x585.png" class="wp-image-659 size-large" src="http://104.236.88.249/wp-content/uploads/2016/10/loc_indexer_returns_series_or_dataframe-1024x585.png" alt=".loc returning Series or DataFrames depending on selection" width="750" height="428" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/loc_indexer_returns_series_or_dataframe-1024x585.png 1024w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/loc_indexer_returns_series_or_dataframe-300x171.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/loc_indexer_returns_series_or_dataframe-768x439.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/loc_indexer_returns_series_or_dataframe-732x418.png 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/loc_indexer_returns_series_or_dataframe-1140x651.png 1140w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/loc_indexer_returns_series_or_dataframe.png 1400w" sizes="(max-width: 750px) 100vw, 750px"></a><p
+class="wp-caption-text">If selections of a single column are made as a string, a series is returned from .loc. Pass a list to get a DataFrame back.</p></div><p>Make sure you understand the following additional examples of .loc selections for clarity:</p><div
+class="oembed-gist"><script src="https://gist.github.com/shanealynn/b34acd07fdaba4f220f4e03c6f902a9f.js"></script><noscript>View the code on <a
+href="https://gist.github.com/shanealynn/b34acd07fdaba4f220f4e03c6f902a9f">Gist</a>.</noscript></div><p>Logical selections and boolean Series can also be passed to the generic [] indexer of a pandas DataFrame and will give the same results: data.loc[data[‘id’] == 9] == data[data[‘id’] == 9] .</p><h2 id="ix-selection">3. Selecting pandas data using ix</h2><blockquote><p><strong>Note</strong>: The ix indexer <a
+href="http://pandas.pydata.org/pandas-docs/stable/whatsnew.html#whatsnew-0200-api-breaking-deprecate-ix">has been deprecated</a> in recent versions of Pandas, starting with version 0.20.1.</p></blockquote><p>The <a
+href="http://pandas.pydata.org/pandas-docs/version/0.17.0/generated/pandas.DataFrame.ix.html">ix[] indexer</a> is a hybrid of .loc and .iloc. Generally, ix is label based and acts just as the .loc indexer. However, .ix also supports integer type selections (as in .iloc) where passed an integer. This only works where the index of the DataFrame is not integer based. ix will accept any of the inputs of .loc and .iloc.</p><p>Slightly more complex, I prefer to explicitly use .iloc and .loc to avoid unexpected results.</p><p>As an example:</p><div
+class="oembed-gist"><script src="https://gist.github.com/shanealynn/2c61235a30cbe1dff15d81b90c216cfe.js"></script><noscript>View the code on <a
+href="https://gist.github.com/shanealynn/2c61235a30cbe1dff15d81b90c216cfe">Gist</a>.</noscript></div><p> </p><h2>Setting values in DataFrames using .loc</h2><p>With a slight change of syntax, you can actually update your DataFrame in the same statement as you select and filter using .loc indexer. This particular pattern allows you to update values in columns depending on different conditions. The setting operation does not make a copy of the data frame, but edits the original data.</p><p>As an example:</p><div
+class="oembed-gist"><script src="https://gist.github.com/shanealynn/1c30da11d88cba2ecdf3936209a981b9.js"></script><noscript>View the code on <a
+href="https://gist.github.com/shanealynn/1c30da11d88cba2ecdf3936209a981b9">Gist</a>.</noscript></div><p>That’s the basics of indexing and selecting with Pandas. If you’re looking for more, take a look at the<a
+href="http://pandas.pydata.org/pandas-docs/version/0.17.0/generated/pandas.DataFrame.iat.html"> .iat,</a> and .<a
+href="http://pandas.pydata.org/pandas-docs/version/0.17.0/generated/pandas.DataFrame.at.html">at</a> operations for some more <a
+href="http://pandas.pydata.org/pandas-docs/stable/indexing.html#fast-scalar-value-getting-and-setting">performance-enhanced value accessors</a> in the <a
+href="http://pandas.pydata.org/pandas-docs/stable/">Pandas Documentation</a> and take a look at <a
+href="http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-callable">selecting by callable functions</a> for more iloc and loc fun.</p><div
+id="jp-relatedposts" class="jp-relatedposts"><h3 class="jp-relatedposts-headline"><em>Related</em></h3></div></div>
+<footer
+class="footer-meta"><div
+class="cat-tag-meta-wrap">
+<span
+class="cats-meta"><i
+class="fa fa-folder"></i> <a
+href="https://www.shanelynn.ie/category/blog/" rel="category tag">blog</a>, <a
+href="https://www.shanelynn.ie/category/blog/data-science/" rel="category tag">data science</a>, <a
+href="https://www.shanelynn.ie/category/pandas/" rel="category tag">Pandas</a>, <a
+href="https://www.shanelynn.ie/category/blog/python/" rel="category tag">python</a>, <a
+href="https://www.shanelynn.ie/category/tutorials/" rel="category tag">Tutorials</a></span>
+<span
+class="tags-meta"><i
+class="fa fa-tags"></i> <a
+href="https://www.shanelynn.ie/tag/code/" rel="tag">code</a>, <a
+href="https://www.shanelynn.ie/tag/data/" rel="tag">data</a>, <a
+href="https://www.shanelynn.ie/tag/data-science/" rel="tag">data science</a>, <a
+href="https://www.shanelynn.ie/tag/datascience/" rel="tag">datascience</a>, <a
+href="https://www.shanelynn.ie/tag/learning/" rel="tag">learning</a>, <a
+href="https://www.shanelynn.ie/tag/pandas/" rel="tag">pandas</a>, <a
+href="https://www.shanelynn.ie/tag/python/" rel="tag">python</a>, <a
+href="https://www.shanelynn.ie/tag/tutorial/" rel="tag">tutorial</a></span></div>
+</footer></div></div>
+</article>
+<nav
+role="navigation" id="nav-below" class="post-navigation"><h1 class="screen-reader-text">Post navigation</h1><ul
+class="pager"><li
+class="nav-previous previous"><a
+href="https://www.shanelynn.ie/themes-and-colours-for-r-ggplots-with-ggthemr/" rel="prev"><span
+class="meta-nav">&larr;</span> The ggthemr package &#8211; Theme and colour your ggplot figures</a></li><li
+class="nav-next next"><a
+href="https://www.shanelynn.ie/batch-geocoding-in-python-with-google-geocoding-api/" rel="next">Batch CSV Geocoding in Python with Google Maps API <span
+class="meta-nav">&rarr;</span></a></li></ul>
+</nav><div
+id="comments" class="comments-area">
+<header
+class="page-header"><h2 class="comments-title">
+48 thoughts on &ldquo;<span>Using iloc, loc, &#038; ix to select rows and columns in Pandas DataFrames</span>&rdquo;</h2>
+</header><nav
+id="comment-nav-above" class="comment-navigation" role="navigation"><h5 class="screen-reader-text">Comment navigation</h5><ul
+class="pager"><li
+class="nav-previous"><a
+href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/comment-page-1/#comments" >&larr; Older Comments</a></li><li
+class="nav-next"></li></ul>
+</nav><ol
+class="comment-list media-list"><li
+id="comment-702" class="comment even thread-even depth-1">
+<article
+id="div-comment-702" class="comment-body media">
+<a
+class="pull-left" href="#">
+</a><div
+class="media-body"><div
+class="media-body-wrap"><div
+class="comment-heading"><h5 class="media-heading"><cite
+class="fn"><a
+href='http://tanthiamhuat.wordpress.com' rel='external nofollow' class='url'>tanthiamhuat</a></cite></h5><div
+class="comment-meta">
+<a
+href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/comment-page-2/#comment-702">
+<time
+class="updated" datetime="2018-04-09T02:57:49+00:00">
+April 9, 2018 at 2:57 am				</time>
+</a></div></div><div
+class="comment-content"><p>yes, indeed. Your posting is very helpful to help me understand the usage of loc and iloc. Thank You. Another question to ask: Is there any kind of website which we can discuss about Python topics, and post questions?</p></div><div
+class="reply comment-reply"><a
+rel='nofollow' class='comment-reply-link' href='https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/?replytocom=702#respond' onclick='return addComment.moveForm( "div-comment-702", "702", "respond", "643" )' aria-label='Reply to tanthiamhuat'>Reply</a></div></div></div>
+</article></li><li
+id="comment-712" class="comment odd alt thread-odd thread-alt depth-1">
+<article
+id="div-comment-712" class="comment-body media">
+<a
+class="pull-left" href="#">
+</a><div
+class="media-body"><div
+class="media-body-wrap"><div
+class="comment-heading"><h5 class="media-heading"><cite
+class="fn">sridhar kakkera</cite></h5><div
+class="comment-meta">
+<a
+href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/comment-page-2/#comment-712">
+<time
+class="updated" datetime="2018-04-16T08:04:19+00:00">
+April 16, 2018 at 8:04 am				</time>
+</a></div></div><div
+class="comment-content"><p>These are really helpful for beginners. Thanks a lot</p></div><div
+class="reply comment-reply"><a
+rel='nofollow' class='comment-reply-link' href='https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/?replytocom=712#respond' onclick='return addComment.moveForm( "div-comment-712", "712", "respond", "643" )' aria-label='Reply to sridhar kakkera'>Reply</a></div></div></div>
+</article></li><li
+id="comment-714" class="comment even thread-even depth-1 parent">
+<article
+id="div-comment-714" class="comment-body media">
+<a
+class="pull-left" href="#">
+</a><div
+class="media-body"><div
+class="media-body-wrap"><div
+class="comment-heading"><h5 class="media-heading"><cite
+class="fn"><a
+href='https://plus.google.com/100169294345261939412' rel='external nofollow' class='url'>michael dsouza</a></cite></h5><div
+class="comment-meta">
+<a
+href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/comment-page-2/#comment-714">
+<time
+class="updated" datetime="2018-04-17T04:46:25+00:00">
+April 17, 2018 at 4:46 am				</time>
+</a></div></div><div
+class="comment-content"><p>Hi is there anyway for me to update a column in one dataset using a reference value from another dataset ?<br
+/>
+similar to having 2 tables with a key shared between the 2 in a 1 to many relationship</p></div><div
+class="reply comment-reply"><a
+rel='nofollow' class='comment-reply-link' href='https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/?replytocom=714#respond' onclick='return addComment.moveForm( "div-comment-714", "714", "respond", "643" )' aria-label='Reply to michael dsouza'>Reply</a></div></div></div>
+</article><ul
+class="children"><li
+id="comment-721" class="comment byuser comment-author-shanelynn bypostauthor odd alt depth-2">
+<article
+id="div-comment-721" class="comment-body media">
+<a
+class="pull-left" href="#">
+</a><div
+class="media-body"><div
+class="media-body-wrap"><div
+class="comment-heading"><h5 class="media-heading"><cite
+class="fn">shanelynn</cite></h5><div
+class="comment-meta">
+<a
+href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/comment-page-2/#comment-721">
+<time
+class="updated" datetime="2018-04-24T06:55:39+00:00">
+April 24, 2018 at 6:55 am				</time>
+</a></div></div><div
+class="comment-content"><p>Hi Michael, your best bet there is to look at pandas.merge &#8211; you can join two datasets together based on a common value, and then use the matched values as your replacement. There&#8217;s another post on this site that might help you out.</p></div><div
+class="reply comment-reply"><a
+rel='nofollow' class='comment-reply-link' href='https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/?replytocom=721#respond' onclick='return addComment.moveForm( "div-comment-721", "721", "respond", "643" )' aria-label='Reply to shanelynn'>Reply</a></div></div></div>
+</article></li></ul></li><li
+id="comment-726" class="comment even thread-odd thread-alt depth-1">
+<article
+id="div-comment-726" class="comment-body media">
+<a
+class="pull-left" href="#">
+</a><div
+class="media-body"><div
+class="media-body-wrap"><div
+class="comment-heading"><h5 class="media-heading"><cite
+class="fn">Dan T</cite></h5><div
+class="comment-meta">
+<a
+href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/comment-page-2/#comment-726">
+<time
+class="updated" datetime="2018-05-01T03:10:21+00:00">
+May 1, 2018 at 3:10 am				</time>
+</a></div></div><div
+class="comment-content"><p>One of the best explanations for this material that I&#8217;ve seen anywhere on the internet.  Thank you!</p></div><div
+class="reply comment-reply"><a
+rel='nofollow' class='comment-reply-link' href='https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/?replytocom=726#respond' onclick='return addComment.moveForm( "div-comment-726", "726", "respond", "643" )' aria-label='Reply to Dan T'>Reply</a></div></div></div>
+</article></li><li
+id="comment-729" class="comment odd alt thread-even depth-1">
+<article
+id="div-comment-729" class="comment-body media">
+<a
+class="pull-left" href="#">
+</a><div
+class="media-body"><div
+class="media-body-wrap"><div
+class="comment-heading"><h5 class="media-heading"><cite
+class="fn">poweredbyai</cite></h5><div
+class="comment-meta">
+<a
+href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/comment-page-2/#comment-729">
+<time
+class="updated" datetime="2018-05-02T21:19:34+00:00">
+May 2, 2018 at 9:19 pm				</time>
+</a></div></div><div
+class="comment-content"><p>Thank you so much for this!!</p></div><div
+class="reply comment-reply"><a
+rel='nofollow' class='comment-reply-link' href='https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/?replytocom=729#respond' onclick='return addComment.moveForm( "div-comment-729", "729", "respond", "643" )' aria-label='Reply to poweredbyai'>Reply</a></div></div></div>
+</article></li><li
+id="comment-730" class="comment even thread-odd thread-alt depth-1">
+<article
+id="div-comment-730" class="comment-body media">
+<a
+class="pull-left" href="#">
+</a><div
+class="media-body"><div
+class="media-body-wrap"><div
+class="comment-heading"><h5 class="media-heading"><cite
+class="fn">Big_Tail</cite></h5><div
+class="comment-meta">
+<a
+href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/comment-page-2/#comment-730">
+<time
+class="updated" datetime="2018-05-03T08:57:16+00:00">
+May 3, 2018 at 8:57 am				</time>
+</a></div></div><div
+class="comment-content"><p>Thanks a ton! 🙂</p></div><div
+class="reply comment-reply"><a
+rel='nofollow' class='comment-reply-link' href='https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/?replytocom=730#respond' onclick='return addComment.moveForm( "div-comment-730", "730", "respond", "643" )' aria-label='Reply to Big_Tail'>Reply</a></div></div></div>
+</article></li></ol><nav
+id="comment-nav-below" class="comment-navigation" role="navigation"><h1 class="screen-reader-text">Comment navigation</h1><div
+class="nav-previous"><a
+href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/comment-page-1/#comments" >&larr; Older Comments</a></div><div
+class="nav-next"></div>
+</nav><div
+id="respond" class="comment-respond"><h3 id="reply-title" class="comment-reply-title">Leave a Reply					<small><a
+rel="nofollow" id="cancel-comment-reply-link" href="/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/#respond" style="display:none;">Cancel reply</a></small></h3><form
+id="commentform" class="comment-form">
+<iframe
+title="Comment Form" src="https://jetpack.wordpress.com/jetpack-comment/?blogid=108567932&#038;postid=643&#038;comment_registration=0&#038;require_name_email=1&#038;stc_enabled=1&#038;stb_enabled=1&#038;show_avatars=0&#038;avatar_default=mystery&#038;greeting=Leave+a+Reply&#038;greeting_reply=Leave+a+Reply+to+%25s&#038;color_scheme=light&#038;lang=en_US&#038;jetpack_version=6.0&#038;sig=b017f4d137cc429ea429bbc6a9797b02314f694b#parent=https%3A%2F%2Fwww.shanelynn.ie%2Fselect-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix%2F" style="width:100%; height: 430px; border:0;" name="jetpack_remote_comment" class="jetpack_remote_comment" id="jetpack_remote_comment"></iframe>
+<!--[if !IE]><!--> <script>/*<![CDATA[*/document.addEventListener('DOMContentLoaded',function(){var commentForms=document.getElementsByClassName('jetpack_remote_comment');for(var i=0;i<commentForms.length;i++){commentForms[i].allowTransparency=false;commentForms[i].scrolling='no';}});/*]]>*/</script> <!--<![endif]--></form></div>
+<input
+type="hidden" name="comment_parent" id="comment_parent" value="" /></div></div><div
+class="col-sm-12 col-md-3"><div
+class="sidebar"><div
+class="sidebar-padder"><aside
+class="widget shane-widget"><h3 class="widget-title">Coffee money generator:</h3><div
+style="margin-left: auto; margin-right: auto; width: 160px; height: 600px; " id="shane-1727072654"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> <ins
+class="adsbygoogle" style="display:inline-block;width:160px;height:600px;"
+data-ad-client="ca-pub-2568178699868194"
+data-ad-slot="6223265268"></ins> <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script> </div><br
+style="clear: both; display: block; float: none;"/></aside><aside
+id="blog_subscription-2" class="widget jetpack_subscription_widget"><h3 class="widget-title">Subscribe to Blog via Email</h3><form
+action="#" method="post" accept-charset="utf-8" id="subscribe-blog-blog_subscription-2"><div
+id="subscribe-text"><p>Enter your email address to subscribe to this blog and receive notifications of new posts by email.</p></div><p
+id="subscribe-email">
+<label
+id="jetpack-subscribe-label" for="subscribe-field-blog_subscription-2">
+Email Address						</label>
+<input
+type="email" name="email" required="required" class="required" value="" id="subscribe-field-blog_subscription-2" placeholder="Email Address" /></p><p
+id="subscribe-submit">
+<input
+type="hidden" name="action" value="subscribe" />
+<input
+type="hidden" name="source" value="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/" />
+<input
+type="hidden" name="sub-type" value="widget" />
+<input
+type="hidden" name="redirect_fragment" value="blog_subscription-2" />
+<input
+type="submit" value="Subscribe" name="jetpack_subscriptions_widget" /></p></form> <script>(function(d){if(('placeholder'in d.createElement('input'))){var label=d.querySelector('label[for=subscribe-field-blog_subscription-2]');label.style.clip='rect(1px, 1px, 1px, 1px)';label.style.position='absolute';label.style.height='1px';label.style.width='1px';label.style.overflow='hidden';}
+var form=d.getElementById('subscribe-blog-blog_subscription-2'),input=d.getElementById('subscribe-field-blog_subscription-2'),handler=function(event){if(''===input.value){input.focus();if(event.preventDefault){event.preventDefault();}
+return false;}};if(window.addEventListener){form.addEventListener('submit',handler,false);}else{form.attachEvent('onsubmit',handler);}})(document);</script> </aside><aside
+id="categories-3" class="widget widget_categories"><h3 class="widget-title">Categories</h3><form
+action="https://www.shanelynn.ie" method="get"><label
+class="screen-reader-text" for="cat">Categories</label><select
+name='cat' id='cat' class='postform' ><option
+value='-1'>Select Category</option><option
+class="level-0" value="14">blog</option><option
+class="level-0" value="25">C++</option><option
+class="level-0" value="105">Cycling</option><option
+class="level-0" value="16">data science</option><option
+class="level-0" value="103">Data Visualisation</option><option
+class="level-0" value="167">Natural Language Processing</option><option
+class="level-0" value="112">Pandas</option><option
+class="level-0" value="27">python</option><option
+class="level-0" value="9">R</option><option
+class="level-0" value="26">ROS</option><option
+class="level-0" value="24">Software</option><option
+class="level-0" value="113">Tutorials</option><option
+class="level-0" value="1">Uncategorized</option><option
+class="level-0" value="43">web</option>
+</select></form> <script type='text/javascript'>(function(){var dropdown=document.getElementById("cat");function onCatChange(){if(dropdown.options[dropdown.selectedIndex].value>0){dropdown.parentNode.submit();}}
+dropdown.onchange=onCatChange;})();</script> </aside><aside
+id="custom-twitter-feeds-widget-2" class="widget widget_custom-twitter-feeds-widget"><div
+id="ctf" class="ctf ctf-type-usertimeline  ctf-styles" style="width: 100%;" data-ctfshortcode="{}" data-ctfneeded="0"><div
+class="ctf-header ctf-no-bio" style=""><a
+href="https://twitter.com/shane_a_lynn" target="_blank" title="@shane_a_lynn" class="ctf-header-link"><div
+class="ctf-header-text"><p
+class="ctf-header-user" style=""><span
+class="ctf-header-name">Shane Lynn</span><span
+class="ctf-header-follow"><i
+class="fa fa-twitter" aria-hidden="true"></i>Follow</span></p></div><div
+class="ctf-header-img"><div
+class="ctf-header-img-hover"><i
+class="fa fa-twitter" aria-hidden="true"></i></div><img
+src="https://pbs.twimg.com/profile_images/413684983929135105/aJtBkzZK_normal.png" alt="Shane Lynn" width="48" height="48"></div></a></div><div
+class="ctf-tweets"><div
+class="ctf-item ctf-author-shane_a_lynn ctf-new" id="994632544158212096" style=""><div
+class="ctf-author-box"><div
+class="ctf-author-box-link" target="_blank" style=""><a
+href="https://twitter.com/shane_a_lynn" class="ctf-author-avatar" target="_blank" style=""><img
+src="https://pbs.twimg.com/profile_images/413684983929135105/aJtBkzZK_normal.png" alt="shane_a_lynn" width="48" height="48"></a><a
+href="https://twitter.com/shane_a_lynn" target="_blank" class="ctf-author-name" style="">Shane Lynn</a><a
+href="https://twitter.com/shane_a_lynn" class="ctf-author-screenname" target="_blank" style="">@shane_a_lynn</a><span
+class="ctf-screename-sep">&middot;</span><div
+class="ctf-tweet-meta"><a
+href="https://twitter.com/shane_a_lynn/status/994632544158212096" class="ctf-tweet-date" target="_blank" style="">10 May</a></div></div></div><div
+class="ctf-tweet-content"><p
+class="ctf-tweet-text" style="">There was a new bulletin yesterday, on national news in @ireland, about how these 22 WILD and WANDERING GOATS were "terrorising" Ennis, a western town. What an incredibly Irish story. @rtenews  #ahcmon #goatterrorists</p><a
+href="https://twitter.com/shane_a_lynn/status/994632544158212096" target="_blank" class="ctf-tweet-text-media-wrap"><i
+style="padding-right: 5px;" class="fa fa-picture-o ctf-tweet-text-media" aria-hidden="true"></i></a></div><div
+class="ctf-tweet-actions"><a
+href="https://twitter.com/intent/tweet?in_reply_to=994632544158212096&related=shane_a_lynn" class="ctf-reply" target="_blank" style=""><i
+class="fa fa-reply" aria-hidden="true"></i><span
+class="ctf-screenreader">Reply on Twitter</span></a><a
+href="https://twitter.com/intent/retweet?tweet_id=994632544158212096&related=shane_a_lynn" class="ctf-retweet" target="_blank" style=""><i
+class="fa fa-retweet" aria-hidden="true"></i><span
+class="ctf-screenreader">Retweet on Twitter</span><span
+class="ctf-action-count ctf-retweet-count"></span></a><a
+href="https://twitter.com/intent/like?tweet_id=994632544158212096&related=shane_a_lynn" class="ctf-like" target="_blank" style=""><i
+class="fa fa-heart" aria-hidden="true"></i><span
+class="ctf-screenreader">Like on Twitter</span><span
+class="ctf-action-count ctf-favorite-count">3</span></a><a
+href="https://twitter.com/shane_a_lynn/status/994632544158212096" class="ctf-twitterlink" style="" target="_blank">Twitter</a></div></div><div
+class="ctf-item ctf-author-shane_a_lynn ctf-new ctf-quoted" id="994631717297315841" style=""><div
+class="ctf-author-box"><div
+class="ctf-author-box-link" target="_blank" style=""><a
+href="https://twitter.com/shane_a_lynn" class="ctf-author-avatar" target="_blank" style=""><img
+src="https://pbs.twimg.com/profile_images/413684983929135105/aJtBkzZK_normal.png" alt="shane_a_lynn" width="48" height="48"></a><a
+href="https://twitter.com/shane_a_lynn" target="_blank" class="ctf-author-name" style="">Shane Lynn</a><a
+href="https://twitter.com/shane_a_lynn" class="ctf-author-screenname" target="_blank" style="">@shane_a_lynn</a><span
+class="ctf-screename-sep">&middot;</span><div
+class="ctf-tweet-meta"><a
+href="https://twitter.com/shane_a_lynn/status/994631717297315841" class="ctf-tweet-date" target="_blank" style="">10 May</a></div></div></div><div
+class="ctf-tweet-content"><p
+class="ctf-tweet-text" style="">Ireland finally starting to see sense?</div><div
+class="ctf-tweet-actions"><a
+href="https://twitter.com/intent/tweet?in_reply_to=994631717297315841&related=shane_a_lynn" class="ctf-reply" target="_blank" style=""><i
+class="fa fa-reply" aria-hidden="true"></i><span
+class="ctf-screenreader">Reply on Twitter</span></a><a
+href="https://twitter.com/intent/retweet?tweet_id=994631717297315841&related=shane_a_lynn" class="ctf-retweet" target="_blank" style=""><i
+class="fa fa-retweet" aria-hidden="true"></i><span
+class="ctf-screenreader">Retweet on Twitter</span><span
+class="ctf-action-count ctf-retweet-count"></span></a><a
+href="https://twitter.com/intent/like?tweet_id=994631717297315841&related=shane_a_lynn" class="ctf-like" target="_blank" style=""><i
+class="fa fa-heart" aria-hidden="true"></i><span
+class="ctf-screenreader">Like on Twitter</span><span
+class="ctf-action-count ctf-favorite-count">1</span></a><a
+href="https://twitter.com/shane_a_lynn/status/994631717297315841" class="ctf-twitterlink" style="" target="_blank">Twitter</a></div></div><div
+class="ctf-item ctf-author-shane_a_lynn ctf-new" id="993954883446411264" style=""><div
+class="ctf-author-box"><div
+class="ctf-author-box-link" target="_blank" style=""><a
+href="https://twitter.com/shane_a_lynn" class="ctf-author-avatar" target="_blank" style=""><img
+src="https://pbs.twimg.com/profile_images/413684983929135105/aJtBkzZK_normal.png" alt="shane_a_lynn" width="48" height="48"></a><a
+href="https://twitter.com/shane_a_lynn" target="_blank" class="ctf-author-name" style="">Shane Lynn</a><a
+href="https://twitter.com/shane_a_lynn" class="ctf-author-screenname" target="_blank" style="">@shane_a_lynn</a><span
+class="ctf-screename-sep">&middot;</span><div
+class="ctf-tweet-meta"><a
+href="https://twitter.com/shane_a_lynn/status/993954883446411264" class="ctf-tweet-date" target="_blank" style="">8 May</a></div></div></div><div
+class="ctf-tweet-content"><p
+class="ctf-tweet-text" style="">Google Duplex has been in the work for many years - next-level #conversationalAI from @Google at #GoogleIO https://t.co/izHiRr3xGH #googleduplex</p><a
+href="https://twitter.com/shane_a_lynn/status/993954883446411264" target="_blank" class="ctf-tweet-text-media-wrap"><i
+style="padding-right: 5px;" class="fa fa-picture-o ctf-tweet-text-media" aria-hidden="true"></i></a></div><div
+class="ctf-tweet-actions"><a
+href="https://twitter.com/intent/tweet?in_reply_to=993954883446411264&related=shane_a_lynn" class="ctf-reply" target="_blank" style=""><i
+class="fa fa-reply" aria-hidden="true"></i><span
+class="ctf-screenreader">Reply on Twitter</span></a><a
+href="https://twitter.com/intent/retweet?tweet_id=993954883446411264&related=shane_a_lynn" class="ctf-retweet" target="_blank" style=""><i
+class="fa fa-retweet" aria-hidden="true"></i><span
+class="ctf-screenreader">Retweet on Twitter</span><span
+class="ctf-action-count ctf-retweet-count"></span></a><a
+href="https://twitter.com/intent/like?tweet_id=993954883446411264&related=shane_a_lynn" class="ctf-like" target="_blank" style=""><i
+class="fa fa-heart" aria-hidden="true"></i><span
+class="ctf-screenreader">Like on Twitter</span><span
+class="ctf-action-count ctf-favorite-count">1</span></a><a
+href="https://twitter.com/shane_a_lynn/status/993954883446411264" class="ctf-twitterlink" style="" target="_blank">Twitter</a></div></div><div
+class="ctf-item ctf-author-shane_a_lynn ctf-new ctf-retweet" id="993946670684672001" style=""><div
+class="ctf-context"><a
+href="https://twitter.com/intent/user?screen_name=shane_a_lynn" target="_blank" class="ctf-retweet-icon"><i
+class="fa fa-retweet" aria-hidden="true"></i><span
+class="ctf-screenreader">Retweet on Twitter</span></a><a
+href="https://twitter.com/shane_a_lynn" target="_blank" class="ctf-retweet-text" style="">Shane Lynn Retweeted</a></div><div
+class="ctf-author-box"><div
+class="ctf-author-box-link" target="_blank" style=""><a
+href="https://twitter.com/parsaghaffari" class="ctf-author-avatar" target="_blank" style=""><img
+src="https://pbs.twimg.com/profile_images/858222398218399745/jzNUGlMy_normal.jpg" alt="parsaghaffari" width="48" height="48"></a><a
+href="https://twitter.com/parsaghaffari" target="_blank" class="ctf-author-name" style="">Parsa Ghaffari</a><a
+href="https://twitter.com/parsaghaffari" class="ctf-author-screenname" target="_blank" style="">@parsaghaffari</a><span
+class="ctf-screename-sep">&middot;</span><div
+class="ctf-tweet-meta"><a
+href="https://twitter.com/parsaghaffari/status/993939247152422912" class="ctf-tweet-date" target="_blank" style="">8 May</a></div></div></div><div
+class="ctf-tweet-content"><p
+class="ctf-tweet-text" style="">Google Duplex is pretty cool. The "opening hours" example (where the AI calls a restaurant and asks their holiday opening hours) hints at a new and very important era in crawling information: crawling non-digitized human knowledge. https://t.co/exozknzLiu</div><div
+class="ctf-tweet-actions"><a
+href="https://twitter.com/intent/tweet?in_reply_to=993939247152422912&related=parsaghaffari" class="ctf-reply" target="_blank" style=""><i
+class="fa fa-reply" aria-hidden="true"></i><span
+class="ctf-screenreader">Reply on Twitter</span></a><a
+href="https://twitter.com/intent/retweet?tweet_id=993939247152422912&related=parsaghaffari" class="ctf-retweet" target="_blank" style=""><i
+class="fa fa-retweet" aria-hidden="true"></i><span
+class="ctf-screenreader">Retweet on Twitter</span><span
+class="ctf-action-count ctf-retweet-count">11</span></a><a
+href="https://twitter.com/intent/like?tweet_id=993939247152422912&related=parsaghaffari" class="ctf-like" target="_blank" style=""><i
+class="fa fa-heart" aria-hidden="true"></i><span
+class="ctf-screenreader">Like on Twitter</span><span
+class="ctf-action-count ctf-favorite-count">19</span></a><a
+href="https://twitter.com/parsaghaffari/status/993939247152422912" class="ctf-twitterlink" style="" target="_blank">Twitter</a></div></div></div><a
+href="javascript:void(0);" id="ctf-more" class="ctf-more" style=""><span>Load More...</span></a></div></aside></div></div></div></div></div></div></div><footer
+id="colophon" class="site-footer" role="contentinfo"><div
+class="container animated fadeInLeft"><div
+class="row"><div
+class="site-footer-inner col-sm-12 clearfix"><div
+class="sidebar-padder"><aside
+id="categories-2" class="widget widget_categories col-3"><h3 class="widget-title">Categories</h3><ul><li
+class="cat-item cat-item-14"><a
+href="https://www.shanelynn.ie/category/blog/" >blog</a></li><li
+class="cat-item cat-item-25"><a
+href="https://www.shanelynn.ie/category/c/" >C++</a></li><li
+class="cat-item cat-item-105"><a
+href="https://www.shanelynn.ie/category/cycling/" >Cycling</a></li><li
+class="cat-item cat-item-16"><a
+href="https://www.shanelynn.ie/category/blog/data-science/" >data science</a></li><li
+class="cat-item cat-item-103"><a
+href="https://www.shanelynn.ie/category/blog/data-visualisation/" >Data Visualisation</a></li><li
+class="cat-item cat-item-167"><a
+href="https://www.shanelynn.ie/category/blog/natural-language-processing/" >Natural Language Processing</a></li><li
+class="cat-item cat-item-112"><a
+href="https://www.shanelynn.ie/category/pandas/" >Pandas</a></li><li
+class="cat-item cat-item-27"><a
+href="https://www.shanelynn.ie/category/blog/python/" >python</a></li><li
+class="cat-item cat-item-9"><a
+href="https://www.shanelynn.ie/category/blog/r/" >R</a></li><li
+class="cat-item cat-item-26"><a
+href="https://www.shanelynn.ie/category/ros/" >ROS</a></li><li
+class="cat-item cat-item-24"><a
+href="https://www.shanelynn.ie/category/software/" >Software</a></li><li
+class="cat-item cat-item-113"><a
+href="https://www.shanelynn.ie/category/tutorials/" >Tutorials</a></li><li
+class="cat-item cat-item-1"><a
+href="https://www.shanelynn.ie/category/uncategorized/" >Uncategorized</a></li><li
+class="cat-item cat-item-43"><a
+href="https://www.shanelynn.ie/category/blog/web/" >web</a></li></ul>
+</aside><aside
+id="linkcat-8" class="widget widget_links col-3"><h3 class="widget-title">Footer links</h3><ul
+class='xoxo blogroll'><li><a
+href="http://www.meetup.com/DublinR/" title="Meetup page for the Dublin R Users group who regularly host talks on different aspects of using R" target="_blank">Dublin R Users Group</a></li><li><a
+href="http://www.r-bloggers.com/" title="Great collection of R related blog content from around the web." target="_blank">R-bloggers</a></li><li><a
+href="http://www.rstudio.com" title="Fantastic editor and IDE for R programming" target="_blank">RStudio</a></li><li><a
+href="http://www.udacity.com" title="Udacity &#8211; Online Learning University" target="_blank">Udacity</a></li><li><a
+href="https://www.shanelynn.ie/useful-resources" title="Useful resources from around the internet.">Useful Resources</a></li></ul>
+</aside>
+<aside
+id="search-2" class="widget widget_search col-3"><h3 class="widget-title">Search</h3><form
+role="search" method="get" class="search-form" action="https://www.shanelynn.ie/">
+<label>
+<input
+type="search" class="search-field" placeholder="Search &hellip;" value="" name="s" title="Search for:">
+</label>
+<input
+type="submit" class="search-submit" value="Search"></form>
+</aside><aside
+id="pages-3" class="widget widget_pages col-3"><h3 class="widget-title">Pages</h3><ul><li
+class="page_item page-item-2"><a
+href="https://www.shanelynn.ie/about/">About</a></li><li
+class="page_item page-item-680"><a
+href="https://www.shanelynn.ie/consultancy-services/">Consultancy &#038; Services</a></li><li
+class="page_item page-item-27"><a
+href="https://www.shanelynn.ie/contact/">Contact</a></li><li
+class="page_item page-item-67"><a
+href="https://www.shanelynn.ie/publications/">Publications</a></li><li
+class="page_item page-item-25"><a
+href="https://www.shanelynn.ie/research/">Research</a></li><li
+class="page_item page-item-802"><a
+href="https://www.shanelynn.ie/useful-resources/">Useful Resources</a></li></ul>
+</aside></div></div></div></div><div
+id="footer-info"><div
+class="container"><div
+class="site-info">
+<a
+href="http://wordpress.org/" title="A Semantic Personal Publishing Platform" >&copy; 2016 ascent. All rights reserved</a>
+<span
+class="sep"> | </span>
+Ascent by   <a
+href="http://nettantra.com/" target="_blank">NetTantra</a></div></div></div>
+</footer> <script>/*<![CDATA[*/var advanced_ads_ga_UID='';advanced_ads_check_adblocker=function(t){function e(t){(window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||function(t){return setTimeout(t,16)}).call(window,t)}var n=[],a=null;return e(function(){var t=document.createElement("div");t.innerHTML="&nbsp;",t.setAttribute("class","ad_unit ad-unit text-ad text_ad pub_300x250"),t.setAttribute("style","width: 1px !important; height: 1px !important; position: absolute !important; left: 0px !important; top: 0px !important; overflow: hidden !important;"),document.body.appendChild(t),e(function(){var e=window.getComputedStyle&&window.getComputedStyle(t),o=e&&e.getPropertyValue("-moz-binding");a=e&&"none"===e.getPropertyValue("display")||"string"==typeof o&&-1!==o.indexOf("about:");for(var i=0;i<n.length;i++)n[i](a);n=[]})}),function(t){if(null===a)return void n.push(t);t(a)}}(),function(){var t=function(t,e){this.name=t,this.UID=e,this.analyticsObject=null;var n=this,a={hitType:"event",eventCategory:"Advanced Ads",eventAction:"AdBlock",eventLabel:"Yes",nonInteraction:!0,transport:"beacon"};this.analyticsObject="string"==typeof GoogleAnalyticsObject&&"function"==typeof window[GoogleAnalyticsObject]&&window[GoogleAnalyticsObject],!1===this.analyticsObject?(!function(t,e,n,a,o,i,d){t.GoogleAnalyticsObject=o,t[o]=t[o]||function(){(t[o].q=t[o].q||[]).push(arguments)},t[o].l=1*new Date,i=e.createElement(n),d=e.getElementsByTagName(n)[0],i.async=1,i.src="https://www.google-analytics.com/analytics.js",d.parentNode.insertBefore(i,d)}(window,document,"script",0,"_advads_ga"),_advads_ga("create",n.UID,"auto",this.name),_advads_ga(n.name+".send",a)):(window.console&&window.console.log("Advanced Ads Analytics >> using other's variable named `"+GoogleAnalyticsObject+"`"),window[GoogleAnalyticsObject]("create",n.UID,"auto",this.name),window[GoogleAnalyticsObject](n.name+".send",a))};advanced_ads_check_adblocker(function(e){e&&"string"==typeof advanced_ads_ga_UID&&advanced_ads_ga_UID&&new t("advadsTracker",advanced_ads_ga_UID)})}();/*]]>*/</script><div
+id="hbcxdFCLQLTp" class="AnEaCyNbUfNi" style="background:#dddddd;z-index:9999999; "></div> <script type="text/javascript">/*<![CDATA[*/var anOptions={"anOptionChoice":"2","anOptionStats":"1","anOptionAdsSelectors":"","anOptionCookie":"1","anOptionCookieLife":"30","anPageRedirect":"","anPermalink":"undefined","anOptionModalEffect":"none","anOptionModalspeed":"350","anOptionModalclose":false,"anOptionModalOverlay":"rgba( 0,0,0,0.8 )","anAlternativeActivation":false,"anAlternativeElement":"","anAlternativeText":"<p><strong>AdBlock detected!<\/strong><\/p>\n<p>Please add <a title=\"https:\/\/getadmiral.com?utm_medium=plugin&utm_campaign=abn&utm_source=abnlinks\" href=\"themeisle.com\" target=\"_blank\">www.getadmiral.com<\/a> to your adblocking whitelist or disable your adblocking software.<\/p>\n","anAlternativeClone":"2","anAlternativeProperties":"","anOptionModalShowAfter":0,"anPageMD5":"","anSiteID":0,"modalHTML":"<div class=\"AnEaCyNbUfNi-default\">\n\t<h1 style=\"\">I use ads to pay for hosting and coffee<\/h1>\n\t<p>There's a few ads on this site. It makes about $30 a month (which I think is great) and that pays for hosting at Digital Ocean and some coffee.<\/p>\n<p>I've\u00a0detected that you are using AdBlock Plus or some other adblocking software which is preventing the page from fully loading.<\/p>\n<p><strong>Please add <a title=\"Shane Lynn\" href=\"http:\/\/www.shanelynn.ie\" target=\"_blank\" rel=\"noopener\">www.shanelynn.ie<\/a> to your ad blocking whitelist or disable your adblocking software when you're on this site.<\/strong><\/p>\n<\/div>\n<a class=\"close-modal close-AnEaCyNbUfNi\">&#215;<\/a>"}/*]]>*/</script><div
+id="adsense" class="an-sponsored" style="position:absolute; z-index:-1; height:1px; width:1px; visibility: hidden; top: -1px; left: 0;"><img
+class="an-advert-banner" alt="sponsored" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"></div><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-44822631-1','auto');ga('send','pageview');</script><!--[if lte IE 8]><link
+rel='stylesheet' id='jetpack-carousel-ie8fix-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/jetpack/modules/carousel/jetpack-carousel-ie8fix.css?ver=20121024' type='text/css' media='all' />
+<![endif]--> <script type='text/javascript'>var wpcf7={"apiSettings":{"root":"https:\/\/www.shanelynn.ie\/wp-json\/contact-form-7\/v1","namespace":"contact-form-7\/v1"},"recaptcha":{"messages":{"empty":"Please verify that you are not a robot."}},"cached":"1"};</script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=5.0.1'></script> <script type='text/javascript'>var ctf={"ajax_url":"https:\/\/www.shanelynn.ie\/wp-admin\/admin-ajax.php"};</script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/custom-twitter-feeds/js/ctf-scripts.js?ver=1.2.8'></script> <script type='text/javascript' src='https://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201819'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/skip-link-focus-fix.js?ver=20130115'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-includes/js/comment-reply.min.js?ver=4.9.5'></script> <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/mootools/1.6.0/mootools.min.js'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/enlighter/resources/EnlighterJS.min.js?ver=3.5'></script> <script type='text/javascript'>var ajax_object={"nonce":"2a61f6d60a","ajaxurl":"https:\/\/www.shanelynn.ie\/wp-admin\/admin-ajax.php"};</script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/ywrMnyIoxdTt/oIWjOKsshQuI.js?ver=2.2.3'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-includes/js/wp-embed.min.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/oembed-gist/js/script.min.js?ver=4.9.1'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/jetpack/_inc/build/spin.min.js?ver=1.3'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/jetpack/_inc/build/jquery.spin.min.js?ver=1.3'></script> <script type='text/javascript'>/*<![CDATA[*/var jetpackCarouselStrings={"widths":[370,700,1000,1200,1400,2000],"is_logged_in":"","lang":"en","ajaxurl":"https:\/\/www.shanelynn.ie\/wp-admin\/admin-ajax.php","nonce":"4402242803","display_exif":"1","display_geo":"1","single_image_gallery":"1","single_image_gallery_media_file":"","background_color":"black","comment":"Comment","post_comment":"Post Comment","write_comment":"Write a Comment...","loading_comments":"Loading Comments...","download_original":"View full size <span class=\"photo-size\">{0}<span class=\"photo-size-times\">\u00d7<\/span>{1}<\/span>","no_comment_text":"Please be sure to submit some text with your comment.","no_comment_email":"Please provide an email address to comment.","no_comment_author":"Please provide your name to comment.","comment_post_error":"Sorry, but there was an error posting your comment. Please try again later.","comment_approved":"Your comment was approved.","comment_unapproved":"Your comment is in moderation.","camera":"Camera","aperture":"Aperture","shutter_speed":"Shutter Speed","focal_length":"Focal Length","copyright":"Copyright","comment_registration":"0","require_name_email":"1","login_url":"https:\/\/www.shanelynn.ie\/wp-login.php?redirect_to=https%3A%2F%2Fwww.shanelynn.ie%2Fselect-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix%2F","blog_id":"1","meta_data":["camera","aperture","shutter_speed","focal_length","copyright"],"local_comments_commenting_as":"<fieldset><label for=\"email\">Email (Required)<\/label> <input type=\"text\" name=\"email\" class=\"jp-carousel-comment-form-field jp-carousel-comment-form-text-field\" id=\"jp-carousel-comment-form-email-field\" \/><\/fieldset><fieldset><label for=\"author\">Name (Required)<\/label> <input type=\"text\" name=\"author\" class=\"jp-carousel-comment-form-field jp-carousel-comment-form-text-field\" id=\"jp-carousel-comment-form-author-field\" \/><\/fieldset><fieldset><label for=\"url\">Website<\/label> <input type=\"text\" name=\"url\" class=\"jp-carousel-comment-form-field jp-carousel-comment-form-text-field\" id=\"jp-carousel-comment-form-url-field\" \/><\/fieldset>"};/*]]>*/</script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/jetpack/_inc/build/carousel/jetpack-carousel.min.js?ver=20170209'></script> <script async="async" type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/akismet/_inc/form.js?ver=4.0.3'></script> <script type="text/javascript">/*<![CDATA[*/EnlighterJS_Config={"selector":{"block":"pre.EnlighterJSRAW","inline":"code.EnlighterJSRAW"},"language":"python","theme":"enlighter","indent":2,"hover":"hoverEnabled","showLinenumbers":true,"rawButton":true,"infoButton":true,"windowButton":true,"rawcodeDoubleclick":false,"grouping":true,"cryptex":{"enabled":false,"email":"mail@example.tld"}};!function(){var a=function(a){var b="Enlighter Error: ";console.error?console.error(b+a):console.log&&console.log(b+a)};return window.addEvent?"undefined"==typeof EnlighterJS?void a("Javascript Resources not loaded yet!"):"undefined"==typeof EnlighterJS_Config?void a("Configuration not loaded yet!"):void window.addEvent("domready",function(){EnlighterJS.Util.Init(EnlighterJS_Config.selector.block,EnlighterJS_Config.selector.inline,EnlighterJS_Config)}):void a("MooTools Framework not loaded yet!")}();;/*]]>*/</script> <!--[if IE]> <script type="text/javascript">if(0===window.location.hash.indexOf('#comment-')){window.location.hash=window.location.hash;}</script> <![endif]--> <script type="text/javascript">/*<![CDATA[*/(function(){var comm_par_el=document.getElementById('comment_parent'),comm_par=(comm_par_el&&comm_par_el.value)?comm_par_el.value:'',frame=document.getElementById('jetpack_remote_comment'),tellFrameNewParent;tellFrameNewParent=function(){if(comm_par){frame.src="https://jetpack.wordpress.com/jetpack-comment/?blogid=108567932&postid=643&comment_registration=0&require_name_email=1&stc_enabled=1&stb_enabled=1&show_avatars=0&avatar_default=mystery&greeting=Leave+a+Reply&greeting_reply=Leave+a+Reply+to+%25s&color_scheme=light&lang=en_US&jetpack_version=6.0&sig=b017f4d137cc429ea429bbc6a9797b02314f694b#parent=https%3A%2F%2Fwww.shanelynn.ie%2Fselect-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix%2F"+'&replytocom='+parseInt(comm_par,10).toString();}else{frame.src="https://jetpack.wordpress.com/jetpack-comment/?blogid=108567932&postid=643&comment_registration=0&require_name_email=1&stc_enabled=1&stb_enabled=1&show_avatars=0&avatar_default=mystery&greeting=Leave+a+Reply&greeting_reply=Leave+a+Reply+to+%25s&color_scheme=light&lang=en_US&jetpack_version=6.0&sig=b017f4d137cc429ea429bbc6a9797b02314f694b#parent=https%3A%2F%2Fwww.shanelynn.ie%2Fselect-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix%2F";}};if('undefined'!==typeof addComment){addComment._Jetpack_moveForm=addComment.moveForm;addComment.moveForm=function(commId,parentId,respondId,postId){var returnValue=addComment._Jetpack_moveForm(commId,parentId,respondId,postId),cancelClick,cancel;if(false===returnValue){cancel=document.getElementById('cancel-comment-reply-link');cancelClick=cancel.onclick;cancel.onclick=function(){var cancelReturn=cancelClick.call(this);if(false!==cancelReturn){return cancelReturn;}
+if(!comm_par){return cancelReturn;}
+comm_par=0;tellFrameNewParent();return cancelReturn;};}
+if(comm_par==parentId){return returnValue;}
+comm_par=parentId;tellFrameNewParent();return returnValue;};}
+document.addEventListener('DOMContentLoaded',function(){var iframe_url="https:\/\/jetpack.wordpress.com";if(window.postMessage){if(document.addEventListener){window.addEventListener('message',function(event){var origin=event.origin.replace(/^http:\/\//i,'https://');if(iframe_url.replace(/^http:\/\//i,'https://')!==origin){return;}
+jQuery(frame).height(event.data);});}else if(document.attachEvent){window.attachEvent('message',function(event){var origin=event.origin.replace(/^http:\/\//i,'https://');if(iframe_url.replace(/^http:\/\//i,'https://')!==origin){return;}
+jQuery(frame).height(event.data);});}}})})();/*]]>*/</script> <script type='text/javascript' src='https://stats.wp.com/e-201819.js' async='async' defer='defer'></script> <script type='text/javascript'>_stq=window._stq||[];_stq.push(['view',{v:'ext',j:'1:6.0',blog:'108567932',post:'643',tz:'0',srv:'www.shanelynn.ie'}]);_stq.push(['clickTrackerInit','108567932','643']);</script> </body></html>

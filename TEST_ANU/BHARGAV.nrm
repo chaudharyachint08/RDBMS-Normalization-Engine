@@ -1,0 +1,16 @@
+A,B,C,D,E,F,G,H,I,J,K,L,M
+
+A->B
+A->C
+C,E,F->D
+B,D->E
+B,D->F
+A->D
+A,C,E,F->G
+B->A
+C,E,F,G->H
+L->K
+A->L
+B,F,E->J
+J->I
+B,J->M

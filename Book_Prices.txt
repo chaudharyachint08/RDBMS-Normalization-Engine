@@ -1,0 +1,10 @@
+Cormen 1080
+OS 600
+DM 550
+GATE 600
+Pointer 220
+C Programming 330
+Handbook 270
+Automata 320
+
+Total ~4000

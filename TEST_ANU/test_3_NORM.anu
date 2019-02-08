@@ -1,0 +1,27 @@
+Attribute Set is
+['Jaipur', 'Shimla', 'Takshila']
+
+Initial FDs are
+Jaipur,Shimla -> Takshila
+Takshila -> Jaipur
+
+ "Canonical Cover" of FDs set is
+Jaipur,Shimla -> Takshila
+Takshila -> Jaipur
+
+ "Candidate Keys" of Universal Relation are
+(['Jaipur', 'Shimla'], ['Shimla', 'Takshila'])
+
+On converting
+['Jaipur', 'Shimla', 'Takshila'] to (['Jaipur', 'Takshila'], ['Shimla', 'Takshila'])
+BCNF is not FD preserving, these FDs are violated
+Jaipur,Shimla -> Takshila
+
+ "2NF" Decomposition of Universal Relation is
+(['Jaipur', 'Shimla', 'Takshila'],)
+
+ 3NF Decomposition of Universal Relation is
+(['Jaipur', 'Shimla', 'Takshila'],)
+
+ "BCNF" Decomposition of Universal Relation is
+(['Jaipur', 'Takshila'], ['Shimla', 'Takshila'])

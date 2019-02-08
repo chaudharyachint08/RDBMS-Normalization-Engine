@@ -1,0 +1,1571 @@
+<!DOCTYPE html><html
+lang="en-US"><head><meta
+charset="UTF-8"><meta
+name="viewport" content="width=device-width"><title>Python Pandas DataFrame: load, edit, view data | Shane Lynn</title><link
+rel="profile" href="http://gmpg.org/xfn/11"><link
+rel="shortcut icon" href=""/><link
+rel="pingback" href="https://www.shanelynn.ie/xmlrpc.php">
+<!--[if lt IE 9]> <script src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/html5.js"></script> <![endif]--><meta
+name="description"  content="It&#039;s difficult starting out with Pandas DataFrames. Learn how to load, preview, select, rename, edit, and plot data using Python Data Frames in this post." /><meta
+name="keywords"  content="analysis,beginner,csv,da,data,data analysis,data frame,data science,dataframe,excel,pandas,pandas data frame,python,python pandas,tutorials" /><link
+rel="canonical" href="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/" /><link
+rel='dns-prefetch' href='//platform.twitter.com' /><link
+rel='dns-prefetch' href='//s0.wp.com' /><link
+rel='dns-prefetch' href='//ajax.googleapis.com' /><link
+rel='dns-prefetch' href='//fonts.googleapis.com' /><link
+rel='dns-prefetch' href='//s.w.org' /><link
+rel="alternate" type="application/rss+xml" title="Shane Lynn &raquo; Feed" href="https://www.shanelynn.ie/feed/" /><link
+rel="alternate" type="application/rss+xml" title="Shane Lynn &raquo; Comments Feed" href="https://www.shanelynn.ie/comments/feed/" /><link
+rel="alternate" type="application/rss+xml" title="Shane Lynn &raquo; The Pandas DataFrame &#8211; loading, editing, and viewing data in Python Comments Feed" href="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/feed/" /> <script type="text/javascript">/*<![CDATA[*/window._wpemojiSettings={"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.shanelynn.ie\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.5"}};!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55357,56692,8205,9792,65039],[55357,56692,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);/*]]>*/</script> <script>/*<![CDATA[*/advanced_ads_ready=function(){var fns=[],listener,doc=typeof document==="object"&&document,hack=doc&&doc.documentElement.doScroll,domContentLoaded="DOMContentLoaded",loaded=doc&&(hack?/^loaded|^c/:/^loaded|^i|^c/).test(doc.readyState);if(!loaded&&doc){listener=function(){doc.removeEventListener(domContentLoaded,listener);window.removeEventListener("load",listener);loaded=1;while(listener=fns.shift())listener()};doc.addEventListener(domContentLoaded,listener);window.addEventListener("load",listener)}return function(fn){loaded?setTimeout(fn,0):fns.push(fn)}}();/*]]>*/</script><style type="text/css">img.wp-smiley,img.emoji{display:inline !important;border:none !important;box-shadow:none !important;height:1em !important;width:1em !important;margin:0
+.07em !important;vertical-align:-0.1em !important;background:none !important;padding:0
+!important}</style><link
+rel='stylesheet' id='crayon-theme-classic-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/crayon-syntax-highlighter/themes/classic/classic.css?ver=_2.7.2_beta' type='text/css' media='all' /><link
+rel='stylesheet' id='crayon-font-monaco-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/crayon-syntax-highlighter/fonts/monaco.css?ver=_2.7.2_beta' type='text/css' media='all' /><link
+rel='stylesheet' id='contact-form-7-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.0.1' type='text/css' media='all' /><link
+rel='stylesheet' id='ctf_styles-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/custom-twitter-feeds/css/ctf-styles.css?ver=1.2.8' type='text/css' media='all' /><link
+rel='stylesheet' id='google-raleway-css'  href='https://fonts.googleapis.com/css?family=Open+Sans%3A300italic%2C400italic%2C600italic%2C700italic%2C800italic%2C400%2C300%2C600%2C700%2C800&#038;ver=4.9.5' type='text/css' media='all' /><link
+rel='stylesheet' id='ascent-bootstrap-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/resources/bootstrap/css/bootstrap.css?ver=4.9.5' type='text/css' media='all' /><link
+rel='stylesheet' id='ascent-swipebox-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/css/swipebox.css?ver=4.9.5' type='text/css' media='all' /><link
+rel='stylesheet' id='ascent-owl-carousel-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/css/owl.carousel.css?ver=4.9.5' type='text/css' media='all' /><link
+rel='stylesheet' id='ascent-owl-theme-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/css/owl.theme.css?ver=4.9.5' type='text/css' media='all' /><link
+rel='stylesheet' id='ascent-animations-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/css/animations.css?ver=4.9.5' type='text/css' media='all' /><link
+rel='stylesheet' id='ascent-meanmenu-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/css/meanmenu.css?ver=4.9.5' type='text/css' media='all' /><link
+rel='stylesheet' id='ascent-main-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/css/main.css?ver=4.9.5' type='text/css' media='all' /><link
+rel='stylesheet' id='jetpack-widget-social-icons-styles-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/jetpack/modules/widgets/social-icons/social-icons.css?ver=20170506' type='text/css' media='all' /><link
+rel='stylesheet' id='easy_table_style-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/easy-table/themes/default/style.css?ver=1.6' type='text/css' media='all' /><link
+rel='stylesheet' id='enlighter-local-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/enlighter/resources/EnlighterJS.min.css?ver=3.5' type='text/css' media='all' /><link
+rel='stylesheet' id='an_style-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/ywrMnyIoxdTt/eHjUtdkTrPUU.css?ver=2.2.3' type='text/css' media='all' /><style id='an_style-inline-css' type='text/css'>.AnEaCyNbUfNi-bg{display:none;position:fixed;z-index:100;top:0;left:0;width:100%;height:100%;background:#000;background:rgba(0,0,0,0.75)}.AnEaCyNbUfNi{visibility:hidden;position:fixed;z-index:101;top:100px;right:0;left:0;max-width:640px;margin-right:auto;margin-left:auto;background:#fff;-webkit-box-shadow:0 3px 5px 2px rgba(0,0,0,0.25);box-shadow:0 3px 5px 2px rgba(0,0,0,0.25);font-family:Arial,Helvetica,sans-serif}.AnEaCyNbUfNi-default,.AnEaCyNbUfNi-ok{padding:30px
+30px 15px}.AnEaCyNbUfNi-image{overflow:hidden;position:relative;width:100%}.AnEaCyNbUfNi-image .AnEaCyNbUfNi-left{position:absolute;top:0;left:0;width:50%;height:100%}.AnEaCyNbUfNi-image .AnEaCyNbUfNi-right{float:right;width:50%;padding:30px}.AnEaCyNbUfNi.small{width:200px;margin-left:-140px}.AnEaCyNbUfNi.medium{width:400px;margin-left:-240px}.AnEaCyNbUfNi.large{width:600px;margin-left:-340px}.AnEaCyNbUfNi.xlarge{width:800px;margin-left:-440px}.close-AnEaCyNbUfNi{display:inline-block;position:absolute;top:15px;right:15px;width:30px;height:30px;color:#bbb;font-size:32px;font-weight:700;line-height:30px;text-align:center;cursor:pointer;-webkit-transition:0.3s;transition:0.3s}.close-AnEaCyNbUfNi:hover{color:#252b37}.AnEaCyNbUfNi
+h1{margin-bottom:15px;padding:0
+30px;color:#252b37;font-size:28px;line-height:1.25;text-align:center}.AnEaCyNbUfNi-right
+h1{padding:0
+30px 0 0;text-align:left}.AnEaCyNbUfNi
+p{margin-bottom:15px;color:#333745;font-size:14px}.AnEaCyNbUfNi p
+a{color:#ff6160}.AnEaCyNbUfNi-right .close-modal,.AnEaCyNbUfNi-footer .close-modal{padding:15px
+!important;border-radius:0 !important;background-color:#ff6160;font-size:14px;letter-spacing:2px !important;-webkit-transition:0.3s;transition:0.3s}.AnEaCyNbUfNi-right .close-modal:hover,.AnEaCyNbUfNi-footer .close-modal:hover{background-color:#252b37 !important}.AnEaCyNbUfNi-footer .grey-button-modal{margin-right:15px;background-color:#a5a5a5}.AnEaCyNbUfNi-footer{display:block;padding:15px
+30px;background-color:#eff4f7;text-align:right}@media only screen and (max-width: 640px){.AnEaCyNbUfNi{right:5%;left:5%;max-width:90%}.AnEaCyNbUfNi-default{padding:20px}.AnEaCyNbUfNi-image .AnEaCyNbUfNi-left{width:100%;height:250px}.AnEaCyNbUfNi-image .AnEaCyNbUfNi-right{float:left;width:100%;margin-top:250px;padding:20px}.AnEaCyNbUfNi
+h1{margin-bottom:10px;font-size:20px}.AnEaCyNbUfNi-right
+h1{padding:0}.AnEaCyNbUfNi
+p{margin-bottom:10px}.close-AnEaCyNbUfNi{color:#fcfcfc;background-color:#252b37}.close-AnEaCyNbUfNi:hover{color:#252b37;background-color:#fcfcfc}.AnEaCyNbUfNi-footer{padding:15px
+20px}}@media only screen and (max-width: 480px){.AnEaCyNbUfNi-image .AnEaCyNbUfNi-left{height:200px}.AnEaCyNbUfNi-image .AnEaCyNbUfNi-right{margin-top:200px}.AnEaCyNbUfNi-footer{text-align:center}.AnEaCyNbUfNi-footer .close-modal{width:80%;margin:5px
+10%}}</style><link
+rel='stylesheet' id='jetpack_css-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/jetpack/css/jetpack.css?ver=6.0' type='text/css' media='all' /> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script> <script type='text/javascript'>var related_posts_js_options={"post_heading":"h4"};</script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/jetpack/_inc/build/related-posts/related-posts.min.js?ver=20150408'></script> <script type='text/javascript' src='https://platform.twitter.com/widgets.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/resources/bootstrap/js/bootstrap.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/bootstrap-wp.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/jquery.swipebox.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/swipebox-config.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/owl.carousel.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/jquery.appear.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/jquery.meanmenu.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/jquery.velocity.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/appear.config.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/main.js?ver=4.9.5'></script> <link
+rel='https://api.w.org/' href='https://www.shanelynn.ie/wp-json/' /><link
+rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-includes/wlwmanifest.xml" /><link
+rel='prev' title='The Irish Property Price Register &#8211; Geocoded to Small Areas' href='https://www.shanelynn.ie/the-irish-property-price-register-geocoded-to-small-areas/' /><link
+rel='next' title='Get Busy with Word Embeddings &#8211; An Introduction' href='https://www.shanelynn.ie/get-busy-with-word-embeddings-introduction/' /><meta
+name="generator" content="WordPress 4.9.5" /><link
+rel='shortlink' href='https://www.shanelynn.ie/?p=917' /><link
+rel="alternate" type="application/json+oembed" href="https://www.shanelynn.ie/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.shanelynn.ie%2Fusing-pandas-dataframe-creating-editing-viewing-data-in-python%2F" /><link
+rel="alternate" type="text/xml+oembed" href="https://www.shanelynn.ie/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.shanelynn.ie%2Fusing-pandas-dataframe-creating-editing-viewing-data-in-python%2F&#038;format=xml" /><link
+rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.shanelynn.ie/xmlrpc2.php?rsd" /><link
+rel='dns-prefetch' href='//jetpack.wordpress.com'/><link
+rel='dns-prefetch' href='//s0.wp.com'/><link
+rel='dns-prefetch' href='//s1.wp.com'/><link
+rel='dns-prefetch' href='//s2.wp.com'/><link
+rel='dns-prefetch' href='//public-api.wordpress.com'/><link
+rel='dns-prefetch' href='//0.gravatar.com'/><link
+rel='dns-prefetch' href='//1.gravatar.com'/><link
+rel='dns-prefetch' href='//2.gravatar.com'/><style type='text/css'>img#wpstats{display:none}</style><style type='text/css' id='dynamic-css'></style><style type="text/css"></style><link
+rel="amphtml" href="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/amp/"><meta
+property="og:type" content="article" /><meta
+property="og:title" content="The Pandas DataFrame &#8211; loading, editing, and viewing data in Python" /><meta
+property="og:url" content="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/" /><meta
+property="og:description" content="The Pandas DataFrame &#8211; this blog post covers the basics of loading, editing, and viewing data in Python, and getting to grips with the all-important data structure in Python &#8211; the Panda…" /><meta
+property="article:published_time" content="2017-12-13T00:05:58+00:00" /><meta
+property="article:modified_time" content="2017-12-18T18:51:31+00:00" /><meta
+property="og:site_name" content="Shane Lynn" /><meta
+property="og:image" content="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/data-manipulation.jpg" /><meta
+property="og:image:width" content="1000" /><meta
+property="og:image:height" content="259" /><meta
+property="og:locale" content="en_US" /><meta
+name="twitter:text:title" content="The Pandas DataFrame &#8211; loading, editing, and viewing data in Python" /><meta
+name="twitter:image" content="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/data-manipulation.jpg?w=640" /><meta
+name="twitter:card" content="summary_large_image" /> <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> <script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-2568178699868194",enable_page_level_ads:true});</script> <style type="text/css" id="wp-custom-css">.entry-content{font-size:1.2em;line-height:150%;text-align:justify}.wp-caption-text{font-size:1em}h2{margin-top:0.8em;margin-bottom:0.4em}.shane-content{margin-top:30px;margin-bottom:30px}.shane-content-1{margin-top:30px;margin-bottom:30px}#googleadwords{width:263px;height:600px}</style></head><body
+class="post-template-default single single-post postid-917 single-format-standard"><header
+id="masthead" class="site-header" role="banner"><div
+class="header-top"><div
+class="container"><div
+class="row"><div
+class="col-sm-6"><div
+class="mail-info"></div></div><div
+class="col-sm-6"><div
+class="header-social-icon-wrap"><ul
+class="social-icons"><li
+class="social-icon"><a
+target="_blank" href="http://twitter.com/shane_a_lynn"><i
+class="fa fa-twitter"></i></a></li><li
+class="social-icon"><a
+target="_blank" href="http://facebook.com/shanerlynn"><i
+class="fa fa-facebook"></i></a></li><li
+class="social-icon"><a
+target="_blank" href="https://www.linkedin.com/in/shanealynn"><i
+class="fa fa-linkedin"></i></a></li><li
+class="social-icon"><a
+target="_blank" href="http://www.github.com/shanealynn"><i
+class="fa fa-github"></i></a></li></ul></div></div></div></div></div><div
+id="header-main" class="header-bottom"><div
+class="header-bottom-inner"><div
+class="container"><div
+class="row"><div
+class="col-sm-3"><div
+id="logo"><div
+class="site-header-inner col-sm-12"><div
+class="site-branding"><h1 class="site-title">
+<a
+href="https://www.shanelynn.ie/" title="Shane Lynn" rel="home">
+Shane Lynn                        				                        				    </a></h1><h4 class="site-description">Data science, Startups, Analytics and Data visualisation.</h4></div></div></div></div><div
+class="col-sm-9"><div
+class="header-search pull-right"><div
+id="header-search-button"><i
+class="fa fa-search"></i></div></div><div
+class="site-navigation pull-right">
+<nav
+class="main-menu"><ul
+id="menu-home" class="header-nav clearfix"><li
+id="menu-item-56" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-56"><a
+href="https://www.shanelynn.ie">Blog</a></li><li
+id="menu-item-53" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-53"><a
+href="https://www.shanelynn.ie/about/">About</a></li><li
+id="menu-item-800" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-ancestor current-menu-parent current-post-parent menu-item-has-children menu-item-800"><a
+href="https://www.shanelynn.ie/category/tutorials/">Pandas Tutorials</a><ul
+class="sub-menu"><li
+id="menu-item-954" class="menu-item menu-item-type-post_type menu-item-object-post current-menu-item menu-item-954"><a
+href="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/">The Pandas DataFrame – creating, editing, and viewing data in Python</a></li><li
+id="menu-item-799" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-799"><a
+href="https://www.shanelynn.ie/summarising-aggregation-and-grouping-data-in-python-pandas/">Summarising, Aggregating, and Grouping data</a></li><li
+id="menu-item-798" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-798"><a
+href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/">Use iloc, loc, &#038; ix for DataFrame selections</a></li><li
+id="menu-item-797" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-797"><a
+href="https://www.shanelynn.ie/merge-join-dataframes-python-pandas-index-1/">Master Merges and Joins with Pandas</a></li></ul></li><li
+id="menu-item-694" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-694"><a
+href="https://www.shanelynn.ie/consultancy-services/">Consultancy &#038; Services</a></li><li
+id="menu-item-55" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-55"><a
+href="https://www.shanelynn.ie/research/">Research</a></li><li
+id="menu-item-71" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-71"><a
+href="https://www.shanelynn.ie/publications/">Publications</a></li><li
+id="menu-item-54" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54"><a
+href="https://www.shanelynn.ie/contact/">Contact</a></li></ul>            			    </nav><div
+id="responsive-menu-container"></div></div></div></div></div></div></div><div
+id="header-search-form-wrap" class="header-search-form-wrap"><div
+class="container"><form
+role="search" method="get" class="header-search-form search-form" action="https://www.shanelynn.ie/"><div
+class="control-group">
+<i
+class="fa fa-search"></i>
+<input
+type="search" class="search-field" placeholder="Search &hellip;" value="" name="s" title="Search for:">
+<button
+class="search" type="submit"><i
+class="icon-search"></i></button></div></form></div></div>
+</header><div
+class="main-content"><div
+class="container"><div
+id="content" class="main-content-inner"><div
+class="row"><div
+class="col-sm-12 col-md-9">
+<article
+id="post-917" class="post-917 post type-post status-publish format-standard has-post-thumbnail hentry category-blog category-data-science category-data-visualisation category-pandas category-python category-tutorials tag-analysis tag-beginner tag-csv tag-da tag-data tag-data-analysis tag-data-frame tag-data-science tag-dataframe tag-excel tag-pandas tag-pandas-data-frame tag-python tag-python-pandas tag-tutorials"><div
+class="row"><div
+class="post-meta-info col-sm-12 col-md-2"><div
+class="entry-meta">
+<time
+class="entry-time updated" itemprop="datePublished" datetime="2017-12-13T00:05:58+00:00">Dec<strong>13</strong></time>
+<span
+class="comments_count clearfix entry-comments-link"><a
+href="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/#comments">5</a></span></div></div><div
+class="post-content-wrap col-sm-12 col-md-10">
+<header
+class="page-header"><h1 class="entry-title">The Pandas DataFrame &#8211; loading, editing, and viewing data in Python</h1>
+<span
+class="entry-author">
+Posted by			<span
+class="author vcard entry-author-link">
+<a
+href="https://www.shanelynn.ie/author/shanelynn/" title="Posts by shanelynn" rel="author">shanelynn</a>			</span>
+</span>
+</header><div
+class="entry-content">
+<figure>
+<a
+class="swipebox" href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/data-manipulation.jpg" title="The Pandas DataFrame &#8211; loading, editing, and viewing data in Python">
+<img
+width="732" height="190" src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/data-manipulation-732x190.jpg" class="attachment-blog-page size-blog-page wp-post-image" alt="" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/data-manipulation-732x190.jpg 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/data-manipulation-300x78.jpg 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/data-manipulation-768x199.jpg 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/data-manipulation.jpg 1000w" sizes="(max-width: 732px) 100vw, 732px" data-attachment-id="952" data-permalink="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/data-manipulation/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/data-manipulation.jpg" data-orig-size="1000,259" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1418214349&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}" data-image-title="data-manipulation" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/data-manipulation-300x78.jpg" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/data-manipulation.jpg" />			    </a>
+</figure><div
+class="shane-before-content" style="margin-left: auto; margin-right: auto; width: 700px; height: 100px; " id="shane-2046690826"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><ins
+class="adsbygoogle" style="display:inline-block;width:700px;height:100px;" data-ad-client="ca-pub-2568178699868194" data-ad-slot="7699998463"></ins> <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><h2>Starting out with Python Pandas DataFrames</h2><p>If you’re developing in data science, and moving from excel-based analysis to the world of <a
+href="https://www.python.org" target="_blank" rel="noopener">Python</a>, scripting, and automated analysis, you’ll come across the incredibly popular data management library, “<a
+href="https://pandas.pydata.org">Pandas</a>” in Python. Pandas development started in 2008 with main developer <a
+href="https://twitter.com/wesmckinn?lang=en" target="_blank" rel="noopener">Wes McKinney</a> and the library has become a standard for data analysis and management using Python. Pandas fluency is essential for any Python-based data professional, people interested in trying a <a
+href="https://www.kaggle.com">Kaggle challenge</a>, or anyone seeking to automate a data process.</p><p>The aim of this post is to help beginners get to grips with the basic data format for Pandas – <a
+href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" target="_blank" rel="noopener">the DataFrame</a>. We will examine basic methods for creating data frames, what a DataFrame actually is, renaming and deleting data frame columns and rows, and where to go next to further your skills.</p><p>The topics in this post will enable you (hopefully) to:</p><ol><li>Load your data from a file into a <a
+href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" target="_blank" rel="noopener">Python Pandas DataFrame</a>,</li><li>Examine the basic statistics of the data,</li><li>Change some values,</li><li>Finally output the result to a new file.</li></ol><h2>What is a Python Pandas DataFrame?</h2><p>The <a
+href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html">Pandas library documentation</a> defines a DataFrame as a “two-dimensional, size-mutable, potentially heterogeneous tabular data structure with labeled axes (rows and columns)”. In plain terms, think of a DataFrame as a table of data, i.e. a single set of formatted two-dimensional data, with the following characteristics:</p><ul><li>There can be multiple rows and columns in the data.</li><li>Each row represents a sample of data,</li><li>Each column contains a different variable that describes the samples (rows).</li><li>The data in every column is usually the same type of data – e.g. numbers, strings, dates.</li><li>Usually, unlike an excel data set, DataFrames avoid having missing values, and there are no gaps and empty values between rows or columns.</li></ul><p>By way of example, the following data sets that would fit well in a Pandas DataFrame:</p><ul><li><strong>In a school system DataFrame</strong> – each row could represent a single student in the school, and columns may represent the students name (string), age (number), date of birth (date), and address (string).</li><li><strong>In an economics DataFrame,</strong> each row may represent a single city or geographical area, and columns might include the the name of area (string), the population (number), the average age of the population (number), the number of households (number), the number of schools in each area (number) etc.</li><li><strong>In a shop or e-commerce system DataFrame</strong>, each row in a DataFrame may be used to represent a customer, where there are columns for the number of items purchased (number), the date of original registration (date), and the credit card number (string).</li></ul><div
+class="shane-content" style="margin-left: auto; margin-right: auto; width: 336px; height: 280px; " id="shane-738037624"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><ins
+class="adsbygoogle" style="display:inline-block;width:336px;height:280px;" data-ad-client="ca-pub-2568178699868194" data-ad-slot="4606931263"></ins> <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><h2>Creating Pandas DataFrames</h2><p>We’ll examine two methods to create a DataFrame – manually, and from comma-separated value (CSV) files.</p><h3>Manually entering data</h3><p>The start of every data science project will include getting useful data into an analysis environment, in this case Python. There’s multiple ways to create DataFrames of data in Python, and the simplest way is through typing the data into Python manually, which obviously only works for tiny datasets.</p><div
+id="attachment_929" style="width: 788px" class="wp-caption aligncenter"><a
+href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/creating-data-frames-pandas-from-lists.png"><img
+data-attachment-id="929" data-permalink="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/creating-data-frames-pandas-from-lists/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/creating-data-frames-pandas-from-lists.png" data-orig-size="778,524" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="Create Pandas DataFrames using Dictionaries of Lists" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/creating-data-frames-pandas-from-lists-300x202.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/creating-data-frames-pandas-from-lists.png" class="size-full wp-image-929" src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/creating-data-frames-pandas-from-lists.png" alt="" width="778" height="524" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/creating-data-frames-pandas-from-lists.png 778w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/creating-data-frames-pandas-from-lists-300x202.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/creating-data-frames-pandas-from-lists-768x517.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/creating-data-frames-pandas-from-lists-732x493.png 732w" sizes="(max-width: 778px) 100vw, 778px"></a><p
+class="wp-caption-text">Using Python dictionaries and lists to create DataFrames only works for small datasets that you can type out manually. There are other ways to format manually entered data which you can <a
+href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html">check out here</a>.</p></div><p>Note that convention is to load the Pandas library as ‘pd’ (<code
+class="EnlighterJSRAW" data-enlighter-language="null">import pandas as pd</code>). You’ll see this notation used frequently online, and in <a
+href="https://www.kaggle.com" target="_blank" rel="noopener">Kaggle</a> kernels.</p><h3>Loading CSV data into Pandas</h3><p>Creating DataFrames from CSV (comma-separated value) files is made extremely simple with the <a
+href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html">read_csv</a>() function in Pandas, once you know the path to your file. A CSV file is a text file containing data in table form, where columns are separated using the ‘,’ comma character, and rows are on separate lines (<a
+href="https://www.lifewire.com/csv-file-2622708">see here</a>).</p><p>If your data is in some other form, such as an SQL database, or an Excel (XLS / XLSX) file, you can look at the other functions to read from these sources into DataFrames, namely <a
+href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_excel.html">read_xlsx</a>, <a
+href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_sql.html">read_sql</a>. However, for simplicity, sometimes extracting data directly to CSV and using that is preferable.</p><p>In this example, we’re going to load <a
+href="https://www.kaggle.com/dorbicycle/world-foodfeed-production" target="_blank" rel="noopener">Global Food production</a> data from a CSV file downloaded from the Data Science competition website, <a
+href="http://www.kaggle.com">Kaggle</a>. You can download the CSV file from Kaggle, or directly from <a
+href="https://s3-eu-west-1.amazonaws.com/shanebucket/downloads/FAO+database.csv">here</a>. The data is nicely formatted, and you can open it in Excel at first to get a preview:</p><div
+id="attachment_926" style="width: 760px" class="wp-caption aligncenter"><a
+href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/food-database-excel.png"><img
+data-attachment-id="926" data-permalink="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/food-database-excel/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/food-database-excel.png" data-orig-size="1032,477" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="Food Production Data from Kaggle opened in Excel" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/food-database-excel-300x139.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/food-database-excel-1024x473.png" class="size-large wp-image-926" src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/food-database-excel-1024x473.png" alt="" width="750" height="346" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/food-database-excel-1024x473.png 1024w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/food-database-excel-300x139.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/food-database-excel-768x355.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/food-database-excel-732x338.png 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/food-database-excel.png 1032w" sizes="(max-width: 750px) 100vw, 750px"></a><p
+class="wp-caption-text">The sample data for this post consists of food global production information spanning 1961 to 2013. Here the CSV file is examined in Microsoft Excel.</p></div><p>The sample data contains 21,478 rows of data, with each row corresponding to a food source from a specific country. The first 10 columns represent information on the sample country and food/feed type, and the remaining columns represent the food production for every year from 1963 – 2013 (63 columns in total).</p><div
+class="shane-content-1" style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px; width: 336px; height: 280px; " id="shane-296372952"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><ins
+class="adsbygoogle" style="display:inline-block;width:336px;height:280px;" data-ad-client="ca-pub-2568178699868194" data-ad-slot="6964968463"></ins> <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><p>If you haven’t already installed Python / Pandas, I’d recommend setting up <a
+href="https://www.anaconda.com/distribution/" target="_blank" rel="noopener">Anaconda</a> or <a
+href="http://winpython.sourceforge.net/" target="_blank" rel="noopener">WinPython</a> (these are downloadable distributions or bundles that contain Python with the top libraries pre-installed) and using <a
+href="http://jupyter.org/" target="_blank" rel="noopener">Jupyter notebooks</a> (notebooks allow you to use Python in your browser easily) for this tutorial. Some installation instructions are <a
+href="http://jupyter.readthedocs.io/en/latest/install.html#id3" target="_blank" rel="noopener">here</a>.</p><p>Load the file into your Python workbook using the Pandas read_csv function like so:</p><div
+id="attachment_928" style="width: 1023px" class="wp-caption aligncenter"><a
+href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/load-data-from-csv-pandas-dataframe.png"><img
+data-attachment-id="928" data-permalink="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/load-data-from-csv-pandas-dataframe/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/load-data-from-csv-pandas-dataframe.png" data-orig-size="1013,336" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="Loading data from CSV using Python Pandas to create a DataFrame" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/load-data-from-csv-pandas-dataframe-300x100.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/load-data-from-csv-pandas-dataframe.png" class="size-full wp-image-928" src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/load-data-from-csv-pandas-dataframe.png" alt="" width="1013" height="336" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/load-data-from-csv-pandas-dataframe.png 1013w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/load-data-from-csv-pandas-dataframe-300x100.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/load-data-from-csv-pandas-dataframe-768x255.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/11/load-data-from-csv-pandas-dataframe-732x243.png 732w" sizes="(max-width: 1013px) 100vw, 1013px"></a><p
+class="wp-caption-text">Load CSV files into Python to create Pandas Dataframes using the read_csv function. Beginners often trip up with paths – make sure your file is in the same directory you’re working in, or specify the complete path here (it’ll start with C:/ if you’re using Windows).</p></div><p>If you have path or filename issues, you’ll see FileNotFoundError exceptions like this:</p><div
+id="crayon-5af876a5c2a26167963649" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;"><div
+class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span
+class="crayon-title"></span><div
+class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div
+class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-expand-button" title="Expand Code"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-copy-button" title="Copy"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-popup-button" title="Open Code In New Window"><div
+class="crayon-button-icon"></div></div><span
+class="crayon-language">Python</span></div></div><div
+class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div><div
+class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+&lt;span class="ansi-red-fg"&gt;FileNotFoundError&lt;/span&gt;: File b'/some/directory/on/your/system/FAO+database.csv' does not exist</textarea></div><div
+class="crayon-main" style=""><table
+class="crayon-table"><tr
+class="crayon-row"><td
+class="crayon-nums " data-settings="show"><div
+class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div
+class="crayon-num" data-line="crayon-5af876a5c2a26167963649-1">1</div></div></td><td
+class="crayon-code"><div
+class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div
+class="crayon-line" id="crayon-5af876a5c2a26167963649-1"><span
+class="crayon-o">&lt;</span><span
+class="crayon-e">span </span><span
+class="crayon-t">class</span><span
+class="crayon-o">=</span><span
+class="crayon-s">"ansi-red-fg"</span><span
+class="crayon-o">&gt;</span><span
+class="crayon-v">FileNotFoundError</span><span
+class="crayon-o">&lt;</span><span
+class="crayon-o">/</span><span
+class="crayon-v">span</span><span
+class="crayon-o">&gt;</span><span
+class="crayon-o">:</span><span
+class="crayon-h"> </span><span
+class="crayon-k ">File</span><span
+class="crayon-h"> </span><span
+class="crayon-i">b</span><span
+class="crayon-s">'/some/directory/on/your/system/FAO+database.csv'</span><span
+class="crayon-h"> </span><span
+class="crayon-e">does </span><span
+class="crayon-st">not</span><span
+class="crayon-h"> </span><span
+class="crayon-v">exist</span></div></div></td></tr></table></div></div><p></p><h2>Preview and examine data in a Pandas DataFrame</h2><p>Once you have data in Python, you’ll want to see the data has loaded, and confirm that the expected columns and rows are present.</p><h3>Print the data</h3><p>If you’re using a Jupyter notebook, outputs from simply typing in the name of the data frame will result in nicely formatted outputs. Printing is a convenient way to preview your loaded data, you can confirm that column names were imported correctly, that the data formats are as expected, and if there are missing values anywhere.</p><div
+id="attachment_933" style="width: 760px" class="wp-caption aligncenter"><a
+href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-printing-by-jupyter-notebook.png"><img
+data-attachment-id="933" data-permalink="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/dataframe-printing-by-jupyter-notebook/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-printing-by-jupyter-notebook.png" data-orig-size="1126,547" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="Jupyter notebooks format dataframes neatly when printing them out by default." data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-printing-by-jupyter-notebook-300x146.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-printing-by-jupyter-notebook-1024x497.png" class="size-large wp-image-933" src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-printing-by-jupyter-notebook-1024x497.png" alt="pandas output for a dataframe using jupyter notbooks" width="750" height="364" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-printing-by-jupyter-notebook-1024x497.png 1024w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-printing-by-jupyter-notebook-300x146.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-printing-by-jupyter-notebook-768x373.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-printing-by-jupyter-notebook-732x356.png 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-printing-by-jupyter-notebook.png 1126w" sizes="(max-width: 750px) 100vw, 750px"></a><p
+class="wp-caption-text">In a Jupyter notebook, simply typing the name of a data frame will result in a neatly formatted outputs. This is an excellent way to preview data, however notes that, by default, only 100 rows will print, and 20 columns.</p></div><p>You’ll notice that Pandas displays only 20 columns by default for wide data dataframes, and only 60 or so rows, truncating the middle section. If you’d like to change these limits, you can edit the defaults using some internal options for Pandas displays (simple use <code
+class="EnlighterJSRAW" data-enlighter-language="python">pd.display.options.XX = value</code> to set these):</p><ul><li>pd.display.options.width – the width of the display in characters – use this if your display is wrapping rows over more than one line.</li><li>pd.display.options.max_rows – maximum number of rows displayed.</li><li>pd.display.options.max_columns – maximum number of columns displayed.</li></ul><p>You can see the full set of options available in the <a
+href="https://pandas.pydata.org/pandas-docs/stable/options.html" target="_blank" rel="noopener">official Pandas options and settings documentation</a>.</p><h3>DataFrame rows and columns with .shape</h3><p>The shape command gives information on the data set size – ‘shape’ returns a tuple with the number of rows, and the number of columns for the data in the DataFrame. Another descriptive property is the ‘ndim’ which gives the number of dimensions in your data, typically 2.</p><div
+id="attachment_935" style="width: 510px" class="wp-caption aligncenter"><a
+href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-shape-and-ndim-1.png"><img
+data-attachment-id="935" data-permalink="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/dataframe-shape-and-ndim-2/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-shape-and-ndim-1.png" data-orig-size="946,294" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="dataframe-shape-and-ndim" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-shape-and-ndim-1-300x93.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-shape-and-ndim-1.png" class="wp-image-935" src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-shape-and-ndim-1-300x93.png" alt="Basic descriptions of dataframes are obtained from .shape and .ndim" width="500" height="155" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-shape-and-ndim-1-300x93.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-shape-and-ndim-1-768x239.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-shape-and-ndim-1-732x227.png 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/dataframe-shape-and-ndim-1.png 946w" sizes="(max-width: 500px) 100vw, 500px"></a><p
+class="wp-caption-text">Get the shape of your DataFrame – the number of rows and columns using .shape, and the number of dimensions using .ndim.</p></div><p>Our food production data contains 21,477 rows, each with 63 columns as seen by the output of .shape. We have two dimensions – i.e. a 2D data frame with height and width. If your data had only one column, ndim would return 1. Data sets with more than two dimensions in Pandas used to be called Panels, but these formats have been deprecated. The recommended approach for multi-dimensional (&gt;2) data is to use the <a
+href="http://xarray.pydata.org/en/stable/">Xarray</a> Python library.</p><h3>Preview DataFrames with head() and tail()</h3><p>The DataFrame.head() function in Pandas, by default, shows you the top 5 rows of data in the DataFrame. The opposite is DataFrame.tail(), which gives you the last 5 rows.</p><p>Pass in a number and Pandas will print out the specified number of rows as shown in the example below. Head() and Tail() need to be core parts of your go-to Python Pandas functions for investigating your datasets.</p><div
+id="attachment_936" style="width: 760px" class="wp-caption aligncenter"><a
+href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/pandas-dataframe-head-tail.png"><img
+data-attachment-id="936" data-permalink="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/pandas-dataframe-head-tail/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/pandas-dataframe-head-tail.png" data-orig-size="1095,1206" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="Preview the first and last rows of a dataframe using head() and tail() in Pandas" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/pandas-dataframe-head-tail-272x300.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/pandas-dataframe-head-tail-930x1024.png" class="wp-image-936 size-large" src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/pandas-dataframe-head-tail-930x1024.png" alt="Quickly view datasets using pandas head and tail functions." width="750" height="826" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/pandas-dataframe-head-tail-930x1024.png 930w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/pandas-dataframe-head-tail-272x300.png 272w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/pandas-dataframe-head-tail-768x846.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/pandas-dataframe-head-tail-732x806.png 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/pandas-dataframe-head-tail.png 1095w" sizes="(max-width: 750px) 100vw, 750px"></a><p
+class="wp-caption-text">The first 5 rows of a DataFrame are shown by head(), the final 5 rows by tail(). For other numbers of rows – simply specify how many you want!</p></div><p>In our example here, you can see a subset of the columns in the data since there are more than 20 columns overall.</p><h3>Data types (dtypes) of columns</h3><p>Many DataFrames have mixed data types, that is, some columns are numbers, some are strings, and some are dates etc. Internally, CSV files do not contain information on what data types are contained in each column; all of the data is just characters. Pandas infers the data types when loading the data, e.g. if a column contains only numbers, pandas will set that column’s data type to numeric: integer or float.</p><p>You can check the types of each column in our example with the <a
+href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.dtypes.html">‘.dtypes’</a> property of the dataframe.</p><div
+id="attachment_937" style="width: 548px" class="wp-caption aligncenter"><a
+href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/panda-python-data-types-dtypes.png"><img
+data-attachment-id="937" data-permalink="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/panda-python-data-types-dtypes/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/panda-python-data-types-dtypes.png" data-orig-size="538,483" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="Pandas DataFrame column data types" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/panda-python-data-types-dtypes-300x269.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/panda-python-data-types-dtypes.png" class="wp-image-937 size-full" src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/panda-python-data-types-dtypes.png" alt="Columns in pandas " width="538" height="483" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/panda-python-data-types-dtypes.png 538w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/panda-python-data-types-dtypes-300x269.png 300w" sizes="(max-width: 538px) 100vw, 538px"></a><p
+class="wp-caption-text">See the data types of each column in your dataframe using the .dtypes property. Notes that character/string columns appear as ‘object’ datatypes.</p></div><p>In some cases, the automated inferring of data types can give unexpected results. Note that strings are loaded as ‘object’ datatypes, because technically, the DataFrame holds a pointer to the string data elsewhere in memory. This behaviour is expected, and can be ignored.</p><p>To change the datatype of a specific column, use the <a
+href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.astype.html" target="_blank" rel="noopener">.astype() function</a>. For example, to see the ‘Item Code’ column as a string, use:</p><div
+id="crayon-5af876a5c2a39741634680" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;"><div
+class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span
+class="crayon-title"></span><div
+class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div
+class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-expand-button" title="Expand Code"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-copy-button" title="Copy"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-popup-button" title="Open Code In New Window"><div
+class="crayon-button-icon"></div></div><span
+class="crayon-language">Python</span></div></div><div
+class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div><div
+class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+data['Item Code'].astype(str)</textarea></div><div
+class="crayon-main" style=""><table
+class="crayon-table"><tr
+class="crayon-row"><td
+class="crayon-nums " data-settings="show"><div
+class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div
+class="crayon-num" data-line="crayon-5af876a5c2a39741634680-1">1</div></div></td><td
+class="crayon-code"><div
+class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div
+class="crayon-line" id="crayon-5af876a5c2a39741634680-1"><span
+class="crayon-v">data</span><span
+class="crayon-sy">[</span><span
+class="crayon-s">'Item Code'</span><span
+class="crayon-sy">]</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">astype</span><span
+class="crayon-sy">(</span><span
+class="crayon-k ">str</span><span
+class="crayon-sy">)</span></div></div></td></tr></table></div></div><p></p><h3>Describing data with .describe()</h3><p>Finally, to see some of the core statistics about a particular column, you can use the ‘<a
+href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.describe.html" target="_blank" rel="noopener">describe</a>‘ function.</p><ul><li>For numeric columns, <a
+href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.describe.html">describe()</a> returns <a
+href="https://www.ibm.com/support/knowledgecenter/en/SSEP7J_10.2.0/com.ibm.swg.ba.cognos.ug_cr_rptstd.10.2.0.doc/c_id_obj_desc_tables.html" target="_blank" rel="noopener">basic statistics</a>: the value count, mean, standard deviation, minimum, maximum, and 25th, 50th, and 75th quantiles for the data in a column.</li><li>For string columns, <a
+href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.describe.html">describe()</a> returns the value count, the number of unique entries, the most frequently occurring value (‘top’), and the number of times the top value occurs (‘freq’)</li></ul><p>Select a column to describe using a string inside the [] braces, and call describe() as follows:</p><div
+id="attachment_938" style="width: 777px" class="wp-caption aligncenter"><a
+href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Pandas-describe-numeric-integer-string-columns-statistics.png"><img
+data-attachment-id="938" data-permalink="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/pandas-describe-numeric-integer-string-columns-statistics/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Pandas-describe-numeric-integer-string-columns-statistics.png" data-orig-size="767,380" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="Pandas-describe-numeric-integer-string-columns-statistics" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Pandas-describe-numeric-integer-string-columns-statistics-300x149.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Pandas-describe-numeric-integer-string-columns-statistics.png" class="size-full wp-image-938" src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Pandas-describe-numeric-integer-string-columns-statistics.png" alt="Describe function in pandas gives basic statistics on the contents of that column" width="767" height="380" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Pandas-describe-numeric-integer-string-columns-statistics.png 767w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Pandas-describe-numeric-integer-string-columns-statistics-300x149.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Pandas-describe-numeric-integer-string-columns-statistics-732x363.png 732w" sizes="(max-width: 767px) 100vw, 767px"></a><p
+class="wp-caption-text">Use the describe() function to get basic statistics on columns in your Pandas DataFrame. Note the differences between columns with numeric datatypes, and columns of strings and characters.</p></div><p>Note that if describe is called on the entire DataFrame, statistics only for the columns with numeric datatypes are returned, and in DataFrame format.</p><div
+id="attachment_939" style="width: 852px" class="wp-caption aligncenter"><a
+href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/python-describe-full-dataframe.png"><img
+data-attachment-id="939" data-permalink="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/python-describe-full-dataframe/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/python-describe-full-dataframe.png" data-orig-size="842,359" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="python-describe-full-dataframe" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/python-describe-full-dataframe-300x128.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/python-describe-full-dataframe.png" class="size-full wp-image-939" src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/python-describe-full-dataframe.png" alt="describe() can also be used to summarise all numeric columns in a dataframe" width="842" height="359" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/python-describe-full-dataframe.png 842w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/python-describe-full-dataframe-300x128.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/python-describe-full-dataframe-768x327.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/python-describe-full-dataframe-732x312.png 732w" sizes="(max-width: 842px) 100vw, 842px"></a><p
+class="wp-caption-text">Describing a full dataframe gives summary statistics for the numeric columns only, and the return format is another DataFrame.</p></div><h2>Selecting and Manipulating Data</h2><p>The data selection methods for Pandas are very flexible. In another post on this site, <a
+href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/">I’ve written extensively about the core selection methods in Pandas – namely iloc and loc</a>. For detailed information and to master selection, be sure to read that post. For this example, we will look at the basic method for column and row selection.</p><h3>Selecting columns</h3><p>There are three main methods of selecting columns in pandas:</p><ul><li>using a dot notation, e.g. <code
+class="EnlighterJSRAW" data-enlighter-language="python">data.column_name</code>,</li><li>using square braces and the name of the column as a string, e.g. <code
+class="EnlighterJSRAW" data-enlighter-language="null">data['column_name']</code></li><li>or using numeric indexing and the iloc selector <code
+class="EnlighterJSRAW" data-enlighter-language="null">data.iloc[:, &lt;column_number&gt;]</code></li></ul><div
+id="attachment_970" style="width: 818px" class="wp-caption aligncenter"><a
+href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/select-columns-dot-iloc-square.png"><img
+data-attachment-id="970" data-permalink="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/select-columns-dot-iloc-square/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/select-columns-dot-iloc-square.png" data-orig-size="808,141" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="select-columns-dot-iloc-square" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/select-columns-dot-iloc-square-300x52.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/select-columns-dot-iloc-square.png" class="size-full wp-image-970" src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/select-columns-dot-iloc-square.png" alt="selecting columns from data frames in three methods" width="808" height="141" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/select-columns-dot-iloc-square.png 808w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/select-columns-dot-iloc-square-300x52.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/select-columns-dot-iloc-square-768x134.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/select-columns-dot-iloc-square-732x128.png 732w" sizes="(max-width: 808px) 100vw, 808px"></a><p
+class="wp-caption-text">Three primary methods for selecting columns from dataframes in pandas – use the dot notation, square brackets, or iloc methods. The square brackets with column name method is the least error prone in my opinion.</p></div><p>When a column is selected using any of these methodologies, a <a
+href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.html" target="_blank" rel="noopener">pandas.Series</a> is the resulting datatype. A pandas series is a one-dimensional set of data. It’s useful to know the basic operations that can be carried out on these Series of data, including summing (<code
+class="EnlighterJSRAW" data-enlighter-language="null">.sum()</code>), averaging (<code
+class="EnlighterJSRAW" data-enlighter-language="null">.mean()</code>), counting (<code
+class="EnlighterJSRAW" data-enlighter-language="null">.count()</code>), getting the median (<code
+class="EnlighterJSRAW" data-enlighter-language="null">.median()</code>), and replacing missing values (<code
+class="EnlighterJSRAW" data-enlighter-language="null">.fillna(new_value)</code>).</p><div
+id="crayon-5af876a5c2a42488550045" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;"><div
+class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span
+class="crayon-title"></span><div
+class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div
+class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-expand-button" title="Expand Code"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-copy-button" title="Copy"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-popup-button" title="Open Code In New Window"><div
+class="crayon-button-icon"></div></div><span
+class="crayon-language">Python</span></div></div><div
+class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div><div
+class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+# Series summary operations.
+# We are selecting the column "Y2007", and performing various calculations.
+[data['Y2007'].sum(), # Total sum of the column values
+ data['Y2007'].mean(), # Mean of the column values
+ data['Y2007'].median(), # Median of the column values
+ data['Y2007'].nunique(), # Number of unique entries
+ data['Y2007'].max(), # Maximum of the column values
+ data['Y2007'].min()] # Minimum of the column values
+
+Out: [10867788.0, 508.48210358863986, 7.0, 1994, 402975.0, 0.0]</textarea></div><div
+class="crayon-main" style=""><table
+class="crayon-table"><tr
+class="crayon-row"><td
+class="crayon-nums " data-settings="show"><div
+class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div
+class="crayon-num" data-line="crayon-5af876a5c2a42488550045-1">1</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a42488550045-2">2</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a42488550045-3">3</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a42488550045-4">4</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a42488550045-5">5</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a42488550045-6">6</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a42488550045-7">7</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a42488550045-8">8</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a42488550045-9">9</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a42488550045-10">10</div></div></td><td
+class="crayon-code"><div
+class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div
+class="crayon-line" id="crayon-5af876a5c2a42488550045-1"><span
+class="crayon-c"># Series summary operations.</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a42488550045-2"><span
+class="crayon-c"># We are selecting the column "Y2007", and performing various calculations.</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a42488550045-3"><span
+class="crayon-sy">[</span><span
+class="crayon-v">data</span><span
+class="crayon-sy">[</span><span
+class="crayon-s">'Y2007'</span><span
+class="crayon-sy">]</span><span
+class="crayon-sy">.</span><span
+class="crayon-k ">sum</span><span
+class="crayon-sy">(</span><span
+class="crayon-sy">)</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-c"># Total sum of the column values</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a42488550045-4"><span
+class="crayon-h"> </span><span
+class="crayon-v">data</span><span
+class="crayon-sy">[</span><span
+class="crayon-s">'Y2007'</span><span
+class="crayon-sy">]</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">mean</span><span
+class="crayon-sy">(</span><span
+class="crayon-sy">)</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-c"># Mean of the column values</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a42488550045-5"><span
+class="crayon-h"> </span><span
+class="crayon-v">data</span><span
+class="crayon-sy">[</span><span
+class="crayon-s">'Y2007'</span><span
+class="crayon-sy">]</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">median</span><span
+class="crayon-sy">(</span><span
+class="crayon-sy">)</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-c"># Median of the column values</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a42488550045-6"><span
+class="crayon-h"> </span><span
+class="crayon-v">data</span><span
+class="crayon-sy">[</span><span
+class="crayon-s">'Y2007'</span><span
+class="crayon-sy">]</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">nunique</span><span
+class="crayon-sy">(</span><span
+class="crayon-sy">)</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-c"># Number of unique entries</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a42488550045-7"><span
+class="crayon-h"> </span><span
+class="crayon-v">data</span><span
+class="crayon-sy">[</span><span
+class="crayon-s">'Y2007'</span><span
+class="crayon-sy">]</span><span
+class="crayon-sy">.</span><span
+class="crayon-k ">max</span><span
+class="crayon-sy">(</span><span
+class="crayon-sy">)</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-c"># Maximum of the column values</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a42488550045-8"><span
+class="crayon-h"> </span><span
+class="crayon-v">data</span><span
+class="crayon-sy">[</span><span
+class="crayon-s">'Y2007'</span><span
+class="crayon-sy">]</span><span
+class="crayon-sy">.</span><span
+class="crayon-k ">min</span><span
+class="crayon-sy">(</span><span
+class="crayon-sy">)</span><span
+class="crayon-sy">]</span><span
+class="crayon-h"> </span><span
+class="crayon-c"># Minimum of the column values</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a42488550045-9"> </div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a42488550045-10"><span
+class="crayon-v">Out</span><span
+class="crayon-o">:</span><span
+class="crayon-h"> </span><span
+class="crayon-sy">[</span><span
+class="crayon-cn">10867788.0</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-cn">508.48210358863986</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-cn">7.0</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-cn">1994</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-cn">402975.0</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-cn">0.0</span><span
+class="crayon-sy">]</span></div></div></td></tr></table></div></div><p>Selecting multiple columns at the same time extracts a new DataFrame from your existing DataFrame. For selection of multiple columns, the syntax is:</p><ul><li>square-brace selection with a list of column names, e.g. <code
+class="EnlighterJSRAW" data-enlighter-language="null">data[['column_name_1', 'column_name_2']]</code></li><li>using numeric indexing with the iloc selector and a list of column numbers, e.g. <code
+class="EnlighterJSRAW" data-enlighter-language="null">data.iloc[:, [0,1,20,22]]</code></li></ul><h3>Selecting rows</h3><p>Rows in a DataFrame are selected, typically, using the iloc/loc selection methods, or using logical selectors (selecting based on the value of another column or variable).</p><p>The basic methods to get your heads around are:</p><ul><li>numeric row selection using the iloc selector, e.g. <code
+class="EnlighterJSRAW" data-enlighter-language="null">data.iloc[0:10, :]</code> – select the first 10 rows.</li><li>label-based row selection using the loc selector (this is only applicably if you have set an “index” on your dataframe. e.g. <code
+class="EnlighterJSRAW" data-enlighter-language="null">data.loc[44, :]</code></li><li>logical-based row selection using evaluated statements, e.g. <code
+class="EnlighterJSRAW" data-enlighter-language="null">data[data["Area"] == "Ireland"]</code> – select the rows where Area value is ‘Ireland’.</li></ul><p>Note that you can combine the selection methods for columns and rows in many ways to achieve the selection of your dreams. For details, please refer to the post “<a
+href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/">Using iloc, loc, and ix to select and index data</a>“.</p><div
+id="attachment_665" style="width: 760px" class="wp-caption aligncenter"><a
+href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing.png"><img
+data-attachment-id="665" data-permalink="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/pandas-selections-and-indexing/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing.png" data-orig-size="1400,1000" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="pandas-selections-and-indexing" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing-300x214.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing-1024x731.png" class="size-large wp-image-665" src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing-1024x731.png" alt="iloc and loc indexing is achieved with pandas using two main arguments for rows and columns" width="750" height="535" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing-1024x731.png 1024w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing-300x214.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing-768x549.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing-732x523.png 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing-1140x814.png 1140w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2016/10/Pandas-selections-and-indexing.png 1400w" sizes="(max-width: 750px) 100vw, 750px"></a><p
+class="wp-caption-text">Summary of iloc and loc methods discussed in the <a
+href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/">iloc and loc selection blog post</a>. iloc and loc are operations for retrieving data from Pandas dataframes.</p></div><h3>Deleting rows and columns (drop)</h3><p>To delete rows and columns from DataFrames, Pandas uses the “<a
+href="https://pandas.pydata.org/pandas-docs/version/0.21/generated/pandas.DataFrame.drop.html">drop</a>” function.</p><p>To delete a column, or multiple columns, use the name of the column(s), and specify the “axis” as 1. Alternatively, as in the example below, the ‘columns’ parameter has been added in Pandas which cuts out the need for ‘axis’. The drop function returns a new DataFrame, with the columns removed. To actually edit the original DataFrame, the “inplace” parameter can be set to True, and there is no returned value.</p><div
+id="crayon-5af876a5c2a49032447245" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;"><div
+class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span
+class="crayon-title"></span><div
+class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div
+class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-expand-button" title="Expand Code"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-copy-button" title="Copy"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-popup-button" title="Open Code In New Window"><div
+class="crayon-button-icon"></div></div><span
+class="crayon-language">Python</span></div></div><div
+class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div><div
+class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+# Deleting columns
+
+# Delete the "Area" column from the dataframe
+data = data.drop("Area", axis=1)
+
+# alternatively, delete columns using the columns parameter of drop
+data = data.drop(columns="area")
+
+# Delete the Area column from the dataframe in place
+# Note that the original 'data' object is changed when inplace=True
+data.drop("Area", axis=1, inplace=True). 
+
+# Delete multiple columns from the dataframe
+data = data.drop(["Y2001", "Y2002", "Y2003"], axis=1)</textarea></div><div
+class="crayon-main" style=""><table
+class="crayon-table"><tr
+class="crayon-row"><td
+class="crayon-nums " data-settings="show"><div
+class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div
+class="crayon-num" data-line="crayon-5af876a5c2a49032447245-1">1</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a49032447245-2">2</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a49032447245-3">3</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a49032447245-4">4</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a49032447245-5">5</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a49032447245-6">6</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a49032447245-7">7</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a49032447245-8">8</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a49032447245-9">9</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a49032447245-10">10</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a49032447245-11">11</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a49032447245-12">12</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a49032447245-13">13</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a49032447245-14">14</div></div></td><td
+class="crayon-code"><div
+class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div
+class="crayon-line" id="crayon-5af876a5c2a49032447245-1"><span
+class="crayon-c"># Deleting columns</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a49032447245-2"> </div><div
+class="crayon-line" id="crayon-5af876a5c2a49032447245-3"><span
+class="crayon-c"># Delete the "Area" column from the dataframe</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a49032447245-4"><span
+class="crayon-v">data</span><span
+class="crayon-h"> </span><span
+class="crayon-o">=</span><span
+class="crayon-h"> </span><span
+class="crayon-v">data</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">drop</span><span
+class="crayon-sy">(</span><span
+class="crayon-s">"Area"</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-v">axis</span><span
+class="crayon-o">=</span><span
+class="crayon-cn">1</span><span
+class="crayon-sy">)</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a49032447245-5"> </div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a49032447245-6"><span
+class="crayon-c"># alternatively, delete columns using the columns parameter of drop</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a49032447245-7"><span
+class="crayon-v">data</span><span
+class="crayon-h"> </span><span
+class="crayon-o">=</span><span
+class="crayon-h"> </span><span
+class="crayon-v">data</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">drop</span><span
+class="crayon-sy">(</span><span
+class="crayon-v">columns</span><span
+class="crayon-o">=</span><span
+class="crayon-s">"area"</span><span
+class="crayon-sy">)</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a49032447245-8"> </div><div
+class="crayon-line" id="crayon-5af876a5c2a49032447245-9"><span
+class="crayon-c"># Delete the Area column from the dataframe in place</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a49032447245-10"><span
+class="crayon-c"># Note that the original 'data' object is changed when inplace=True</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a49032447245-11"><span
+class="crayon-v">data</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">drop</span><span
+class="crayon-sy">(</span><span
+class="crayon-s">"Area"</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-v">axis</span><span
+class="crayon-o">=</span><span
+class="crayon-cn">1</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-v">inplace</span><span
+class="crayon-o">=</span><span
+class="crayon-t">True</span><span
+class="crayon-sy">)</span><span
+class="crayon-sy">.</span><span
+class="crayon-h"> </span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a49032447245-12"> </div><div
+class="crayon-line" id="crayon-5af876a5c2a49032447245-13"><span
+class="crayon-c"># Delete multiple columns from the dataframe</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a49032447245-14"><span
+class="crayon-v">data</span><span
+class="crayon-h"> </span><span
+class="crayon-o">=</span><span
+class="crayon-h"> </span><span
+class="crayon-v">data</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">drop</span><span
+class="crayon-sy">(</span><span
+class="crayon-sy">[</span><span
+class="crayon-s">"Y2001"</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-s">"Y2002"</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-s">"Y2003"</span><span
+class="crayon-sy">]</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-v">axis</span><span
+class="crayon-o">=</span><span
+class="crayon-cn">1</span><span
+class="crayon-sy">)</span></div></div></td></tr></table></div></div><p>Rows can also be removed using the “drop” function, by specifying axis=0. Drop() removes rows based on “labels”, rather than numeric indexing. To delete rows based on their numeric position / index, use iloc to reassign the dataframe values, as in the examples below.</p><p></p><div
+id="attachment_946" style="width: 760px" class="wp-caption aligncenter"><a
+href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/delete-rows-with-drop-pandas-dataframe.png"><img
+data-attachment-id="946" data-permalink="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/delete-rows-with-drop-pandas-dataframe/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/delete-rows-with-drop-pandas-dataframe.png" data-orig-size="1438,1230" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="delete-rows-with-drop-pandas-dataframe" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/delete-rows-with-drop-pandas-dataframe-300x257.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/delete-rows-with-drop-pandas-dataframe-1024x876.png" class="size-large wp-image-946" src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/delete-rows-with-drop-pandas-dataframe-1024x876.png" alt="dropping and deleting rows in pandas dataframes" width="750" height="642" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/delete-rows-with-drop-pandas-dataframe-1024x876.png 1024w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/delete-rows-with-drop-pandas-dataframe-300x257.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/delete-rows-with-drop-pandas-dataframe-768x657.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/delete-rows-with-drop-pandas-dataframe-732x626.png 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/delete-rows-with-drop-pandas-dataframe-1140x975.png 1140w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/delete-rows-with-drop-pandas-dataframe.png 1438w" sizes="(max-width: 750px) 100vw, 750px"></a><p
+class="wp-caption-text">The drop() function in Pandas be used to delete rows from a DataFrame, with the axis set to 0. As before, the inplace parameter can be used to alter DataFrames without reassignment.</p></div><br><div
+id="crayon-5af876a5c2a4e480038404" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;"><div
+class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span
+class="crayon-title"></span><div
+class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div
+class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-expand-button" title="Expand Code"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-copy-button" title="Copy"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-popup-button" title="Open Code In New Window"><div
+class="crayon-button-icon"></div></div><span
+class="crayon-language">Python</span></div></div><div
+class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div><div
+class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+# Delete the rows with labels 0,1,5
+data = data.drop([0,1,2], axis=0)
+
+# Delete the rows with label "Ireland"
+# For label-based deletion, set the index first on the dataframe:
+data = data.set_index("Area")
+data = data.drop("Ireland", axis=0). # Delete all rows with label "Ireland"
+
+# Delete the first five rows using iloc selector
+data = data.iloc[5:,]</textarea></div><div
+class="crayon-main" style=""><table
+class="crayon-table"><tr
+class="crayon-row"><td
+class="crayon-nums " data-settings="show"><div
+class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div
+class="crayon-num" data-line="crayon-5af876a5c2a4e480038404-1">1</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a4e480038404-2">2</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a4e480038404-3">3</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a4e480038404-4">4</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a4e480038404-5">5</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a4e480038404-6">6</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a4e480038404-7">7</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a4e480038404-8">8</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a4e480038404-9">9</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a4e480038404-10">10</div></div></td><td
+class="crayon-code"><div
+class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div
+class="crayon-line" id="crayon-5af876a5c2a4e480038404-1"><span
+class="crayon-c"># Delete the rows with labels 0,1,5</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a4e480038404-2"><span
+class="crayon-v">data</span><span
+class="crayon-h"> </span><span
+class="crayon-o">=</span><span
+class="crayon-h"> </span><span
+class="crayon-v">data</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">drop</span><span
+class="crayon-sy">(</span><span
+class="crayon-sy">[</span><span
+class="crayon-cn">0</span><span
+class="crayon-sy">,</span><span
+class="crayon-cn">1</span><span
+class="crayon-sy">,</span><span
+class="crayon-cn">2</span><span
+class="crayon-sy">]</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-v">axis</span><span
+class="crayon-o">=</span><span
+class="crayon-cn">0</span><span
+class="crayon-sy">)</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a4e480038404-3"> </div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a4e480038404-4"><span
+class="crayon-c"># Delete the rows with label "Ireland"</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a4e480038404-5"><span
+class="crayon-c"># For label-based deletion, set the index first on the dataframe:</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a4e480038404-6"><span
+class="crayon-v">data</span><span
+class="crayon-h"> </span><span
+class="crayon-o">=</span><span
+class="crayon-h"> </span><span
+class="crayon-v">data</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">set_index</span><span
+class="crayon-sy">(</span><span
+class="crayon-s">"Area"</span><span
+class="crayon-sy">)</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a4e480038404-7"><span
+class="crayon-v">data</span><span
+class="crayon-h"> </span><span
+class="crayon-o">=</span><span
+class="crayon-h"> </span><span
+class="crayon-v">data</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">drop</span><span
+class="crayon-sy">(</span><span
+class="crayon-s">"Ireland"</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-v">axis</span><span
+class="crayon-o">=</span><span
+class="crayon-cn">0</span><span
+class="crayon-sy">)</span><span
+class="crayon-sy">.</span><span
+class="crayon-h"> </span><span
+class="crayon-c"># Delete all rows with label "Ireland"</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a4e480038404-8"> </div><div
+class="crayon-line" id="crayon-5af876a5c2a4e480038404-9"><span
+class="crayon-c"># Delete the first five rows using iloc selector</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a4e480038404-10"><span
+class="crayon-v">data</span><span
+class="crayon-h"> </span><span
+class="crayon-o">=</span><span
+class="crayon-h"> </span><span
+class="crayon-v">data</span><span
+class="crayon-sy">.</span><span
+class="crayon-v">iloc</span><span
+class="crayon-sy">[</span><span
+class="crayon-cn">5</span><span
+class="crayon-o">:</span><span
+class="crayon-sy">,</span><span
+class="crayon-sy">]</span></div></div></td></tr></table></div></div><h3>Renaming columns</h3><p>Column renames are achieved easily in Pandas using the <a
+href="https://pandas.pydata.org/pandas-docs/version/0.21/generated/pandas.DataFrame.rename.html" target="_blank" rel="noopener">DataFrame rename</a> function. The rename function is easy to use, and quite flexible. Rename columns in these two ways:</p><ul><li>Rename by mapping old names to new names using a dictionary, with form {“old_column_name”: “new_column_name”, …}</li><li>Rename by providing a function to change the column names with. Functions are applied to every column name.</li></ul><p></p><div
+id="crayon-5af876a5c2a51750101222" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;"><div
+class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span
+class="crayon-title"></span><div
+class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div
+class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-expand-button" title="Expand Code"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-copy-button" title="Copy"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-popup-button" title="Open Code In New Window"><div
+class="crayon-button-icon"></div></div><span
+class="crayon-language">Python</span></div></div><div
+class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div><div
+class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+# Rename columns using a dictionary to map values
+# Rename the Area columnn to 'place_name'
+data = data.rename(columns={"Area": "place_name"})
+
+# Again, the inplace parameter will change the dataframe without assignment
+data.rename(columns={"Area": "place_name"}, inplace=True)
+
+# Rename multiple columns in one go with a larger dictionary
+data.rename(
+    columns={
+        "Area": "place_name",
+        "Y2001": "year_2001"
+    },
+    inplace=True
+)
+
+# Rename all columns using a function, e.g. convert all column names to lower case:
+data.rename(columns=str.lower)</textarea></div><div
+class="crayon-main" style=""><table
+class="crayon-table"><tr
+class="crayon-row"><td
+class="crayon-nums " data-settings="show"><div
+class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div
+class="crayon-num" data-line="crayon-5af876a5c2a51750101222-1">1</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a51750101222-2">2</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a51750101222-3">3</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a51750101222-4">4</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a51750101222-5">5</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a51750101222-6">6</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a51750101222-7">7</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a51750101222-8">8</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a51750101222-9">9</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a51750101222-10">10</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a51750101222-11">11</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a51750101222-12">12</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a51750101222-13">13</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a51750101222-14">14</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a51750101222-15">15</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a51750101222-16">16</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a51750101222-17">17</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a51750101222-18">18</div></div></td><td
+class="crayon-code"><div
+class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div
+class="crayon-line" id="crayon-5af876a5c2a51750101222-1"><span
+class="crayon-c"># Rename columns using a dictionary to map values</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a51750101222-2"><span
+class="crayon-c"># Rename the Area columnn to 'place_name'</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a51750101222-3"><span
+class="crayon-v">data</span><span
+class="crayon-h"> </span><span
+class="crayon-o">=</span><span
+class="crayon-h"> </span><span
+class="crayon-v">data</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">rename</span><span
+class="crayon-sy">(</span><span
+class="crayon-v">columns</span><span
+class="crayon-o">=</span><span
+class="crayon-sy">{</span><span
+class="crayon-s">"Area"</span><span
+class="crayon-o">:</span><span
+class="crayon-h"> </span><span
+class="crayon-s">"place_name"</span><span
+class="crayon-sy">}</span><span
+class="crayon-sy">)</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a51750101222-4"> </div><div
+class="crayon-line" id="crayon-5af876a5c2a51750101222-5"><span
+class="crayon-c"># Again, the inplace parameter will change the dataframe without assignment</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a51750101222-6"><span
+class="crayon-v">data</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">rename</span><span
+class="crayon-sy">(</span><span
+class="crayon-v">columns</span><span
+class="crayon-o">=</span><span
+class="crayon-sy">{</span><span
+class="crayon-s">"Area"</span><span
+class="crayon-o">:</span><span
+class="crayon-h"> </span><span
+class="crayon-s">"place_name"</span><span
+class="crayon-sy">}</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-v">inplace</span><span
+class="crayon-o">=</span><span
+class="crayon-t">True</span><span
+class="crayon-sy">)</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a51750101222-7"> </div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a51750101222-8"><span
+class="crayon-c"># Rename multiple columns in one go with a larger dictionary</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a51750101222-9"><span
+class="crayon-v">data</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">rename</span><span
+class="crayon-sy">(</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a51750101222-10"><span
+class="crayon-h">    </span><span
+class="crayon-v">columns</span><span
+class="crayon-o">=</span><span
+class="crayon-sy">{</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a51750101222-11"><span
+class="crayon-h">        </span><span
+class="crayon-s">"Area"</span><span
+class="crayon-o">:</span><span
+class="crayon-h"> </span><span
+class="crayon-s">"place_name"</span><span
+class="crayon-sy">,</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a51750101222-12"><span
+class="crayon-h">        </span><span
+class="crayon-s">"Y2001"</span><span
+class="crayon-o">:</span><span
+class="crayon-h"> </span><span
+class="crayon-s">"year_2001"</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a51750101222-13"><span
+class="crayon-h">    </span><span
+class="crayon-sy">}</span><span
+class="crayon-sy">,</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a51750101222-14"><span
+class="crayon-h">    </span><span
+class="crayon-v">inplace</span><span
+class="crayon-o">=</span><span
+class="crayon-t">True</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a51750101222-15"><span
+class="crayon-sy">)</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a51750101222-16"> </div><div
+class="crayon-line" id="crayon-5af876a5c2a51750101222-17"><span
+class="crayon-c"># Rename all columns using a function, e.g. convert all column names to lower case:</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a51750101222-18"><span
+class="crayon-v">data</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">rename</span><span
+class="crayon-sy">(</span><span
+class="crayon-v">columns</span><span
+class="crayon-o">=</span><span
+class="crayon-k ">str</span><span
+class="crayon-sy">.</span><span
+class="crayon-v">lower</span><span
+class="crayon-sy">)</span></div></div></td></tr></table></div></div><p>In many cases, I use a tidying function for column names to ensure a standard, camel-case format for variables names. When loading data from potentially unstructured data sets, it can be useful to remove spaces and lowercase all column names using a <a
+href="https://www.programiz.com/python-programming/anonymous-function" target="_blank" rel="noopener">lambda (anonymous) function</a>:</p><div
+id="crayon-5af876a5c2a55377987722" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;"><div
+class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span
+class="crayon-title"></span><div
+class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div
+class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-expand-button" title="Expand Code"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-copy-button" title="Copy"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-popup-button" title="Open Code In New Window"><div
+class="crayon-button-icon"></div></div><span
+class="crayon-language">Python</span></div></div><div
+class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div><div
+class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+# Quickly lowercase and camelcase all column names in a DataFrame
+data = pd.read_csv("/path/to/csv/file.csv")
+data.rename(columns=lambda x: x.lower().replace(' ', '_'))</textarea></div><div
+class="crayon-main" style=""><table
+class="crayon-table"><tr
+class="crayon-row"><td
+class="crayon-nums " data-settings="show"><div
+class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div
+class="crayon-num" data-line="crayon-5af876a5c2a55377987722-1">1</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a55377987722-2">2</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a55377987722-3">3</div></div></td><td
+class="crayon-code"><div
+class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div
+class="crayon-line" id="crayon-5af876a5c2a55377987722-1"><span
+class="crayon-c"># Quickly lowercase and camelcase all column names in a DataFrame</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a55377987722-2"><span
+class="crayon-v">data</span><span
+class="crayon-h"> </span><span
+class="crayon-o">=</span><span
+class="crayon-h"> </span><span
+class="crayon-v">pd</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">read_csv</span><span
+class="crayon-sy">(</span><span
+class="crayon-s">"/path/to/csv/file.csv"</span><span
+class="crayon-sy">)</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a55377987722-3"><span
+class="crayon-v">data</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">rename</span><span
+class="crayon-sy">(</span><span
+class="crayon-v">columns</span><span
+class="crayon-o">=</span><span
+class="crayon-r">lambda</span><span
+class="crayon-h"> </span><span
+class="crayon-v">x</span><span
+class="crayon-o">:</span><span
+class="crayon-h"> </span><span
+class="crayon-v">x</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">lower</span><span
+class="crayon-sy">(</span><span
+class="crayon-sy">)</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">replace</span><span
+class="crayon-sy">(</span><span
+class="crayon-s">' '</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-s">'_'</span><span
+class="crayon-sy">)</span><span
+class="crayon-sy">)</span></div></div></td></tr></table></div></div><p></p><h2>Exporting and Saving Pandas DataFrames</h2><p>After manipulation or calculations, saving your data back to CSV is the next step. Data output in Pandas is as simple as loading data.</p><p>Two two functions you’ll need to know are <a
+href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.to_csv.html" target="_blank" rel="noopener">to_csv</a> to write a DataFrame to a CSV file, and <a
+href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.to_excel.html" target="_blank" rel="noopener">to_excel</a> to write DataFrame information to a Microsoft Excel file.</p><div
+id="crayon-5af876a5c2a57361242388" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;"><div
+class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span
+class="crayon-title"></span><div
+class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div
+class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-expand-button" title="Expand Code"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-copy-button" title="Copy"><div
+class="crayon-button-icon"></div></div><div
+class="crayon-button crayon-popup-button" title="Open Code In New Window"><div
+class="crayon-button-icon"></div></div><span
+class="crayon-language">Python</span></div></div><div
+class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div><div
+class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+# Output data to a CSV file
+# Typically, I don't want row numbers in my output file, hence index=False.
+# To avoid character issues, I typically use utf8 encoding for input/output.
+
+data.to_csv("output_filename.csv", index=False, encoding='utf8')
+
+# Output data to an Excel file.
+# For the excel output to work, you may need to install the "xlsxwriter" package.
+
+data.to_csv("output_excel_file.xlsx", sheet_name="Sheet 1", index=False)</textarea></div><div
+class="crayon-main" style=""><table
+class="crayon-table"><tr
+class="crayon-row"><td
+class="crayon-nums " data-settings="show"><div
+class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div
+class="crayon-num" data-line="crayon-5af876a5c2a57361242388-1">1</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a57361242388-2">2</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a57361242388-3">3</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a57361242388-4">4</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a57361242388-5">5</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a57361242388-6">6</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a57361242388-7">7</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a57361242388-8">8</div><div
+class="crayon-num" data-line="crayon-5af876a5c2a57361242388-9">9</div><div
+class="crayon-num crayon-striped-num" data-line="crayon-5af876a5c2a57361242388-10">10</div></div></td><td
+class="crayon-code"><div
+class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div
+class="crayon-line" id="crayon-5af876a5c2a57361242388-1"><span
+class="crayon-c"># Output data to a CSV file</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a57361242388-2"><span
+class="crayon-c"># Typically, I don't want row numbers in my output file, hence index=False.</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a57361242388-3"><span
+class="crayon-c"># To avoid character issues, I typically use utf8 encoding for input/output.</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a57361242388-4"> </div><div
+class="crayon-line" id="crayon-5af876a5c2a57361242388-5"><span
+class="crayon-v">data</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">to_csv</span><span
+class="crayon-sy">(</span><span
+class="crayon-s">"output_filename.csv"</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-v">index</span><span
+class="crayon-o">=</span><span
+class="crayon-t">False</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-v">encoding</span><span
+class="crayon-o">=</span><span
+class="crayon-s">'utf8'</span><span
+class="crayon-sy">)</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a57361242388-6"> </div><div
+class="crayon-line" id="crayon-5af876a5c2a57361242388-7"><span
+class="crayon-c"># Output data to an Excel file.</span></div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a57361242388-8"><span
+class="crayon-c"># For the excel output to work, you may need to install the "xlsxwriter" package.</span></div><div
+class="crayon-line" id="crayon-5af876a5c2a57361242388-9"> </div><div
+class="crayon-line crayon-striped-line" id="crayon-5af876a5c2a57361242388-10"><span
+class="crayon-v">data</span><span
+class="crayon-sy">.</span><span
+class="crayon-e">to_csv</span><span
+class="crayon-sy">(</span><span
+class="crayon-s">"output_excel_file.xlsx"</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-v">sheet_name</span><span
+class="crayon-o">=</span><span
+class="crayon-s">"Sheet 1"</span><span
+class="crayon-sy">,</span><span
+class="crayon-h"> </span><span
+class="crayon-v">index</span><span
+class="crayon-o">=</span><span
+class="crayon-t">False</span><span
+class="crayon-sy">)</span></div></div></td></tr></table></div></div><p></p><h2>Additional useful functions</h2><h3>Grouping and aggregation of data</h3><p>As soon as you load data, you’ll want to group it by one value or another, and then run some calculations. There’s another post on this blog – <a
+href="https://www.shanelynn.ie/summarising-aggregation-and-grouping-data-in-python-pandas/">Summarising, Aggregating, and Grouping Data in Python Pandas</a>, that goes into extensive detail on this subject.</p><h3>Plotting Pandas DataFrames – Bars and Lines</h3><p>There’s a relatively extensive plotting functionality built into Pandas that can be used for exploratory charts – especially useful in the Jupyter notebook environment for data analysis.</p><p>You’ll need to have the <a
+href="https://matplotlib.org" target="_blank" rel="noopener">matplotlib</a> plotting package installed to generate graphics, and  the <code
+class="EnlighterJSRAW" data-enlighter-language="null">%matplotlib inline</code> notebook ‘magic’ activated for inline plots. You will also need <code
+class="EnlighterJSRAW" data-enlighter-language="null">import matplotlib.pyplot as plt</code> to add figure labels and axis labels to your diagrams. A huge amount of functionality is provided by the <a
+href="https://pandas.pydata.org/pandas-docs/stable/visualization.html#visualization-hist" target="_blank" rel="noopener">.plot()</a> command natively by Pandas.</p><div
+id="attachment_947" style="width: 760px" class="wp-caption aligncenter"><a
+href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/histogram-plot-using-python-pandas-dataframe.png"><img
+data-attachment-id="947" data-permalink="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/histogram-plot-using-python-pandas-dataframe/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/histogram-plot-using-python-pandas-dataframe.png" data-orig-size="1080,752" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="histogram-plot-using-python-pandas-dataframe" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/histogram-plot-using-python-pandas-dataframe-300x209.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/histogram-plot-using-python-pandas-dataframe-1024x713.png" class="size-large wp-image-947" src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/histogram-plot-using-python-pandas-dataframe-1024x713.png" alt="create histograms with pandas using the plot command" width="750" height="522" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/histogram-plot-using-python-pandas-dataframe-1024x713.png 1024w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/histogram-plot-using-python-pandas-dataframe-300x209.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/histogram-plot-using-python-pandas-dataframe-768x535.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/histogram-plot-using-python-pandas-dataframe-732x510.png 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/histogram-plot-using-python-pandas-dataframe.png 1080w" sizes="(max-width: 750px) 100vw, 750px"></a><p
+class="wp-caption-text">Create a histogram showing the distribution of latitude values in the dataset. Note that “plt” here is imported from matplotlib – ‘import matplotlib.pyplot as plt’.</p></div><p> </p><div
+id="attachment_948" style="width: 760px" class="wp-caption aligncenter"><a
+href="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Barplot-pandas-dataframe-plot.png"><img
+data-attachment-id="948" data-permalink="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/barplot-pandas-dataframe-plot/#main" data-orig-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Barplot-pandas-dataframe-plot.png" data-orig-size="1420,1240" data-comments-opened="1" data-image-meta='{"aperture":"0","credit":"","camera":"","caption":"","created_timestamp":"0","copyright":"","focal_length":"0","iso":"0","shutter_speed":"0","title":"","orientation":"0"}' data-image-title="Barplot-pandas-dataframe-plot" data-image-description="" data-medium-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Barplot-pandas-dataframe-plot-300x262.png" data-large-file="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Barplot-pandas-dataframe-plot-1024x894.png" class="size-large wp-image-948" src="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Barplot-pandas-dataframe-plot-1024x894.png" alt="bar plots data visualisation using Pandas" width="750" height="655" srcset="https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Barplot-pandas-dataframe-plot-1024x894.png 1024w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Barplot-pandas-dataframe-plot-300x262.png 300w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Barplot-pandas-dataframe-plot-768x671.png 768w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Barplot-pandas-dataframe-plot-732x639.png 732w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Barplot-pandas-dataframe-plot-1140x995.png 1140w, https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/2017/12/Barplot-pandas-dataframe-plot.png 1420w" sizes="(max-width: 750px) 100vw, 750px"></a><p
+class="wp-caption-text">Create a bar plot of the top food producers with a combination of data selection, data grouping, and finally plotting using the Pandas DataFrame plot command. All of this could be produced in one line, but is separated here for clarity.</p></div><p>With enough interest, plotting and data visualisation with Pandas is the target of a future blog post – let me know in the comments below!</p><p>For more information on visualisation with Pandas, make sure you review:</p><ul><li>The official Pandas documentation on <a
+href="https://pandas.pydata.org/pandas-docs/stable/visualization.html" target="_blank" rel="noopener">plotting and data visualisation.</a></li><li><a
+href="http://pbpython.com/simple-graphing-pandas.html" target="_blank" rel="noopener">Simple Graphing with Python</a> from Practical Business Python</li><li><a
+href="https://machinelearningmastery.com/quick-and-dirty-data-analysis-with-pandas/" target="_blank" rel="noopener">Quick and Dirty Data Analysis</a> with Pandas from Machine Learning Mastery.</li></ul><h2>Going further</h2><p>As your Pandas usage increases, so will your requirements for more advance concepts such as reshaping data and merging / joining (<a
+href="https://www.shanelynn.ie/merge-join-dataframes-python-pandas-index-1/">see accompanying blog post.</a>). To get started, I’d recommend reading the 6-part “<a
+href="https://tomaugspurger.github.io/modern-1-intro.html" target="_blank" rel="noopener">Modern Pandas</a>” from <a
+href="http://twitter.com/TomAugspurger" target="_blank" rel="noopener">Tom Augspurger</a> as an excellent blog post that looks at some of the more advanced indexing and data manipulation methods that are possible.</p><div
+id="jp-relatedposts" class="jp-relatedposts"><h3 class="jp-relatedposts-headline"><em>Related</em></h3></div></div>
+<footer
+class="footer-meta"><div
+class="cat-tag-meta-wrap">
+<span
+class="cats-meta"><i
+class="fa fa-folder"></i> <a
+href="https://www.shanelynn.ie/category/blog/" rel="category tag">blog</a>, <a
+href="https://www.shanelynn.ie/category/blog/data-science/" rel="category tag">data science</a>, <a
+href="https://www.shanelynn.ie/category/blog/data-visualisation/" rel="category tag">Data Visualisation</a>, <a
+href="https://www.shanelynn.ie/category/pandas/" rel="category tag">Pandas</a>, <a
+href="https://www.shanelynn.ie/category/blog/python/" rel="category tag">python</a>, <a
+href="https://www.shanelynn.ie/category/tutorials/" rel="category tag">Tutorials</a></span>
+<span
+class="tags-meta"><i
+class="fa fa-tags"></i> <a
+href="https://www.shanelynn.ie/tag/analysis/" rel="tag">analysis</a>, <a
+href="https://www.shanelynn.ie/tag/beginner/" rel="tag">beginner</a>, <a
+href="https://www.shanelynn.ie/tag/csv/" rel="tag">csv</a>, <a
+href="https://www.shanelynn.ie/tag/da/" rel="tag">da</a>, <a
+href="https://www.shanelynn.ie/tag/data/" rel="tag">data</a>, <a
+href="https://www.shanelynn.ie/tag/data-analysis/" rel="tag">data analysis</a>, <a
+href="https://www.shanelynn.ie/tag/data-frame/" rel="tag">data frame</a>, <a
+href="https://www.shanelynn.ie/tag/data-science/" rel="tag">data science</a>, <a
+href="https://www.shanelynn.ie/tag/dataframe/" rel="tag">dataframe</a>, <a
+href="https://www.shanelynn.ie/tag/excel/" rel="tag">excel</a>, <a
+href="https://www.shanelynn.ie/tag/pandas/" rel="tag">pandas</a>, <a
+href="https://www.shanelynn.ie/tag/pandas-data-frame/" rel="tag">pandas data frame</a>, <a
+href="https://www.shanelynn.ie/tag/python/" rel="tag">python</a>, <a
+href="https://www.shanelynn.ie/tag/python-pandas/" rel="tag">python pandas</a>, <a
+href="https://www.shanelynn.ie/tag/tutorials/" rel="tag">tutorials</a></span></div>
+</footer></div></div>
+</article>
+<nav
+role="navigation" id="nav-below" class="post-navigation"><h1 class="screen-reader-text">Post navigation</h1><ul
+class="pager"><li
+class="nav-previous previous"><a
+href="https://www.shanelynn.ie/the-irish-property-price-register-geocoded-to-small-areas/" rel="prev"><span
+class="meta-nav">&larr;</span> The Irish Property Price Register &#8211; Geocoded to Small Areas</a></li><li
+class="nav-next next"><a
+href="https://www.shanelynn.ie/get-busy-with-word-embeddings-introduction/" rel="next">Get Busy with Word Embeddings &#8211; An Introduction <span
+class="meta-nav">&rarr;</span></a></li></ul>
+</nav><div
+id="comments" class="comments-area">
+<header
+class="page-header"><h2 class="comments-title">
+5 thoughts on &ldquo;<span>The Pandas DataFrame &#8211; loading, editing, and viewing data in Python</span>&rdquo;</h2>
+</header><ol
+class="comment-list media-list"><li
+id="comment-629" class="comment even thread-even depth-1">
+<article
+id="div-comment-629" class="comment-body media">
+<a
+class="pull-left" href="#">
+</a><div
+class="media-body"><div
+class="media-body-wrap"><div
+class="comment-heading"><h5 class="media-heading"><cite
+class="fn">James</cite></h5><div
+class="comment-meta">
+<a
+href="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/#comment-629">
+<time
+class="updated" datetime="2018-01-29T15:35:22+00:00">
+January 29, 2018 at 3:35 pm				</time>
+</a></div></div><div
+class="comment-content"><p>Another fantastic guide!  Noticed a typo on the to_excel example</p></div><div
+class="reply comment-reply"><a
+rel='nofollow' class='comment-reply-link' href='https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/?replytocom=629#respond' onclick='return addComment.moveForm( "div-comment-629", "629", "respond", "917" )' aria-label='Reply to James'>Reply</a></div></div></div>
+</article></li><li
+id="comment-653" class="comment odd alt thread-odd thread-alt depth-1">
+<article
+id="div-comment-653" class="comment-body media">
+<a
+class="pull-left" href="#">
+</a><div
+class="media-body"><div
+class="media-body-wrap"><div
+class="comment-heading"><h5 class="media-heading"><cite
+class="fn">Adil Warsi</cite></h5><div
+class="comment-meta">
+<a
+href="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/#comment-653">
+<time
+class="updated" datetime="2018-02-12T07:58:42+00:00">
+February 12, 2018 at 7:58 am				</time>
+</a></div></div><div
+class="comment-content"><p>very usefull tutorial, provided with pandas necessary info&#8230;&#8230;.thnx</p></div><div
+class="reply comment-reply"><a
+rel='nofollow' class='comment-reply-link' href='https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/?replytocom=653#respond' onclick='return addComment.moveForm( "div-comment-653", "653", "respond", "917" )' aria-label='Reply to Adil Warsi'>Reply</a></div></div></div>
+</article></li><li
+id="comment-673" class="comment even thread-even depth-1">
+<article
+id="div-comment-673" class="comment-body media">
+<a
+class="pull-left" href="#">
+</a><div
+class="media-body"><div
+class="media-body-wrap"><div
+class="comment-heading"><h5 class="media-heading"><cite
+class="fn">@clarke_rj</cite></h5><div
+class="comment-meta">
+<a
+href="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/#comment-673">
+<time
+class="updated" datetime="2018-03-04T00:07:54+00:00">
+March 4, 2018 at 12:07 am				</time>
+</a></div></div><div
+class="comment-content"><p>Thank you so much for a well paced and detailed overview of Pandas, kind Regards</p></div><div
+class="reply comment-reply"><a
+rel='nofollow' class='comment-reply-link' href='https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/?replytocom=673#respond' onclick='return addComment.moveForm( "div-comment-673", "673", "respond", "917" )' aria-label='Reply to @clarke_rj'>Reply</a></div></div></div>
+</article></li><li
+id="comment-682" class="comment odd alt thread-odd thread-alt depth-1">
+<article
+id="div-comment-682" class="comment-body media">
+<a
+class="pull-left" href="#">
+</a><div
+class="media-body"><div
+class="media-body-wrap"><div
+class="comment-heading"><h5 class="media-heading"><cite
+class="fn">John_W</cite></h5><div
+class="comment-meta">
+<a
+href="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/#comment-682">
+<time
+class="updated" datetime="2018-03-18T00:26:00+00:00">
+March 18, 2018 at 12:26 am				</time>
+</a></div></div><div
+class="comment-content"><p>Great tutorial. Just in case others find this, I found the  encoding=&#8221;utf-8&#8242; didnt work for me but just substituted encoding=&#8217;ISO-8859-1&#8242; which worked. cheers, John.</p></div><div
+class="reply comment-reply"><a
+rel='nofollow' class='comment-reply-link' href='https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/?replytocom=682#respond' onclick='return addComment.moveForm( "div-comment-682", "682", "respond", "917" )' aria-label='Reply to John_W'>Reply</a></div></div></div>
+</article></li><li
+id="comment-727" class="comment even thread-even depth-1">
+<article
+id="div-comment-727" class="comment-body media">
+<a
+class="pull-left" href="#">
+</a><div
+class="media-body"><div
+class="media-body-wrap"><div
+class="comment-heading"><h5 class="media-heading"><cite
+class="fn">Dan T</cite></h5><div
+class="comment-meta">
+<a
+href="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/#comment-727">
+<time
+class="updated" datetime="2018-05-01T03:12:33+00:00">
+May 1, 2018 at 3:12 am				</time>
+</a></div></div><div
+class="comment-content"><p>Extremely useful!   Thank you!</p></div><div
+class="reply comment-reply"><a
+rel='nofollow' class='comment-reply-link' href='https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/?replytocom=727#respond' onclick='return addComment.moveForm( "div-comment-727", "727", "respond", "917" )' aria-label='Reply to Dan T'>Reply</a></div></div></div>
+</article></li></ol><div
+id="respond" class="comment-respond"><h3 id="reply-title" class="comment-reply-title">Leave a Reply					<small><a
+rel="nofollow" id="cancel-comment-reply-link" href="/using-pandas-dataframe-creating-editing-viewing-data-in-python/#respond" style="display:none;">Cancel reply</a></small></h3><form
+id="commentform" class="comment-form">
+<iframe
+title="Comment Form" src="https://jetpack.wordpress.com/jetpack-comment/?blogid=108567932&#038;postid=917&#038;comment_registration=0&#038;require_name_email=1&#038;stc_enabled=1&#038;stb_enabled=1&#038;show_avatars=0&#038;avatar_default=mystery&#038;greeting=Leave+a+Reply&#038;greeting_reply=Leave+a+Reply+to+%25s&#038;color_scheme=light&#038;lang=en_US&#038;jetpack_version=6.0&#038;sig=d7fc3486bbee8c0f7a03cd4fdbca7c2a407cdbda#parent=https%3A%2F%2Fwww.shanelynn.ie%2Fusing-pandas-dataframe-creating-editing-viewing-data-in-python%2F" style="width:100%; height: 430px; border:0;" name="jetpack_remote_comment" class="jetpack_remote_comment" id="jetpack_remote_comment"></iframe>
+<!--[if !IE]><!--> <script>/*<![CDATA[*/document.addEventListener('DOMContentLoaded',function(){var commentForms=document.getElementsByClassName('jetpack_remote_comment');for(var i=0;i<commentForms.length;i++){commentForms[i].allowTransparency=false;commentForms[i].scrolling='no';}});/*]]>*/</script> <!--<![endif]--></form></div>
+<input
+type="hidden" name="comment_parent" id="comment_parent" value="" /></div></div><div
+class="col-sm-12 col-md-3"><div
+class="sidebar"><div
+class="sidebar-padder"><aside
+class="widget shane-widget"><h3 class="widget-title">Coffee money generator:</h3><div
+style="margin-left: auto; margin-right: auto; width: 160px; height: 600px; " id="shane-1252933941"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> <ins
+class="adsbygoogle" style="display:inline-block;width:160px;height:600px;"
+data-ad-client="ca-pub-2568178699868194"
+data-ad-slot="6223265268"></ins> <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script> </div><br
+style="clear: both; display: block; float: none;"/></aside><aside
+id="blog_subscription-2" class="widget jetpack_subscription_widget"><h3 class="widget-title">Subscribe to Blog via Email</h3><form
+action="#" method="post" accept-charset="utf-8" id="subscribe-blog-blog_subscription-2"><div
+id="subscribe-text"><p>Enter your email address to subscribe to this blog and receive notifications of new posts by email.</p></div><p
+id="subscribe-email">
+<label
+id="jetpack-subscribe-label" for="subscribe-field-blog_subscription-2">
+Email Address						</label>
+<input
+type="email" name="email" required="required" class="required" value="" id="subscribe-field-blog_subscription-2" placeholder="Email Address" /></p><p
+id="subscribe-submit">
+<input
+type="hidden" name="action" value="subscribe" />
+<input
+type="hidden" name="source" value="https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/" />
+<input
+type="hidden" name="sub-type" value="widget" />
+<input
+type="hidden" name="redirect_fragment" value="blog_subscription-2" />
+<input
+type="submit" value="Subscribe" name="jetpack_subscriptions_widget" /></p></form> <script>(function(d){if(('placeholder'in d.createElement('input'))){var label=d.querySelector('label[for=subscribe-field-blog_subscription-2]');label.style.clip='rect(1px, 1px, 1px, 1px)';label.style.position='absolute';label.style.height='1px';label.style.width='1px';label.style.overflow='hidden';}
+var form=d.getElementById('subscribe-blog-blog_subscription-2'),input=d.getElementById('subscribe-field-blog_subscription-2'),handler=function(event){if(''===input.value){input.focus();if(event.preventDefault){event.preventDefault();}
+return false;}};if(window.addEventListener){form.addEventListener('submit',handler,false);}else{form.attachEvent('onsubmit',handler);}})(document);</script> </aside><aside
+id="categories-3" class="widget widget_categories"><h3 class="widget-title">Categories</h3><form
+action="https://www.shanelynn.ie" method="get"><label
+class="screen-reader-text" for="cat">Categories</label><select
+name='cat' id='cat' class='postform' ><option
+value='-1'>Select Category</option><option
+class="level-0" value="14">blog</option><option
+class="level-0" value="25">C++</option><option
+class="level-0" value="105">Cycling</option><option
+class="level-0" value="16">data science</option><option
+class="level-0" value="103">Data Visualisation</option><option
+class="level-0" value="167">Natural Language Processing</option><option
+class="level-0" value="112">Pandas</option><option
+class="level-0" value="27">python</option><option
+class="level-0" value="9">R</option><option
+class="level-0" value="26">ROS</option><option
+class="level-0" value="24">Software</option><option
+class="level-0" value="113">Tutorials</option><option
+class="level-0" value="1">Uncategorized</option><option
+class="level-0" value="43">web</option>
+</select></form> <script type='text/javascript'>(function(){var dropdown=document.getElementById("cat");function onCatChange(){if(dropdown.options[dropdown.selectedIndex].value>0){dropdown.parentNode.submit();}}
+dropdown.onchange=onCatChange;})();</script> </aside><aside
+id="custom-twitter-feeds-widget-2" class="widget widget_custom-twitter-feeds-widget"><div
+id="ctf" class="ctf ctf-type-usertimeline  ctf-styles" style="width: 100%;" data-ctfshortcode="{}" data-ctfneeded="0"><div
+class="ctf-header ctf-no-bio" style=""><a
+href="https://twitter.com/shane_a_lynn" target="_blank" title="@shane_a_lynn" class="ctf-header-link"><div
+class="ctf-header-text"><p
+class="ctf-header-user" style=""><span
+class="ctf-header-name">Shane Lynn</span><span
+class="ctf-header-follow"><i
+class="fa fa-twitter" aria-hidden="true"></i>Follow</span></p></div><div
+class="ctf-header-img"><div
+class="ctf-header-img-hover"><i
+class="fa fa-twitter" aria-hidden="true"></i></div><img
+src="https://pbs.twimg.com/profile_images/413684983929135105/aJtBkzZK_normal.png" alt="Shane Lynn" width="48" height="48"></div></a></div><div
+class="ctf-tweets"><div
+class="ctf-item ctf-author-shane_a_lynn ctf-new" id="994632544158212096" style=""><div
+class="ctf-author-box"><div
+class="ctf-author-box-link" target="_blank" style=""><a
+href="https://twitter.com/shane_a_lynn" class="ctf-author-avatar" target="_blank" style=""><img
+src="https://pbs.twimg.com/profile_images/413684983929135105/aJtBkzZK_normal.png" alt="shane_a_lynn" width="48" height="48"></a><a
+href="https://twitter.com/shane_a_lynn" target="_blank" class="ctf-author-name" style="">Shane Lynn</a><a
+href="https://twitter.com/shane_a_lynn" class="ctf-author-screenname" target="_blank" style="">@shane_a_lynn</a><span
+class="ctf-screename-sep">&middot;</span><div
+class="ctf-tweet-meta"><a
+href="https://twitter.com/shane_a_lynn/status/994632544158212096" class="ctf-tweet-date" target="_blank" style="">10 May</a></div></div></div><div
+class="ctf-tweet-content"><p
+class="ctf-tweet-text" style="">There was a new bulletin yesterday, on national news in @ireland, about how these 22 WILD and WANDERING GOATS were "terrorising" Ennis, a western town. What an incredibly Irish story. @rtenews  #ahcmon #goatterrorists</p><a
+href="https://twitter.com/shane_a_lynn/status/994632544158212096" target="_blank" class="ctf-tweet-text-media-wrap"><i
+style="padding-right: 5px;" class="fa fa-picture-o ctf-tweet-text-media" aria-hidden="true"></i></a></div><div
+class="ctf-tweet-actions"><a
+href="https://twitter.com/intent/tweet?in_reply_to=994632544158212096&related=shane_a_lynn" class="ctf-reply" target="_blank" style=""><i
+class="fa fa-reply" aria-hidden="true"></i><span
+class="ctf-screenreader">Reply on Twitter</span></a><a
+href="https://twitter.com/intent/retweet?tweet_id=994632544158212096&related=shane_a_lynn" class="ctf-retweet" target="_blank" style=""><i
+class="fa fa-retweet" aria-hidden="true"></i><span
+class="ctf-screenreader">Retweet on Twitter</span><span
+class="ctf-action-count ctf-retweet-count"></span></a><a
+href="https://twitter.com/intent/like?tweet_id=994632544158212096&related=shane_a_lynn" class="ctf-like" target="_blank" style=""><i
+class="fa fa-heart" aria-hidden="true"></i><span
+class="ctf-screenreader">Like on Twitter</span><span
+class="ctf-action-count ctf-favorite-count">3</span></a><a
+href="https://twitter.com/shane_a_lynn/status/994632544158212096" class="ctf-twitterlink" style="" target="_blank">Twitter</a></div></div><div
+class="ctf-item ctf-author-shane_a_lynn ctf-new ctf-quoted" id="994631717297315841" style=""><div
+class="ctf-author-box"><div
+class="ctf-author-box-link" target="_blank" style=""><a
+href="https://twitter.com/shane_a_lynn" class="ctf-author-avatar" target="_blank" style=""><img
+src="https://pbs.twimg.com/profile_images/413684983929135105/aJtBkzZK_normal.png" alt="shane_a_lynn" width="48" height="48"></a><a
+href="https://twitter.com/shane_a_lynn" target="_blank" class="ctf-author-name" style="">Shane Lynn</a><a
+href="https://twitter.com/shane_a_lynn" class="ctf-author-screenname" target="_blank" style="">@shane_a_lynn</a><span
+class="ctf-screename-sep">&middot;</span><div
+class="ctf-tweet-meta"><a
+href="https://twitter.com/shane_a_lynn/status/994631717297315841" class="ctf-tweet-date" target="_blank" style="">10 May</a></div></div></div><div
+class="ctf-tweet-content"><p
+class="ctf-tweet-text" style="">Ireland finally starting to see sense?</div><div
+class="ctf-tweet-actions"><a
+href="https://twitter.com/intent/tweet?in_reply_to=994631717297315841&related=shane_a_lynn" class="ctf-reply" target="_blank" style=""><i
+class="fa fa-reply" aria-hidden="true"></i><span
+class="ctf-screenreader">Reply on Twitter</span></a><a
+href="https://twitter.com/intent/retweet?tweet_id=994631717297315841&related=shane_a_lynn" class="ctf-retweet" target="_blank" style=""><i
+class="fa fa-retweet" aria-hidden="true"></i><span
+class="ctf-screenreader">Retweet on Twitter</span><span
+class="ctf-action-count ctf-retweet-count"></span></a><a
+href="https://twitter.com/intent/like?tweet_id=994631717297315841&related=shane_a_lynn" class="ctf-like" target="_blank" style=""><i
+class="fa fa-heart" aria-hidden="true"></i><span
+class="ctf-screenreader">Like on Twitter</span><span
+class="ctf-action-count ctf-favorite-count">1</span></a><a
+href="https://twitter.com/shane_a_lynn/status/994631717297315841" class="ctf-twitterlink" style="" target="_blank">Twitter</a></div></div><div
+class="ctf-item ctf-author-shane_a_lynn ctf-new" id="993954883446411264" style=""><div
+class="ctf-author-box"><div
+class="ctf-author-box-link" target="_blank" style=""><a
+href="https://twitter.com/shane_a_lynn" class="ctf-author-avatar" target="_blank" style=""><img
+src="https://pbs.twimg.com/profile_images/413684983929135105/aJtBkzZK_normal.png" alt="shane_a_lynn" width="48" height="48"></a><a
+href="https://twitter.com/shane_a_lynn" target="_blank" class="ctf-author-name" style="">Shane Lynn</a><a
+href="https://twitter.com/shane_a_lynn" class="ctf-author-screenname" target="_blank" style="">@shane_a_lynn</a><span
+class="ctf-screename-sep">&middot;</span><div
+class="ctf-tweet-meta"><a
+href="https://twitter.com/shane_a_lynn/status/993954883446411264" class="ctf-tweet-date" target="_blank" style="">8 May</a></div></div></div><div
+class="ctf-tweet-content"><p
+class="ctf-tweet-text" style="">Google Duplex has been in the work for many years - next-level #conversationalAI from @Google at #GoogleIO https://t.co/izHiRr3xGH #googleduplex</p><a
+href="https://twitter.com/shane_a_lynn/status/993954883446411264" target="_blank" class="ctf-tweet-text-media-wrap"><i
+style="padding-right: 5px;" class="fa fa-picture-o ctf-tweet-text-media" aria-hidden="true"></i></a></div><div
+class="ctf-tweet-actions"><a
+href="https://twitter.com/intent/tweet?in_reply_to=993954883446411264&related=shane_a_lynn" class="ctf-reply" target="_blank" style=""><i
+class="fa fa-reply" aria-hidden="true"></i><span
+class="ctf-screenreader">Reply on Twitter</span></a><a
+href="https://twitter.com/intent/retweet?tweet_id=993954883446411264&related=shane_a_lynn" class="ctf-retweet" target="_blank" style=""><i
+class="fa fa-retweet" aria-hidden="true"></i><span
+class="ctf-screenreader">Retweet on Twitter</span><span
+class="ctf-action-count ctf-retweet-count"></span></a><a
+href="https://twitter.com/intent/like?tweet_id=993954883446411264&related=shane_a_lynn" class="ctf-like" target="_blank" style=""><i
+class="fa fa-heart" aria-hidden="true"></i><span
+class="ctf-screenreader">Like on Twitter</span><span
+class="ctf-action-count ctf-favorite-count">1</span></a><a
+href="https://twitter.com/shane_a_lynn/status/993954883446411264" class="ctf-twitterlink" style="" target="_blank">Twitter</a></div></div><div
+class="ctf-item ctf-author-shane_a_lynn ctf-new ctf-retweet" id="993946670684672001" style=""><div
+class="ctf-context"><a
+href="https://twitter.com/intent/user?screen_name=shane_a_lynn" target="_blank" class="ctf-retweet-icon"><i
+class="fa fa-retweet" aria-hidden="true"></i><span
+class="ctf-screenreader">Retweet on Twitter</span></a><a
+href="https://twitter.com/shane_a_lynn" target="_blank" class="ctf-retweet-text" style="">Shane Lynn Retweeted</a></div><div
+class="ctf-author-box"><div
+class="ctf-author-box-link" target="_blank" style=""><a
+href="https://twitter.com/parsaghaffari" class="ctf-author-avatar" target="_blank" style=""><img
+src="https://pbs.twimg.com/profile_images/858222398218399745/jzNUGlMy_normal.jpg" alt="parsaghaffari" width="48" height="48"></a><a
+href="https://twitter.com/parsaghaffari" target="_blank" class="ctf-author-name" style="">Parsa Ghaffari</a><a
+href="https://twitter.com/parsaghaffari" class="ctf-author-screenname" target="_blank" style="">@parsaghaffari</a><span
+class="ctf-screename-sep">&middot;</span><div
+class="ctf-tweet-meta"><a
+href="https://twitter.com/parsaghaffari/status/993939247152422912" class="ctf-tweet-date" target="_blank" style="">8 May</a></div></div></div><div
+class="ctf-tweet-content"><p
+class="ctf-tweet-text" style="">Google Duplex is pretty cool. The "opening hours" example (where the AI calls a restaurant and asks their holiday opening hours) hints at a new and very important era in crawling information: crawling non-digitized human knowledge. https://t.co/exozknzLiu</div><div
+class="ctf-tweet-actions"><a
+href="https://twitter.com/intent/tweet?in_reply_to=993939247152422912&related=parsaghaffari" class="ctf-reply" target="_blank" style=""><i
+class="fa fa-reply" aria-hidden="true"></i><span
+class="ctf-screenreader">Reply on Twitter</span></a><a
+href="https://twitter.com/intent/retweet?tweet_id=993939247152422912&related=parsaghaffari" class="ctf-retweet" target="_blank" style=""><i
+class="fa fa-retweet" aria-hidden="true"></i><span
+class="ctf-screenreader">Retweet on Twitter</span><span
+class="ctf-action-count ctf-retweet-count">11</span></a><a
+href="https://twitter.com/intent/like?tweet_id=993939247152422912&related=parsaghaffari" class="ctf-like" target="_blank" style=""><i
+class="fa fa-heart" aria-hidden="true"></i><span
+class="ctf-screenreader">Like on Twitter</span><span
+class="ctf-action-count ctf-favorite-count">19</span></a><a
+href="https://twitter.com/parsaghaffari/status/993939247152422912" class="ctf-twitterlink" style="" target="_blank">Twitter</a></div></div></div><a
+href="javascript:void(0);" id="ctf-more" class="ctf-more" style=""><span>Load More...</span></a></div></aside></div></div></div></div></div></div></div><footer
+id="colophon" class="site-footer" role="contentinfo"><div
+class="container animated fadeInLeft"><div
+class="row"><div
+class="site-footer-inner col-sm-12 clearfix"><div
+class="sidebar-padder"><aside
+id="categories-2" class="widget widget_categories col-3"><h3 class="widget-title">Categories</h3><ul><li
+class="cat-item cat-item-14"><a
+href="https://www.shanelynn.ie/category/blog/" >blog</a></li><li
+class="cat-item cat-item-25"><a
+href="https://www.shanelynn.ie/category/c/" >C++</a></li><li
+class="cat-item cat-item-105"><a
+href="https://www.shanelynn.ie/category/cycling/" >Cycling</a></li><li
+class="cat-item cat-item-16"><a
+href="https://www.shanelynn.ie/category/blog/data-science/" >data science</a></li><li
+class="cat-item cat-item-103"><a
+href="https://www.shanelynn.ie/category/blog/data-visualisation/" >Data Visualisation</a></li><li
+class="cat-item cat-item-167"><a
+href="https://www.shanelynn.ie/category/blog/natural-language-processing/" >Natural Language Processing</a></li><li
+class="cat-item cat-item-112"><a
+href="https://www.shanelynn.ie/category/pandas/" >Pandas</a></li><li
+class="cat-item cat-item-27"><a
+href="https://www.shanelynn.ie/category/blog/python/" >python</a></li><li
+class="cat-item cat-item-9"><a
+href="https://www.shanelynn.ie/category/blog/r/" >R</a></li><li
+class="cat-item cat-item-26"><a
+href="https://www.shanelynn.ie/category/ros/" >ROS</a></li><li
+class="cat-item cat-item-24"><a
+href="https://www.shanelynn.ie/category/software/" >Software</a></li><li
+class="cat-item cat-item-113"><a
+href="https://www.shanelynn.ie/category/tutorials/" >Tutorials</a></li><li
+class="cat-item cat-item-1"><a
+href="https://www.shanelynn.ie/category/uncategorized/" >Uncategorized</a></li><li
+class="cat-item cat-item-43"><a
+href="https://www.shanelynn.ie/category/blog/web/" >web</a></li></ul>
+</aside><aside
+id="linkcat-8" class="widget widget_links col-3"><h3 class="widget-title">Footer links</h3><ul
+class='xoxo blogroll'><li><a
+href="http://www.meetup.com/DublinR/" title="Meetup page for the Dublin R Users group who regularly host talks on different aspects of using R" target="_blank">Dublin R Users Group</a></li><li><a
+href="http://www.r-bloggers.com/" title="Great collection of R related blog content from around the web." target="_blank">R-bloggers</a></li><li><a
+href="http://www.rstudio.com" title="Fantastic editor and IDE for R programming" target="_blank">RStudio</a></li><li><a
+href="http://www.udacity.com" title="Udacity &#8211; Online Learning University" target="_blank">Udacity</a></li><li><a
+href="https://www.shanelynn.ie/useful-resources" title="Useful resources from around the internet.">Useful Resources</a></li></ul>
+</aside>
+<aside
+id="search-2" class="widget widget_search col-3"><h3 class="widget-title">Search</h3><form
+role="search" method="get" class="search-form" action="https://www.shanelynn.ie/">
+<label>
+<input
+type="search" class="search-field" placeholder="Search &hellip;" value="" name="s" title="Search for:">
+</label>
+<input
+type="submit" class="search-submit" value="Search"></form>
+</aside><aside
+id="pages-3" class="widget widget_pages col-3"><h3 class="widget-title">Pages</h3><ul><li
+class="page_item page-item-2"><a
+href="https://www.shanelynn.ie/about/">About</a></li><li
+class="page_item page-item-680"><a
+href="https://www.shanelynn.ie/consultancy-services/">Consultancy &#038; Services</a></li><li
+class="page_item page-item-27"><a
+href="https://www.shanelynn.ie/contact/">Contact</a></li><li
+class="page_item page-item-67"><a
+href="https://www.shanelynn.ie/publications/">Publications</a></li><li
+class="page_item page-item-25"><a
+href="https://www.shanelynn.ie/research/">Research</a></li><li
+class="page_item page-item-802"><a
+href="https://www.shanelynn.ie/useful-resources/">Useful Resources</a></li></ul>
+</aside></div></div></div></div><div
+id="footer-info"><div
+class="container"><div
+class="site-info">
+<a
+href="http://wordpress.org/" title="A Semantic Personal Publishing Platform" >&copy; 2016 ascent. All rights reserved</a>
+<span
+class="sep"> | </span>
+Ascent by   <a
+href="http://nettantra.com/" target="_blank">NetTantra</a></div></div></div>
+</footer> <script>/*<![CDATA[*/var advanced_ads_ga_UID='';advanced_ads_check_adblocker=function(t){function e(t){(window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||function(t){return setTimeout(t,16)}).call(window,t)}var n=[],a=null;return e(function(){var t=document.createElement("div");t.innerHTML="&nbsp;",t.setAttribute("class","ad_unit ad-unit text-ad text_ad pub_300x250"),t.setAttribute("style","width: 1px !important; height: 1px !important; position: absolute !important; left: 0px !important; top: 0px !important; overflow: hidden !important;"),document.body.appendChild(t),e(function(){var e=window.getComputedStyle&&window.getComputedStyle(t),o=e&&e.getPropertyValue("-moz-binding");a=e&&"none"===e.getPropertyValue("display")||"string"==typeof o&&-1!==o.indexOf("about:");for(var i=0;i<n.length;i++)n[i](a);n=[]})}),function(t){if(null===a)return void n.push(t);t(a)}}(),function(){var t=function(t,e){this.name=t,this.UID=e,this.analyticsObject=null;var n=this,a={hitType:"event",eventCategory:"Advanced Ads",eventAction:"AdBlock",eventLabel:"Yes",nonInteraction:!0,transport:"beacon"};this.analyticsObject="string"==typeof GoogleAnalyticsObject&&"function"==typeof window[GoogleAnalyticsObject]&&window[GoogleAnalyticsObject],!1===this.analyticsObject?(!function(t,e,n,a,o,i,d){t.GoogleAnalyticsObject=o,t[o]=t[o]||function(){(t[o].q=t[o].q||[]).push(arguments)},t[o].l=1*new Date,i=e.createElement(n),d=e.getElementsByTagName(n)[0],i.async=1,i.src="https://www.google-analytics.com/analytics.js",d.parentNode.insertBefore(i,d)}(window,document,"script",0,"_advads_ga"),_advads_ga("create",n.UID,"auto",this.name),_advads_ga(n.name+".send",a)):(window.console&&window.console.log("Advanced Ads Analytics >> using other's variable named `"+GoogleAnalyticsObject+"`"),window[GoogleAnalyticsObject]("create",n.UID,"auto",this.name),window[GoogleAnalyticsObject](n.name+".send",a))};advanced_ads_check_adblocker(function(e){e&&"string"==typeof advanced_ads_ga_UID&&advanced_ads_ga_UID&&new t("advadsTracker",advanced_ads_ga_UID)})}();/*]]>*/</script><div
+id="hbcxdFCLQLTp" class="AnEaCyNbUfNi" style="background:#dddddd;z-index:9999999; "></div> <script type="text/javascript">/*<![CDATA[*/var anOptions={"anOptionChoice":"2","anOptionStats":"1","anOptionAdsSelectors":"","anOptionCookie":"1","anOptionCookieLife":"30","anPageRedirect":"","anPermalink":"undefined","anOptionModalEffect":"none","anOptionModalspeed":"350","anOptionModalclose":false,"anOptionModalOverlay":"rgba( 0,0,0,0.8 )","anAlternativeActivation":false,"anAlternativeElement":"","anAlternativeText":"<p><strong>AdBlock detected!<\/strong><\/p>\n<p>Please add <a title=\"https:\/\/getadmiral.com?utm_medium=plugin&utm_campaign=abn&utm_source=abnlinks\" href=\"themeisle.com\" target=\"_blank\">www.getadmiral.com<\/a> to your adblocking whitelist or disable your adblocking software.<\/p>\n","anAlternativeClone":"2","anAlternativeProperties":"","anOptionModalShowAfter":0,"anPageMD5":"","anSiteID":0,"modalHTML":"<div class=\"AnEaCyNbUfNi-default\">\n\t<h1 style=\"\">I use ads to pay for hosting and coffee<\/h1>\n\t<p>There's a few ads on this site. It makes about $30 a month (which I think is great) and that pays for hosting at Digital Ocean and some coffee.<\/p>\n<p>I've\u00a0detected that you are using AdBlock Plus or some other adblocking software which is preventing the page from fully loading.<\/p>\n<p><strong>Please add <a title=\"Shane Lynn\" href=\"http:\/\/www.shanelynn.ie\" target=\"_blank\" rel=\"noopener\">www.shanelynn.ie<\/a> to your ad blocking whitelist or disable your adblocking software when you're on this site.<\/strong><\/p>\n<\/div>\n<a class=\"close-modal close-AnEaCyNbUfNi\">&#215;<\/a>"}/*]]>*/</script><div
+id="adsense" class="an-sponsored" style="position:absolute; z-index:-1; height:1px; width:1px; visibility: hidden; top: -1px; left: 0;"><img
+class="an-advert-banner" alt="sponsored" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"></div><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-44822631-1','auto');ga('send','pageview');</script><!--[if lte IE 8]><link
+rel='stylesheet' id='jetpack-carousel-ie8fix-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/jetpack/modules/carousel/jetpack-carousel-ie8fix.css?ver=20121024' type='text/css' media='all' />
+<![endif]--><link
+rel='stylesheet' id='crayon-css'  href='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/crayon-syntax-highlighter/css/min/crayon.min.css?ver=_2.7.2_beta' type='text/css' media='all' /> <script type='text/javascript'>var wpcf7={"apiSettings":{"root":"https:\/\/www.shanelynn.ie\/wp-json\/contact-form-7\/v1","namespace":"contact-form-7\/v1"},"recaptcha":{"messages":{"empty":"Please verify that you are not a robot."}},"cached":"1"};</script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=5.0.1'></script> <script type='text/javascript'>var ctf={"ajax_url":"https:\/\/www.shanelynn.ie\/wp-admin\/admin-ajax.php"};</script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/custom-twitter-feeds/js/ctf-scripts.js?ver=1.2.8'></script> <script type='text/javascript' src='https://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201819'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/themes/ascent/includes/js/skip-link-focus-fix.js?ver=20130115'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-includes/js/comment-reply.min.js?ver=4.9.5'></script> <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/mootools/1.6.0/mootools.min.js'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/enlighter/resources/EnlighterJS.min.js?ver=3.5'></script> <script type='text/javascript'>var ajax_object={"nonce":"2a61f6d60a","ajaxurl":"https:\/\/www.shanelynn.ie\/wp-admin\/admin-ajax.php"};</script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/uploads/ywrMnyIoxdTt/oIWjOKsshQuI.js?ver=2.2.3'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-includes/js/wp-embed.min.js?ver=4.9.5'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/jetpack/_inc/build/spin.min.js?ver=1.3'></script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/jetpack/_inc/build/jquery.spin.min.js?ver=1.3'></script> <script type='text/javascript'>/*<![CDATA[*/var jetpackCarouselStrings={"widths":[370,700,1000,1200,1400,2000],"is_logged_in":"","lang":"en","ajaxurl":"https:\/\/www.shanelynn.ie\/wp-admin\/admin-ajax.php","nonce":"4402242803","display_exif":"1","display_geo":"1","single_image_gallery":"1","single_image_gallery_media_file":"","background_color":"black","comment":"Comment","post_comment":"Post Comment","write_comment":"Write a Comment...","loading_comments":"Loading Comments...","download_original":"View full size <span class=\"photo-size\">{0}<span class=\"photo-size-times\">\u00d7<\/span>{1}<\/span>","no_comment_text":"Please be sure to submit some text with your comment.","no_comment_email":"Please provide an email address to comment.","no_comment_author":"Please provide your name to comment.","comment_post_error":"Sorry, but there was an error posting your comment. Please try again later.","comment_approved":"Your comment was approved.","comment_unapproved":"Your comment is in moderation.","camera":"Camera","aperture":"Aperture","shutter_speed":"Shutter Speed","focal_length":"Focal Length","copyright":"Copyright","comment_registration":"0","require_name_email":"1","login_url":"https:\/\/www.shanelynn.ie\/wp-login.php?redirect_to=https%3A%2F%2Fwww.shanelynn.ie%2Fusing-pandas-dataframe-creating-editing-viewing-data-in-python%2F","blog_id":"1","meta_data":["camera","aperture","shutter_speed","focal_length","copyright"],"local_comments_commenting_as":"<fieldset><label for=\"email\">Email (Required)<\/label> <input type=\"text\" name=\"email\" class=\"jp-carousel-comment-form-field jp-carousel-comment-form-text-field\" id=\"jp-carousel-comment-form-email-field\" \/><\/fieldset><fieldset><label for=\"author\">Name (Required)<\/label> <input type=\"text\" name=\"author\" class=\"jp-carousel-comment-form-field jp-carousel-comment-form-text-field\" id=\"jp-carousel-comment-form-author-field\" \/><\/fieldset><fieldset><label for=\"url\">Website<\/label> <input type=\"text\" name=\"url\" class=\"jp-carousel-comment-form-field jp-carousel-comment-form-text-field\" id=\"jp-carousel-comment-form-url-field\" \/><\/fieldset>"};/*]]>*/</script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/jetpack/_inc/build/carousel/jetpack-carousel.min.js?ver=20170209'></script> <script type='text/javascript'>var CrayonSyntaxSettings={"version":"_2.7.2_beta","is_admin":"0","ajaxurl":"https:\/\/www.shanelynn.ie\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};var CrayonSyntaxStrings={"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};</script> <script type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/crayon-syntax-highlighter/js/min/crayon.min.js?ver=_2.7.2_beta'></script> <script async="async" type='text/javascript' src='https://shanelynnwebsite-mid9n9g1q9y8tt.netdna-ssl.com/wp-content/plugins/akismet/_inc/form.js?ver=4.0.3'></script> <script type="text/javascript">/*<![CDATA[*/EnlighterJS_Config={"selector":{"block":"pre.EnlighterJSRAW","inline":"code.EnlighterJSRAW"},"language":"python","theme":"enlighter","indent":2,"hover":"hoverEnabled","showLinenumbers":true,"rawButton":true,"infoButton":true,"windowButton":true,"rawcodeDoubleclick":false,"grouping":true,"cryptex":{"enabled":false,"email":"mail@example.tld"}};!function(){var a=function(a){var b="Enlighter Error: ";console.error?console.error(b+a):console.log&&console.log(b+a)};return window.addEvent?"undefined"==typeof EnlighterJS?void a("Javascript Resources not loaded yet!"):"undefined"==typeof EnlighterJS_Config?void a("Configuration not loaded yet!"):void window.addEvent("domready",function(){EnlighterJS.Util.Init(EnlighterJS_Config.selector.block,EnlighterJS_Config.selector.inline,EnlighterJS_Config)}):void a("MooTools Framework not loaded yet!")}();;/*]]>*/</script> <!--[if IE]> <script type="text/javascript">if(0===window.location.hash.indexOf('#comment-')){window.location.hash=window.location.hash;}</script> <![endif]--> <script type="text/javascript">/*<![CDATA[*/(function(){var comm_par_el=document.getElementById('comment_parent'),comm_par=(comm_par_el&&comm_par_el.value)?comm_par_el.value:'',frame=document.getElementById('jetpack_remote_comment'),tellFrameNewParent;tellFrameNewParent=function(){if(comm_par){frame.src="https://jetpack.wordpress.com/jetpack-comment/?blogid=108567932&postid=917&comment_registration=0&require_name_email=1&stc_enabled=1&stb_enabled=1&show_avatars=0&avatar_default=mystery&greeting=Leave+a+Reply&greeting_reply=Leave+a+Reply+to+%25s&color_scheme=light&lang=en_US&jetpack_version=6.0&sig=d7fc3486bbee8c0f7a03cd4fdbca7c2a407cdbda#parent=https%3A%2F%2Fwww.shanelynn.ie%2Fusing-pandas-dataframe-creating-editing-viewing-data-in-python%2F"+'&replytocom='+parseInt(comm_par,10).toString();}else{frame.src="https://jetpack.wordpress.com/jetpack-comment/?blogid=108567932&postid=917&comment_registration=0&require_name_email=1&stc_enabled=1&stb_enabled=1&show_avatars=0&avatar_default=mystery&greeting=Leave+a+Reply&greeting_reply=Leave+a+Reply+to+%25s&color_scheme=light&lang=en_US&jetpack_version=6.0&sig=d7fc3486bbee8c0f7a03cd4fdbca7c2a407cdbda#parent=https%3A%2F%2Fwww.shanelynn.ie%2Fusing-pandas-dataframe-creating-editing-viewing-data-in-python%2F";}};if('undefined'!==typeof addComment){addComment._Jetpack_moveForm=addComment.moveForm;addComment.moveForm=function(commId,parentId,respondId,postId){var returnValue=addComment._Jetpack_moveForm(commId,parentId,respondId,postId),cancelClick,cancel;if(false===returnValue){cancel=document.getElementById('cancel-comment-reply-link');cancelClick=cancel.onclick;cancel.onclick=function(){var cancelReturn=cancelClick.call(this);if(false!==cancelReturn){return cancelReturn;}
+if(!comm_par){return cancelReturn;}
+comm_par=0;tellFrameNewParent();return cancelReturn;};}
+if(comm_par==parentId){return returnValue;}
+comm_par=parentId;tellFrameNewParent();return returnValue;};}
+document.addEventListener('DOMContentLoaded',function(){var iframe_url="https:\/\/jetpack.wordpress.com";if(window.postMessage){if(document.addEventListener){window.addEventListener('message',function(event){var origin=event.origin.replace(/^http:\/\//i,'https://');if(iframe_url.replace(/^http:\/\//i,'https://')!==origin){return;}
+jQuery(frame).height(event.data);});}else if(document.attachEvent){window.attachEvent('message',function(event){var origin=event.origin.replace(/^http:\/\//i,'https://');if(iframe_url.replace(/^http:\/\//i,'https://')!==origin){return;}
+jQuery(frame).height(event.data);});}}})})();/*]]>*/</script> <script type='text/javascript' src='https://stats.wp.com/e-201819.js' async='async' defer='defer'></script> <script type='text/javascript'>_stq=window._stq||[];_stq.push(['view',{v:'ext',j:'1:6.0',blog:'108567932',post:'917',tz:'0',srv:'www.shanelynn.ie'}]);_stq.push(['clickTrackerInit','108567932','917']);</script> </body></html>

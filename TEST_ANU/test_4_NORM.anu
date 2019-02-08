@@ -1,0 +1,28 @@
+Attribute Set is
+['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M']
+
+Initial FDs are
+A -> B,C,D,E
+A,I -> K
+A,L -> M
+E -> F,G,H
+I -> J
+
+ "Canonical Cover" of FDs set is
+A -> B,C,D,E
+A,I -> K
+A,L -> M
+E -> F,G,H
+I -> J
+
+ "Candidate Keys" of Universal Relation are
+(['A', 'I', 'L'],)
+
+ "2NF" Decomposition of Universal Relation is
+(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'], ['A', 'I', 'K'], ['A', 'I', 'L'], ['A', 'L', 'M'], ['I', 'J'])
+
+ 3NF Decomposition of Universal Relation is
+(['A', 'B', 'C', 'D', 'E'], ['A', 'I', 'K'], ['A', 'I', 'L'], ['A', 'L', 'M'], ['E', 'F', 'G', 'H'], ['I', 'J'])
+
+ "BCNF" Decomposition of Universal Relation is
+(['A', 'B', 'C', 'D', 'E'], ['A', 'I', 'K'], ['A', 'I', 'L'], ['A', 'L', 'M'], ['E', 'F', 'G', 'H'], ['I', 'J'])

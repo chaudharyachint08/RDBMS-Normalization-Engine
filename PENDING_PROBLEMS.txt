@@ -1,0 +1,10 @@
+1. Top-Down dynamic programming, Memo shrink approach
+for Grow-Shrink approch, to reduce exponential space need
+
+#Proof of summation
+https://math.stackexchange.com/questions/683733/sum-of-k-n-choose-k-is-n2n-1
+
+Time complexity will be 
+T*N*(N-1)*(2**(N-1)-1)
+Maximum computing cores which can be employed are
+T*N*Combinations((N-1),ceil((N-1)/2))

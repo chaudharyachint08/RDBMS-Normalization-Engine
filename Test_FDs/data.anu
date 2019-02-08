@@ -1,0 +1,6 @@
+({'BirthYear', 'City'}, {'Name'})
+({'College', 'Name'}, {'City'})
+({'City'}, {'College'})
+({'Name'}, {'BirthYear'})
+
+
