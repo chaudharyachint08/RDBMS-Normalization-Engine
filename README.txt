@@ -1,3 +1,5 @@
+# ANU(Automatic Normalizatio Utility)
+
 This DBMS design project will supoosed to have followings parts:
 
 1. A tool to extract possible Canonical cover of FDs from available instance of a DB
