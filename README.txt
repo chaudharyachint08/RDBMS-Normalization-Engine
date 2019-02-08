@@ -1,4 +1,4 @@
-# ANU(Automatic Normalizatio Utility)
+** ANU(Automatic Normalizatio Utility)
 
 This DBMS design project will supoosed to have followings parts:
 
